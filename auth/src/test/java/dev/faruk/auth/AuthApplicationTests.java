@@ -34,6 +34,8 @@ class AuthApplicationTests {
                 "testPassword",
                 List.of(1, 2));
 
+        try {
+
         // delete the user if it exists
         if (userRepository.findByUsername(testUserCredentials.getUsername()) != null) {
             userRepository.deleteByUsername(testUserCredentials.getUsername());
@@ -62,5 +64,12 @@ class AuthApplicationTests {
 
         // check if the logged-in user is the same as the registered user
         assert loggedInUser.getUsername().equals(testUserCredentials.getUsername());
+        } catch (Exception ignored) {
+            // any unhandled exception should not be thrown
+            assert false;
+        } finally {
+            // delete the user even if the test fails
+            userRepository.deleteByUsername(testUserCredentials.getUsername());
+        }
     }
 }
