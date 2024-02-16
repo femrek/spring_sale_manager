@@ -35,35 +35,35 @@ class AuthApplicationTests {
                 List.of(1, 2));
 
         try {
+            // delete the user if it exists
+            if (userRepository.findByUsername(testUserCredentials.getUsername()) != null) {
+                userRepository.deleteByUsername(testUserCredentials.getUsername());
+            }
 
-        // delete the user if it exists
-        if (userRepository.findByUsername(testUserCredentials.getUsername()) != null) {
-            userRepository.deleteByUsername(testUserCredentials.getUsername());
-        }
+            // register the user
+            final UserDTO registeredUser = authController.register(testUserCredentials).getData();
 
-        // register the user
-        final UserDTO registeredUser = authController.register(testUserCredentials).getData();
+            // try to log in with wrong credentials
+            final LoginRequest wrongLoginRequest = new LoginRequest(
+                    registeredUser.getUsername(),
+                    "wrongPassword");
+            try {
+                authController.login(wrongLoginRequest);
+                assert false;
+            } catch (AppHttpError.Unauthorized ignored) {
+            }
 
-        // try to log in with wrong credentials
-        final LoginRequest wrongLoginRequest = new LoginRequest(
-                registeredUser.getUsername(),
-                "wrongPassword");
-        try {
-            authController.login(wrongLoginRequest);
-            assert false;
-        } catch (AppHttpError.Unauthorized ignored) {}
+            // login with the registered user
+            final LoginRequest loginRequest = new LoginRequest(
+                    testUserCredentials.getUsername(),
+                    testUserCredentials.getPassword());
+            final String token = authController.login(loginRequest).getData();
 
-        // login with the registered user
-        final LoginRequest loginRequest = new LoginRequest(
-                testUserCredentials.getUsername(),
-                testUserCredentials.getPassword());
-        final String token = authController.login(loginRequest).getData();
+            // validate the token
+            final UserDTO loggedInUser = authController.user(token).getData();
 
-        // validate the token
-        final UserDTO loggedInUser = authController.user(token).getData();
-
-        // check if the logged-in user is the same as the registered user
-        assert loggedInUser.getUsername().equals(testUserCredentials.getUsername());
+            // check if the logged-in user is the same as the registered user
+            assert loggedInUser.getUsername().equals(testUserCredentials.getUsername());
         } catch (Exception ignored) {
             // any unhandled exception should not be thrown
             assert false;
