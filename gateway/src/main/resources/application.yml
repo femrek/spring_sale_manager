@@ -11,6 +11,11 @@ spring:
           uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/product/**
+
+        - id: sale-service
+          uri: lb://SALE-SERVICE
+          predicates:
+            - Path=/sale/**
   application:
     name: gateway
 
