@@ -1,4 +1,4 @@
-package dev.faruk.auth.dto.request;
+package dev.faruk.auth.dto;
 
 import lombok.*;
 

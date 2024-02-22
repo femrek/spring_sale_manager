@@ -2,10 +2,10 @@ package dev.faruk.auth;
 
 import dev.faruk.auth.controller.AuthController;
 import dev.faruk.auth.dao.UserRepository;
-import dev.faruk.auth.dto.request.LoginRequest;
-import dev.faruk.auth.dto.request.RegisterRequest;
-import dev.faruk.auth.dto.response.UserDTO;
-import dev.faruk.auth.error.AppHttpError;
+import dev.faruk.auth.dto.LoginRequest;
+import dev.faruk.auth.dto.RegisterRequest;
+import dev.faruk.commoncodebase.dto.UserDTO;
+import dev.faruk.commoncodebase.error.AppHttpError;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,12 +1,12 @@
 package dev.faruk.auth.service;
 
 import dev.faruk.auth.dao.UserRepository;
-import dev.faruk.auth.dto.request.LoginRequest;
-import dev.faruk.auth.dto.request.RegisterRequest;
-import dev.faruk.auth.dto.response.UserDTO;
-import dev.faruk.auth.entity.AppUser;
-import dev.faruk.auth.entity.AppUserRole;
-import dev.faruk.auth.error.AppHttpError;
+import dev.faruk.auth.dto.LoginRequest;
+import dev.faruk.auth.dto.RegisterRequest;
+import dev.faruk.commoncodebase.dto.UserDTO;
+import dev.faruk.commoncodebase.error.AppHttpError;
+import dev.faruk.commoncodebase.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

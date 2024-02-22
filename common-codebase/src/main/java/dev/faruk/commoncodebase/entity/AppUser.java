@@ -1,5 +1,4 @@
-package dev.faruk.auth.entity;
-
+package dev.faruk.commoncodebase.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

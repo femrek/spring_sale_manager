@@ -1,4 +1,4 @@
-package dev.faruk.auth.error;
+package dev.faruk.commoncodebase.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

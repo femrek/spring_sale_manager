@@ -1,6 +1,7 @@
-package dev.faruk.auth.dto.response;
+package dev.faruk.commoncodebase.dto;
 
-import dev.faruk.auth.entity.*;
+import dev.faruk.commoncodebase.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUserRole;
 import lombok.*;
 
 import java.util.List;

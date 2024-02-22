@@ -1,6 +1,6 @@
 package dev.faruk.auth.dao;
 
-import dev.faruk.auth.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUser;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;

@@ -1,6 +1,6 @@
 package dev.faruk.auth.dao;
 
-import dev.faruk.auth.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUser;
 
 import java.util.List;
 

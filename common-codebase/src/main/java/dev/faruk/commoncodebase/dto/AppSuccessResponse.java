@@ -1,4 +1,4 @@
-package dev.faruk.auth.dto.response;
+package dev.faruk.commoncodebase.dto;
 
 import jakarta.annotation.Nullable;
 import lombok.Getter;

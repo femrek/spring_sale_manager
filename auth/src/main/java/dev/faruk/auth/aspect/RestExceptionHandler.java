@@ -1,6 +1,6 @@
 package dev.faruk.auth.aspect;
 
-import dev.faruk.auth.error.AppHttpError;
+import dev.faruk.commoncodebase.error.AppHttpError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;

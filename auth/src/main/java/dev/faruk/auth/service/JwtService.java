@@ -1,6 +1,6 @@
 package dev.faruk.auth.service;
 
-import dev.faruk.auth.error.AppHttpError;
+import dev.faruk.commoncodebase.error.AppHttpError;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

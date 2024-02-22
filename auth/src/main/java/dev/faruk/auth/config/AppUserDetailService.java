@@ -1,7 +1,7 @@
 package dev.faruk.auth.config;
 
 import dev.faruk.auth.dao.UserRepository;
-import dev.faruk.auth.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

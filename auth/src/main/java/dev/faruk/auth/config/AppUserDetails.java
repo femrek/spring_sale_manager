@@ -1,7 +1,7 @@
 package dev.faruk.auth.config;
 
-import dev.faruk.auth.entity.AppUser;
-import dev.faruk.auth.entity.AppUserRole;
+import dev.faruk.commoncodebase.entity.AppUser;
+import dev.faruk.commoncodebase.entity.AppUserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
