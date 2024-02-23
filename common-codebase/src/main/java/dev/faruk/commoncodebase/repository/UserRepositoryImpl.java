@@ -1,4 +1,4 @@
-package dev.faruk.auth.dao;
+package dev.faruk.commoncodebase.repository;
 
 import dev.faruk.commoncodebase.entity.AppUser;
 import jakarta.persistence.EntityManager;

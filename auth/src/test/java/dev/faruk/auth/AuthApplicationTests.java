@@ -1,7 +1,7 @@
 package dev.faruk.auth;
 
 import dev.faruk.auth.controller.AuthController;
-import dev.faruk.auth.dao.UserRepository;
+import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.auth.dto.RegisterRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;

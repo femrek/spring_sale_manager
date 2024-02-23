@@ -1,6 +1,6 @@
 package dev.faruk.auth.config;
 
-import dev.faruk.auth.dao.UserRepository;
+import dev.faruk.commoncodebase.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

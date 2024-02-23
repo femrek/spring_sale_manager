@@ -1,4 +1,4 @@
-package dev.faruk.product.dao;
+package dev.faruk.commoncodebase.repository;
 
 import dev.faruk.commoncodebase.entity.Product;
 import jakarta.persistence.EntityManager;
