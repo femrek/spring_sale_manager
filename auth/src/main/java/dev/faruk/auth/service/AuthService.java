@@ -52,7 +52,7 @@ public class AuthService {
 
             AppUserRole userRole = new AppUserRole();
             userRole.setId(roleId);
-            newUser.addRole(userRole);
+            newUser.add(userRole);
         }
 
         // save the created user

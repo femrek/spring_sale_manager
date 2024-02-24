@@ -28,7 +28,7 @@ public class AppUser {
     @Column(name = "deleted")
     private boolean deleted;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_user_bridge",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -36,7 +36,12 @@ public class AppUser {
     )
     List<AppUserRole> roles;
 
-    public void addRole(AppUserRole userRole) {
+    public AppUser(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public void add(AppUserRole userRole) {
         if (roles == null) {
             roles = new ArrayList<>();
         }

@@ -15,7 +15,7 @@ spring:
         - id: sale-service
           uri: lb://SALE-SERVICE
           predicates:
-            - Path=/sale/**
+            - Path=/sale/**, /offer/**
   application:
     name: gateway
 

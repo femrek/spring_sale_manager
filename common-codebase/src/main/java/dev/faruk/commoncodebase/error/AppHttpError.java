@@ -25,6 +25,16 @@ public abstract class AppHttpError extends RuntimeException {
         return result;
     }
 
+    public static final class NotFound extends AppHttpError {
+        public NotFound(String message) {
+            this(message, null);
+        }
+
+        public NotFound(String message, Map<String, Object> errorMap) {
+            super(HttpStatus.NOT_FOUND, message, errorMap);
+        }
+    }
+
     public static final class BadRequest extends AppHttpError {
         public BadRequest(String message) {
             this(message, null);
