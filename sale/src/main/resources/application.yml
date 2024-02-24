@@ -9,5 +9,3 @@ eureka:
 
 server:
   port: 8082
-  servlet:
-    context-path: /sale
