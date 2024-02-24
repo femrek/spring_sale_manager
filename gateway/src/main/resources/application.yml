@@ -16,6 +16,11 @@ spring:
           uri: lb://SALE-SERVICE
           predicates:
             - Path=/sale/**, /offer/**
+
+        - id: user-management-service
+          uri: lb://USER-MANAGEMENT-SERVICE
+          predicates:
+            - Path=/user/**
   application:
     name: gateway
 
