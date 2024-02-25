@@ -1,6 +1,7 @@
 package dev.faruk.auth;
 
-import dev.faruk.auth.controller.AuthController;
+import dev.faruk.auth.dto.LoginResponse;
+import dev.faruk.auth.service.AuthService;
 import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.auth.dto.RegisterRequest;
@@ -15,12 +16,12 @@ import java.util.List;
 @SpringBootTest
 class AuthApplicationTests {
     private final UserRepository userRepository;
-    private final AuthController authController;
+    private final AuthService authService;
 
     @Autowired
-    AuthApplicationTests(UserRepository userRepository, AuthController authController) {
+    AuthApplicationTests(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
-        this.authController = authController;
+        this.authService = authService;
     }
 
     /**
@@ -40,14 +41,14 @@ class AuthApplicationTests {
         }
 
         // register the user
-        final UserDTO registeredUser = authController.register(testUserCredentials).getData();
+        final UserDTO registeredUser = authService.saveUser(testUserCredentials);
 
         // try to log in with wrong credentials
         final LoginRequest wrongLoginRequest = new LoginRequest(
                 registeredUser.getUsername(),
                 "wrongPassword");
         try {
-            authController.login(wrongLoginRequest);
+            authService.generateToken(wrongLoginRequest);
             assert false;
         } catch (AppHttpError.Unauthorized ignored) {
         }
@@ -56,13 +57,14 @@ class AuthApplicationTests {
         final LoginRequest loginRequest = new LoginRequest(
                 testUserCredentials.getUsername(),
                 testUserCredentials.getPassword());
-        final String token = authController.login(loginRequest).getData();
+        final LoginResponse token = authService.generateToken(loginRequest);
 
         // validate the token
-        final UserDTO loggedInUser = authController.user(token).getData();
+        final UserDTO loggedInUser = authService.getUserByToken(token.getToken());
 
         // check if the logged-in user is the same as the registered user
         assert loggedInUser.getUsername().equals(testUserCredentials.getUsername());
+
         // delete the user even if the test fails
         userRepository.deleteByUsername(testUserCredentials.getUsername());
     }

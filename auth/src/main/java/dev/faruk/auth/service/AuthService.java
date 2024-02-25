@@ -1,5 +1,6 @@
 package dev.faruk.auth.service;
 
+import dev.faruk.auth.dto.LoginResponse;
 import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.auth.dto.RegisterRequest;
@@ -37,7 +38,7 @@ public class AuthService {
      * @param registerRequest the request object including the username, password and role list
      * @return the saved user
      */
-    public AppUser saveUser(RegisterRequest registerRequest) {
+    public UserDTO saveUser(RegisterRequest registerRequest) {
         // create the user object from the request
         AppUser newUser = new AppUser();
         newUser.setUsername(registerRequest.getUsername());
@@ -56,7 +57,7 @@ public class AuthService {
         }
 
         // save the created user
-        return repository.save(newUser);
+        return new UserDTO(repository.save(newUser));
     }
 
     /**
@@ -80,11 +81,12 @@ public class AuthService {
 
     /**
      * Generate a token for the given username
-     * @param username the username of the user
+     * @param loginRequest the request object including the username and password
      * @return the generated token
      */
-    public String generateToken(String username) {
-        return jwtService.generateToken(username);
+    public LoginResponse generateToken(LoginRequest loginRequest) {
+        doesCredentialsValid(loginRequest);
+        return new LoginResponse(jwtService.generateToken(loginRequest.getUsername()));
     }
 
     /**
@@ -102,19 +104,5 @@ public class AuthService {
         final String username = jwtService.getUsernameByToken(authHeader);
         final AppUser user = repository.findByUsername(username);
         return new UserDTO(user);
-    }
-
-    /**
-     * Validate the given token. throws {@link AppHttpError.Unauthorized} if the token is not valid
-     * @param authHeader the token to be validated
-     */
-    public void validateToken(String authHeader) {
-        if (authHeader == null || authHeader.isEmpty()) {
-            throw new AppHttpError.Unauthorized("Token is not provided");
-        }
-        if (authHeader.startsWith("Bearer ")) {
-            authHeader = authHeader.substring(7);
-        }
-        jwtService.validateToken(authHeader);
     }
 }
