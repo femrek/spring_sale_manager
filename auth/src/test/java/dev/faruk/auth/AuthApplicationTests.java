@@ -2,9 +2,10 @@ package dev.faruk.auth;
 
 import dev.faruk.auth.dto.LoginResponse;
 import dev.faruk.auth.service.AuthService;
+import dev.faruk.auth.service.UserManagementService;
+import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
-import dev.faruk.auth.dto.RegisterRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,15 @@ import java.util.List;
 class AuthApplicationTests {
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final UserManagementService userManagementService;
 
     @Autowired
-    AuthApplicationTests(UserRepository userRepository, AuthService authService) {
+    AuthApplicationTests(UserRepository userRepository,
+                         AuthService authService,
+                         UserManagementService userManagementService) {
         this.userRepository = userRepository;
         this.authService = authService;
+        this.userManagementService = userManagementService;
     }
 
     /**
@@ -30,10 +35,10 @@ class AuthApplicationTests {
      */
     @Test
     void registerLoginValidate() {
-        final RegisterRequest testUserCredentials = new RegisterRequest(
+        final UserCreateRequest testUserCredentials = new UserCreateRequest(
                 "testUser",
                 "testPassword",
-                List.of(1, 2));
+                List.of(1L, 2L));
 
         // delete the user if it exists
         if (userRepository.findByUsername(testUserCredentials.getUsername()) != null) {
@@ -41,7 +46,7 @@ class AuthApplicationTests {
         }
 
         // register the user
-        final UserDTO registeredUser = authService.saveUser(testUserCredentials);
+        final UserDTO registeredUser = userManagementService.createUser(testUserCredentials);
 
         // try to log in with wrong credentials
         final LoginRequest wrongLoginRequest = new LoginRequest(

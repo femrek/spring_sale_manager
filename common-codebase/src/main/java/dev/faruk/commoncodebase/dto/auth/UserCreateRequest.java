@@ -1,4 +1,4 @@
-package dev.faruk.auth.dto;
+package dev.faruk.commoncodebase.dto.auth;
 
 import lombok.*;
 
@@ -12,8 +12,8 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class UserCreateRequest {
     private String username;
     private String password;
-    private List<Integer> roleIds;
+    private List<Long> roleIds;
 }

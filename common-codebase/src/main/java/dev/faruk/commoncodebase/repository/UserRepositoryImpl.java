@@ -27,6 +27,13 @@ public class UserRepositoryImpl implements UserRepository {
         return query.getResultList();
     }
 
+    public List<AppUser> findAllOnlyExist() {
+        TypedQuery<AppUser> query = entityManager.createQuery(
+                "SELECT u FROM AppUser as u WHERE u.deleted = false", AppUser.class);
+
+        return query.getResultList();
+    }
+
     @Override
     public List<AppUser> findAllCashiers() {
         TypedQuery<AppUser> query = entityManager.createQuery(
@@ -47,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public AppUser findById(int id) {
+    public AppUser findById(Long id) {
         TypedQuery<AppUser> query = entityManager.createQuery(
                 "SELECT u FROM AppUser as u WHERE u.id = :id", AppUser.class);
         query.setParameter("id", id);
@@ -69,7 +76,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public AppUser findOnlyExistById(int id) {
+    public AppUser findOnlyExistById(Long id) {
         TypedQuery<AppUser> query = entityManager.createQuery(
                 "SELECT u FROM AppUser as u WHERE u.id = :id AND u.deleted = false", AppUser.class);
         query.setParameter("id", id);
@@ -81,8 +88,20 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public AppUser save(AppUser user) {
+    public AppUser create(AppUser user) {
         entityManager.persist(user);
+
+        // fetch the roles completely
+        entityManager.merge(user);
+
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public AppUser update(AppUser user) {
+        entityManager.merge(user);
+        entityManager.flush();
         return user;
     }
 
@@ -102,11 +121,36 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
+    public void deleteById(Long id) {
+        AppUser user = findById(id);
+        entityManager.remove(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteSoftById(AppUser user) {
+        user.setDeleted(true);
+        entityManager.merge(user);
+    }
+
+    @Override
     public List<AppUserRole> findRoles() {
         TypedQuery<AppUserRole> query = entityManager.createQuery(
                 "SELECT r FROM AppUserRole as r", AppUserRole.class);
 
         return query.getResultList();
+    }
+
+    @Override
+    public AppUserRole findRoleById(Long id) {
+        TypedQuery<AppUserRole> query = entityManager.createQuery(
+                "SELECT r FROM AppUserRole as r WHERE id = :id", AppUserRole.class);
+        query.setParameter("id", id);
+
+        final List<AppUserRole> results = query.getResultList();
+        if (results.isEmpty()) return null;
+        return results.get(0);
     }
 
     @Override
