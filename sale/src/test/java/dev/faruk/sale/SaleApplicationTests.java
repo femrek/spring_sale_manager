@@ -82,7 +82,7 @@ class SaleApplicationTests {
      *
      * @return id of the test cashier
      */
-    private int findOrCreateTestCashier() {
+    private Long findOrCreateTestCashier() {
         // check if the test cashier exists. if exists, return its id
         final String testCashierUsername = "testCashier";
         final AppUser existingCashier = userRepository.findByUsername(testCashierUsername);
@@ -99,6 +99,6 @@ class SaleApplicationTests {
         testCashier.add(cashierRole);
 
         // save the test cashier and return its id
-        return userRepository.save(testCashier).getId();
+        return userRepository.create(testCashier).getId();
     }
 }

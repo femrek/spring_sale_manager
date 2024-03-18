@@ -12,10 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 public class SalePostRequest {
     private Double receivedMoney;
-    private Integer cashierId;
+    private Long cashierId;
     private List<ProductDetails> products;
 
-    public SalePostRequest(Double receivedMoney, Integer cashierId) {
+    public SalePostRequest(Double receivedMoney, Long cashierId) {
         this.receivedMoney = receivedMoney;
         this.cashierId = cashierId;
     }

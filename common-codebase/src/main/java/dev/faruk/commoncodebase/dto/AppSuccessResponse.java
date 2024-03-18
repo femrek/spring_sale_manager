@@ -16,7 +16,7 @@ import java.util.Map;
 @Getter
 @ToString
 public class AppSuccessResponse<T> extends ResponseEntity<Map<String, Object>> {
-    private final HttpStatusCode status;
+    private final HttpStatusCode statusCode;
     private final String message;
     private final T data;
 
@@ -30,7 +30,7 @@ public class AppSuccessResponse<T> extends ResponseEntity<Map<String, Object>> {
 
     public AppSuccessResponse(@NonNull HttpStatusCode status, @NonNull String message, @Nullable T data) {
         super(toJson(status, message, data), status);
-        this.status = status;
+        this.statusCode = status;
         this.message = message;
         this.data = data;
     }

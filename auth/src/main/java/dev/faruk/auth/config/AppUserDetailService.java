@@ -12,7 +12,7 @@ public class AppUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Autowired
-    AppUserDetailService(UserRepository userRepository) {
+    public AppUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

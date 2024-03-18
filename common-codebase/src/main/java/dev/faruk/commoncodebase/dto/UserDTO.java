@@ -4,6 +4,7 @@ import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,13 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    private int id;
+    private Long id;
     private String username;
-    private List<AppUserRole> roles;
+    private List<UserRoleDTO> roles;
 
     public UserDTO(AppUser user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.roles = user.getRoles();
+        roles = new ArrayList<>();
+        for (AppUserRole role : user.getRoles()) {
+            roles.add(new UserRoleDTO(role));
+        }
     }
 }
