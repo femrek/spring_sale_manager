@@ -22,7 +22,7 @@ public interface SaleRepository {
      * @param id id of the sale
      * @return Sale with the given id
      */
-    Sale findById(int id);
+    Sale findById(Long id);
 
     /**
      * Deletes given sale from database.

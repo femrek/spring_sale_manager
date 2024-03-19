@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaleDTO {
-    private int id;
-    private double receivedMoney;
+    private Long id;
+    private Double receivedMoney;
     private Timestamp createdAt;
     private UserDTO cashier;
     private List<SaleProductDTO> products;

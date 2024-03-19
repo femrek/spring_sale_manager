@@ -9,9 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OfferProductDTO {
-    private int id;
+    private Long id;
     private ProductDTO product;
-    private int requiredCount;
+    private Integer requiredCount;
 
     public OfferProductDTO(OfferProduct offerProduct) {
         this.id = offerProduct.getId();

@@ -14,13 +14,13 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "product_name")
     private String name;
 
     @Column(name = "current_price")
-    private double price;
+    private Double price;
 
     @Column(name = "barcode")
     private String barcode;

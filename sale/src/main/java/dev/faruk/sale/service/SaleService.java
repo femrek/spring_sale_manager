@@ -75,7 +75,7 @@ public class SaleService {
      * @param id the id of the sale to be shown
      * @return the sale with the given id
      */
-    public SaleDTO findById(int id) {
+    public SaleDTO findById(Long id) {
         Sale sale = saleRepository.findById(id);
         if (sale == null) return null;
         return new SaleDTO(sale);
@@ -86,7 +86,7 @@ public class SaleService {
      *
      * @param id the id of the sale to be deleted
      */
-    public void deletePermanentById(int id) {
+    public void deletePermanentById(Long id) {
         final Sale saleWillBeRemoved = saleRepository.findById(id);
         if (saleWillBeRemoved == null) throw new RuntimeException(String.format("sale does not exist with id: %d", id));
         saleRepository.deletePermanent(saleWillBeRemoved);

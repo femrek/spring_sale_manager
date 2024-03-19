@@ -14,7 +14,7 @@ public class SaleProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Sale.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "sale_id")
@@ -25,12 +25,12 @@ public class SaleProduct {
     private Product product;
 
     @Column(name = "product_count")
-    private int productCount;
+    private Integer productCount;
 
     @Column(name = "unit_price")
-    private double unitPrice;
+    private Double unitPrice;
 
-    public SaleProduct(Sale sale, Product product, int productCount, double unitPrice) {
+    public SaleProduct(Sale sale, Product product, Integer productCount, Double unitPrice) {
         this.sale = sale;
         this.product = product;
         this.productCount = productCount;

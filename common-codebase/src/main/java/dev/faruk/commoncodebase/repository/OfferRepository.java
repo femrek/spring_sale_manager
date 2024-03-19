@@ -14,5 +14,5 @@ public interface OfferRepository {
      * @param id the id of the offer to be found
      * @return the offer with the given id, or null if it does not exist
      */
-    Offer findById(int id);
+    Offer findById(Long id);
 }

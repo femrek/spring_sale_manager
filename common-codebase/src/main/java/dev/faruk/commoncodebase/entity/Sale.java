@@ -18,10 +18,10 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "received_money")
-    private double receivedMoney;
+    private Double receivedMoney;
 
     @Basic(optional = false)
     @Column(name = "created_at", insertable = false, updatable = false)
@@ -36,13 +36,13 @@ public class Sale {
     @JoinColumn(name = "sale_id")
     private List<SaleProduct> productList;
 
-    public Sale(double receivedMoney, AppUser cashier, List<SaleProduct> productList) {
+    public Sale(Double receivedMoney, AppUser cashier, List<SaleProduct> productList) {
         this.receivedMoney = receivedMoney;
         this.cashier = cashier;
         this.productList = productList;
     }
 
-    public Sale(double receivedMoney, AppUser cashier) {
+    public Sale(Double receivedMoney, AppUser cashier) {
         this.receivedMoney = receivedMoney;
         this.cashier = cashier;
     }

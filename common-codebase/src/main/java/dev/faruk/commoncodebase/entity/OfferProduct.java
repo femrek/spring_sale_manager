@@ -14,7 +14,7 @@ public class OfferProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Offer.class)
     @JoinColumn(name = "offer_id")
@@ -25,5 +25,5 @@ public class OfferProduct {
     private Product product;
 
     @Column(name = "required_count")
-    private int requiredCount;
+    private Integer requiredCount;
 }

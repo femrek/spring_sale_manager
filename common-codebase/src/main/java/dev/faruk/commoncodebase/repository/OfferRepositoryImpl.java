@@ -26,7 +26,7 @@ public class OfferRepositoryImpl implements OfferRepository {
     }
 
     @Override
-    public Offer findById(int id) {
+    public Offer findById(Long id) {
         TypedQuery<Offer> query = entityManager.createQuery(
                 "SELECT s FROM Offer as s WHERE id = :offer_id", Offer.class);
 

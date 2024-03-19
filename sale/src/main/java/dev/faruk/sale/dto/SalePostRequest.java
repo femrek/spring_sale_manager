@@ -30,7 +30,7 @@ public class SalePostRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     static public final class ProductDetails {
-        private Integer productId;
+        private Long productId;
         private Integer productCount;
     }
 }

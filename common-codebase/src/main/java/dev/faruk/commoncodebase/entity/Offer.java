@@ -18,13 +18,13 @@ public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "offer_name")
     private String name;
 
     @Column(name = "discount")
-    private float discount;
+    private Double discount;
 
     @Column(name ="valid_until")
     private Timestamp validUntil;
@@ -36,7 +36,7 @@ public class Offer {
     @JoinColumn(name = "offer_id")
     private List<OfferProduct> requiredProducts;
 
-    public Offer(String name, float discount, Timestamp validUntil, Timestamp validSince) {
+    public Offer(String name, Double discount, Timestamp validUntil, Timestamp validSince) {
         this.name = name;
         this.discount = discount;
         this.validUntil = validUntil;

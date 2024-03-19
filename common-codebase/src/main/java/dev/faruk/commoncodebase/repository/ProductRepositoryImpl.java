@@ -24,7 +24,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(Long id) {
         return entityManager.find(Product.class, id);
     }
 }

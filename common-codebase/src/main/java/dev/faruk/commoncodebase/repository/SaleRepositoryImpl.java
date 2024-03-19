@@ -33,7 +33,7 @@ public class SaleRepositoryImpl implements SaleRepository {
     }
 
     @Override
-    public Sale findById(int id) {
+    public Sale findById(Long id) {
         TypedQuery<Sale> query = entityManager.createQuery("SELECT s FROM Sale as s WHERE s.id = :sale_id", Sale.class);
         query.setParameter("sale_id", id);
 

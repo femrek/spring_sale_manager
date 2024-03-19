@@ -9,10 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaleProductDTO {
-    private int id;
+    private Long id;
     private ProductDTO product;
-    private int productCount;
-    private double unitPrice;
+    private Integer productCount;
+    private Double unitPrice;
 
     public SaleProductDTO(SaleProduct saleProduct) {
         this.id = saleProduct.getId();

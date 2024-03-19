@@ -14,5 +14,5 @@ public interface ProductRepository {
      * @param id product id
      * @return the product with given id from database.
      */
-    Product findById(int id);
+    Product findById(Long id);
 }

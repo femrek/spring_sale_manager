@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OfferDTO {
-    private int id;
+    private Long id;
     private String name;
-    private float discount;
+    private Double discount;
     private String validUntil;
     private String validSince;
     private List<OfferProductDTO> requiredProducts;

@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
-    private int id;
+    private Long id;
     private String name;
-    private double price;
+    private Double price;
     private String barcode;
 
     public ProductDTO(Product product) {
