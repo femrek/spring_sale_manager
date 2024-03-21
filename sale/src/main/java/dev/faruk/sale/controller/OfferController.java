@@ -37,7 +37,7 @@ public class OfferController {
      * @return the offer with the given id
      */
     @GetMapping("/{id}")
-    public AppSuccessResponse<OfferDTO> showById(@PathVariable(name = "id") int id) {
+    public AppSuccessResponse<OfferDTO> showById(@PathVariable(name = "id") Long id) {
         final OfferDTO offer = offerService.findById(id);
         return new AppSuccessResponse<>("The offer is shown by id successfully", offer);
     }

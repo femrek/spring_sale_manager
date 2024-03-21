@@ -24,7 +24,7 @@ class ProductApplicationTests {
         assert !products.isEmpty();
 
         // fetch the first product by id
-        final int firstProductId = products.get(0).getId();
+        final Long firstProductId = products.get(0).getId();
         final ProductDTO theProduct = productController.show(firstProductId).getData();
         assert products.get(0).getBarcode().equals(theProduct.getBarcode());
     }

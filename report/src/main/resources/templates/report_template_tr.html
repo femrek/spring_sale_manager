@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <style>
+        /* reset - setup */
+        * {
+            margin: 0;
+            padding: 0;
+
+            font-family: monospace;
+            font-weight: bold;
+            /*font-size: 0.15in;*/
+            font-size: 0.3in;
+        }
+
+        body {
+            /*width: 4.1in;*/
+            width: 8.5in;
+            padding: 0;
+        }
+
+        /* core components */
+        hr {
+            margin: 0.08in 0;
+        }
+
+        /* component styles */
+        #title {
+            text-align: center;
+        }
+
+        #address {
+            text-align: center;
+        }
+
+        #phone-number {
+            text-align: center;
+        }
+
+        #province {
+            text-align: center;
+        }
+
+        #details {
+            width: 100%;
+        }
+
+        #details td {
+            vertical-align: top;
+        }
+
+        .no-wrap {
+            white-space: nowrap;
+        }
+
+        #details .colon {
+            padding: 0 4px;
+        }
+
+        .details-right-side {
+            text-align: right;
+            padding: 0;
+        }
+
+        #product-table {
+            width: 100%;
+        }
+
+        .product-spacer {
+            padding: 0.04in;
+        }
+
+        #money-table {
+            width: 100%;
+        }
+
+        #total-table {
+            width: 100%;
+        }
+
+        #non-receipt {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- title -->
+<div id="title">
+    <div th:text="${company.getName()}">{companyName}</div>
+</div>
+<br/>
+
+<!-- address -->
+<div id="address">
+    <div th:text="${company.getAddress()}">{companyAddress}</div>
+</div>
+
+<!-- phone number -->
+<div id="phone-number">
+    <div th:text="${company.getPhoneNumber()}">{companyPhone}</div>
+</div>
+
+<!-- province -->
+<div id="province">
+    <div th:text="${company.getProvince()}">{province}</div>
+</div>
+<br/>
+
+<!-- details table -->
+<table id="details">
+    <tbody>
+    <!-- date -->
+    <tr>
+        <td class="no-wrap">TARİH</td>
+        <td class="colon">:</td>
+        <td class="no-wrap" th:text="${sale.getDate()}">{date}</td>
+
+        <td style="width: 100%"></td>
+
+        <td class="details-right-side no-wrap">SAAT</td>
+        <td class="details-right-side colon no-wrap">:</td>
+        <td th:text="${sale.getTime()}" class="details-right-side no-wrap">{time}</td>
+    </tr>
+
+    <!-- sale info -->
+    <tr>
+        <td class="no-wrap">SATIŞ NO</td>
+        <td class="colon no-wrap">:</td>
+        <td class="no-wrap" th:text="${sale.getId()}">{saleNo}</td>
+
+        <td style="width: 100%"></td>
+
+        <td class="details-right-side no-wrap">SATIŞ</td>
+        <td class="details-right-side colon no-wrap">:</td>
+        <td class="details-right-side no-wrap">NAKİT</td>
+    </tr>
+
+    <!-- cashier -->
+    <tr>
+        <td class="no-wrap">KASİYER</td>
+        <td class="colon no-wrap">:</td>
+        <td colspan="5">
+            <div th:text="${sale.getCashierName()}">{cashierName}</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr/> <!-- divider -->
+
+<!-- products -->
+<table id="product-table">
+    <th:block th:each="product: ${sale.products}">
+        <tr>
+            <td th:text="|${product.product.getBarcode()} (${product.getProductCount()} adet X ${#numbers.formatDecimal(product.getUnitPrice(), 1, 2, 'COMMA')})|"
+                colspan="2">
+                {barcode} ({count} adet X {unitPrice})
+            </td>
+        </tr>
+
+        <tr>
+            <td th:text="${product.product.getName()}">{productName}</td>
+            <td th:text="${#numbers.formatDecimal(product.getProductTotal(), 1, 2, 'COMMA')}"
+                class="details-right-side">
+                {productTotalPrice}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="product-spacer"></td>
+        </tr>
+    </th:block>
+</table>
+
+<hr/> <!-- divider -->
+
+<!-- received money and remainder -->
+<table id="money-table">
+    <tr>
+        <td>ALINAN PARA:</td>
+        <td th:text="${#numbers.formatDecimal(sale.getReceivedMoney(), 1, 2, 'COMMA')}" class="details-right-side">
+            {receivedMoney}
+        </td>
+    </tr>
+
+    <tr>
+        <td>PARA ÜSTÜ:</td>
+        <td th:text="${#numbers.formatDecimal(sale.getChange(), 1, 2, 'COMMA')}" class="details-right-side">
+            {change}
+        </td>
+    </tr>
+</table>
+
+<hr/> <!-- divider -->
+
+<!-- total -->
+<table id="total-table">
+    <tr>
+        <td>GENEL TOPLAM:</td>
+        <td th:text="${#numbers.formatDecimal(sale.getTotal(), 1, 2, 'COMMA')}" class="details-right-side">
+            {totalPrice}
+        </td>
+    </tr>
+</table>
+
+<br/>
+<div id="non-receipt">KDV FİŞİ DEĞİLDİR</div>
+
+</body>
+</html>

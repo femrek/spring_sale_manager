@@ -21,6 +21,11 @@ spring:
           uri: lb://USER-MANAGEMENT-SERVICE
           predicates:
             - Path=/user/**
+
+        - id: report-service
+          uri: lb://REPORT-SERVICE
+          predicates:
+            - Path=/report/**
   application:
     name: gateway
 

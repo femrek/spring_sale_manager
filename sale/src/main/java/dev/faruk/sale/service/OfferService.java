@@ -36,7 +36,7 @@ public class OfferService {
      * @param id the id of the offer to be shown
      * @return the offer with the given id
      */
-    public OfferDTO findById(int id) {
+    public OfferDTO findById(Long id) {
         final Offer offer = offerRepository.findById(id);
         if (offer == null) throw new AppHttpError.NotFound(String.format("Offer could not found by id: %d", id));
         return new OfferDTO(offer);

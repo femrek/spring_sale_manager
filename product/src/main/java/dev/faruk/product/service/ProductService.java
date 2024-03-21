@@ -29,7 +29,7 @@ public class ProductService {
      * @param id product id
      * @return the product with given id from database.
      */
-    public ProductDTO getProductById(int id) {
+    public ProductDTO getProductById(Long id) {
         Product product = productRepository.findById(id);
         return new ProductDTO(product);
     }

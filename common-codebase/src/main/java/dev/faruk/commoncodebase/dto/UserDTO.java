@@ -18,11 +18,13 @@ import java.util.List;
 public class UserDTO {
     private Long id;
     private String username;
+    private String name;
     private List<UserRoleDTO> roles;
 
     public UserDTO(AppUser user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
+        id = user.getId();
+        username = user.getUsername();
+        name = user.getName();
         roles = new ArrayList<>();
         for (AppUserRole role : user.getRoles()) {
             roles.add(new UserRoleDTO(role));

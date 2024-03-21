@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public AppSuccessResponse<ProductDTO> show(@PathVariable int id) {
+    public AppSuccessResponse<ProductDTO> show(@PathVariable Long id) {
         final ProductDTO product = productService.getProductById(id);
         return new AppSuccessResponse<>("Product is found", product);
     }
