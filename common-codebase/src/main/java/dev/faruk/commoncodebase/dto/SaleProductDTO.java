@@ -20,4 +20,8 @@ public class SaleProductDTO {
         this.productCount = saleProduct.getProductCount();
         this.unitPrice = saleProduct.getUnitPrice();
     }
+
+    public Double getProductTotal() {
+        return unitPrice * productCount;
+    }
 }
