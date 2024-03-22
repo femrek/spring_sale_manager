@@ -15,5 +15,6 @@ import java.util.List;
 public class UserCreateRequest {
     private String username;
     private String password;
+    private String name;
     private List<Long> roleIds;
 }

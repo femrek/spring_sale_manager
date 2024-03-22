@@ -42,6 +42,7 @@ public class UserManagementService {
         AppUser newUser = new AppUser();
         newUser.setUsername(registerRequest.getUsername());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        newUser.setName(registerRequest.getName());
         ArrayList<Long> roleIds = new ArrayList<>();
         for (Long roleId : registerRequest.getRoleIds()) {
             // check if the role is already added
@@ -73,6 +74,9 @@ public class UserManagementService {
         }
         if (userUpdateRequest.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
+        }
+        if (userUpdateRequest.getName() != null) {
+            user.setName(userUpdateRequest.getName());
         }
         if (userUpdateRequest.getRoleIds() != null) {
             user.getRoles().clear();
