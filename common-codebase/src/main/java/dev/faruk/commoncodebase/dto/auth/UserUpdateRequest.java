@@ -19,6 +19,11 @@ public class UserUpdateRequest {
     private String password;
 
     /**
+     * If name is provided, it will be updated. If not, it will not be updated.
+     */
+    private String name;
+
+    /**
      * List of role ids that the user will have. This list have to include all the roles that the user will have.
      * If no list is provided, the user will have the same roles as before.
      */

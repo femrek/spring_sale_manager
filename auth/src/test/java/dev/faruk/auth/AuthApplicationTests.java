@@ -38,6 +38,7 @@ class AuthApplicationTests {
         final UserCreateRequest testUserCredentials = new UserCreateRequest(
                 "testUser",
                 "testPassword",
+                "Test User",
                 List.of(1L, 2L));
 
         // delete the user if it exists
