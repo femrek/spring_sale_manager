@@ -58,6 +58,7 @@ public class ReportPdfGenerator {
      * @return the byte array of the pdf
      */
     private byte[] htmlToPdf(String processedHtml) {
+        final float pageWidth = PageSize.A6.getWidth();
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
@@ -70,7 +71,7 @@ public class ReportPdfGenerator {
 
             // render the html content to determine the height of the content
             PdfDocument pdfDocumentTemp = new PdfDocument(pdfWriter);
-            pdfDocumentTemp.setDefaultPageSize(new PageSize(PageSize.A4.getWidth(), PageSize.A8.getHeight()));
+            pdfDocumentTemp.setDefaultPageSize(new PageSize(pageWidth, PageSize.A10.getHeight()));
             HtmlConverter.convertToPdf(processedHtml, pdfDocumentTemp, converterProperties);
 
             // read the rendered content to determine the height of the content
@@ -87,7 +88,7 @@ public class ReportPdfGenerator {
             totalHeight += verticalIndent * 2f;
 
             // configure result pdf document with the calculated height
-            PageSize pageSize = new PageSize(PageSize.A4.getWidth(), totalHeight);
+            PageSize pageSize = new PageSize(pageWidth, totalHeight);
             ByteArrayOutputStream baosResult = new ByteArrayOutputStream();
             PdfWriter pdfWriterResult = new PdfWriter(baosResult);
             PdfDocument pdfDocumentResult = new PdfDocument(pdfWriterResult);
