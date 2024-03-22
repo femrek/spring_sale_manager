@@ -2,6 +2,7 @@ package dev.faruk.auth.service;
 
 import dev.faruk.commoncodebase.error.AppHttpError;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -31,10 +32,10 @@ public class JwtService {
     public String getUsernameByToken(final String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(_getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
-        } catch (SignatureException | DecodingException e) {
-            throw new AppHttpError.Unauthorized("Invalid token");
         } catch (ExpiredJwtException e) {
             throw new AppHttpError.Unauthorized("Token expired");
+        } catch (JwtException e) {
+            throw new AppHttpError.Unauthorized("Invalid token");
         }
     }
 
