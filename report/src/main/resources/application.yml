@@ -9,5 +9,3 @@ eureka:
 
 server:
   port: 8084
-  servlet:
-    context-path: /report

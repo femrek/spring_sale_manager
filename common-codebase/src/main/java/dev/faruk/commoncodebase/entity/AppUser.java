@@ -29,7 +29,7 @@ public class AppUser {
     private String password;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private Boolean deleted;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

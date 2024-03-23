@@ -6,14 +6,11 @@ import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
-import dev.faruk.usermanagement.feign.FeignExceptionMapper;
+import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.usermanagement.feign.UserManagementClient;
-import feign.Feign;
 import feign.FeignException;
-import feign.gson.GsonDecoder;
-import feign.gson.GsonEncoder;
-import feign.okhttp.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +20,17 @@ import java.util.List;
  */
 @Service
 public class UserService {
-    private static final String HOST = "http://localhost:8080";
     private final UserRepository userRepository;
     private final FeignExceptionMapper feignExceptionMapper;
+    private final UserManagementClient userManagementClient;
 
     @Autowired
-    public UserService(UserRepository userRepository, FeignExceptionMapper feignExceptionMapper) {
+    public UserService(UserRepository userRepository,
+                       FeignExceptionMapper feignExceptionMapper,
+                       @Qualifier("userManagementClient") UserManagementClient userManagementClient) {
         this.userRepository = userRepository;
         this.feignExceptionMapper = feignExceptionMapper;
+        this.userManagementClient = userManagementClient;
     }
 
     /**
@@ -62,11 +62,6 @@ public class UserService {
      * @return UserDTO of created user if success.
      */
     public UserDTO createUser(UserCreateRequest userCreateRequest, String authHeader) {
-        UserManagementClient userManagementClient = Feign.builder()
-                .client(new OkHttpClient())
-                .decoder(new GsonDecoder())
-                .encoder(new GsonEncoder())
-                .target(UserManagementClient.class, HOST);
         try {
             final UserDTO response = userManagementClient.createUser(userCreateRequest, authHeader);
             if (response != null) return response;
@@ -80,19 +75,14 @@ public class UserService {
     /**
      * Updates the user with the given userUpdateRequest. Sends patch request to auth service.
      *
-     * @param userId             id of the user to update
-     * @param userUpdateRequest  user update request
-     * @param authHeader         authorization header starts with "Bearer"
+     * @param userId            id of the user to update
+     * @param userUpdateRequest user update request
+     * @param authHeader        authorization header starts with "Bearer"
      * @return UserDTO of updated user if success.
      */
     public UserDTO updateUser(Long userId, UserUpdateRequest userUpdateRequest, String authHeader) {
         if (userUpdateRequest == null) throw new AppHttpError.BadRequest("User update request is required");
         if (userUpdateRequest.isEmpty()) throw new AppHttpError.BadRequest("There is nothing provided to update user");
-        UserManagementClient userManagementClient = Feign.builder()
-                .client(new OkHttpClient())
-                .decoder(new GsonDecoder())
-                .encoder(new GsonEncoder())
-                .target(UserManagementClient.class, HOST);
         try {
             final UserDTO response = userManagementClient.updateUser(userUpdateRequest, userId, authHeader);
             if (response != null) return response;
@@ -110,11 +100,6 @@ public class UserService {
      * @param authHeader authorization header starts with "Bearer"
      */
     public void deleteUser(Long userId, String authHeader) {
-        UserManagementClient userManagementClient = Feign.builder()
-                .client(new OkHttpClient())
-                .decoder(new GsonDecoder())
-                .encoder(new GsonEncoder())
-                .target(UserManagementClient.class, HOST);
         try {
             userManagementClient.deleteUser(userId, authHeader);
         } catch (FeignException e) {

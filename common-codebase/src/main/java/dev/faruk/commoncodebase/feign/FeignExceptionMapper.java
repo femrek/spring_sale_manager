@@ -1,9 +1,11 @@
-package dev.faruk.usermanagement.feign;
+package dev.faruk.commoncodebase.feign;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.faruk.commoncodebase.aspect.GlobalRestExceptionHandler;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import feign.FeignException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,20 +18,14 @@ import java.util.Map;
 public final class FeignExceptionMapper {
     /**
      * Map the FeignException to AppHttpError. throw the result of this method response to the client via
-     * {@link dev.faruk.commoncodebase.error.GlobalRestExceptionHandler}.
+     * {@link GlobalRestExceptionHandler}.
      *
      * @param e the exception thrown by Feign
      * @return the AppHttpError
      */
     public AppHttpError map(FeignException e) {
         String message = getErrorMessage(e);
-        return switch (e.status()) {
-            case 400 -> new AppHttpError.BadRequest(message);
-            case 401 -> new AppHttpError.Unauthorized(message);
-            case 403 -> new AppHttpError.Forbidden(message);
-            case 404 -> new AppHttpError.NotFound(message);
-            default -> new AppHttpError.InternalServerError(message);
-        };
+        return AppHttpError.byStatusCode(HttpStatus.valueOf(e.status()), message);
     }
 
     /**
@@ -46,7 +42,6 @@ public final class FeignExceptionMapper {
         try {
             Map<String, Object> errorContent = objectMapper.readValue(e.contentUTF8(), new TypeReference<>() {
             });
-            System.out.println("errorContent: " + errorContent);
             if (errorContent.containsKey("message")) {
                 if (errorContent.get("message") instanceof String) {
                     message = (String) errorContent.get("message");

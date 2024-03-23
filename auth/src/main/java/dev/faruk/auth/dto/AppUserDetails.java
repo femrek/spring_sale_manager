@@ -1,4 +1,4 @@
-package dev.faruk.auth.config;
+package dev.faruk.auth.dto;
 
 import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
@@ -53,6 +53,6 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !user.isDeleted();
+        return !user.getDeleted();
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * UserRoleController is the class that handles the requests for getting the roles.
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/user/role")
 public class UserRoleController {
     private final UserRoleService userRoleService;
 

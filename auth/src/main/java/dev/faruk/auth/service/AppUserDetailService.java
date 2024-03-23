@@ -1,5 +1,6 @@
-package dev.faruk.auth.config;
+package dev.faruk.auth.service;
 
+import dev.faruk.auth.dto.AppUserDetails;
 import dev.faruk.commoncodebase.repository.UserRepository;
 import dev.faruk.commoncodebase.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -40,7 +40,7 @@ public class AuthService {
         if (userFromDatabase == null) {
             throw new AppHttpError.Unauthorized("User not found");
         }
-        if (userFromDatabase.isDeleted()) {
+        if (userFromDatabase.getDeleted()) {
             throw new AppHttpError.Unauthorized("User is deleted");
         }
         if (!passwordEncoder.matches(userCredentials.getPassword(), userFromDatabase.getPassword())) {

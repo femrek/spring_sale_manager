@@ -1,6 +1,6 @@
 package dev.faruk.report;
 
-import dev.faruk.commoncodebase.error.GlobalRestExceptionHandler;
+import dev.faruk.commoncodebase.aspect.GlobalRestExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

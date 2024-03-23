@@ -1,8 +1,8 @@
 package dev.faruk.auth.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.faruk.auth.config.AppUserDetailService;
-import dev.faruk.auth.config.AppUserDetails;
+import dev.faruk.auth.service.AppUserDetailService;
+import dev.faruk.auth.dto.AppUserDetails;
 import dev.faruk.auth.service.AuthService;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import jakarta.servlet.FilterChain;
