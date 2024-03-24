@@ -31,6 +31,7 @@ public class ProductService {
      */
     public ProductDTO getProductById(Long id) {
         Product product = productRepository.findById(id);
+        if (product == null) return null;
         return new ProductDTO(product);
     }
 }

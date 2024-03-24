@@ -1,5 +1,6 @@
-package dev.faruk.commoncodebase.error;
+package dev.faruk.commoncodebase.aspect;
 
+import dev.faruk.commoncodebase.error.AppHttpError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,6 @@ import static org.springframework.http.HttpStatus.*;
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppHttpError.class)
     protected ResponseEntity<Object> handleException(AppHttpError e) {
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(e.toJson());
+        return ResponseEntity.status(e.getStatusCode()).body(e.toJson());
     }
 }

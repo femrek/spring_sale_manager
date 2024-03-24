@@ -15,6 +15,7 @@ import java.util.List;
  * UserController is the class that handles the requests for CRUD operations on users.
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 

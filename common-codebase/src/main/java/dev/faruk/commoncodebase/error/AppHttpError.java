@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatusCode;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Getter
 public abstract class AppHttpError extends RuntimeException {
     private final HttpStatusCode statusCode;
@@ -17,6 +19,16 @@ public abstract class AppHttpError extends RuntimeException {
         this.statusCode = statusCode;
         this.message = message;
         this.errorMap = errorMap;
+    }
+
+    static public AppHttpError byStatusCode(HttpStatus statusCode, String message) {
+        return switch (statusCode) {
+            case BAD_REQUEST -> new BadRequest(message);
+            case UNAUTHORIZED -> new Unauthorized(message);
+            case FORBIDDEN -> new Forbidden(message);
+            case NOT_FOUND -> new NotFound(message);
+            default -> new InternalServerError(message);
+        };
     }
 
     public Map<String, Object> toJson() {
@@ -33,7 +45,7 @@ public abstract class AppHttpError extends RuntimeException {
         }
 
         public BadRequest(String message, Map<String, Object> errorMap) {
-            super(HttpStatus.BAD_REQUEST, message, errorMap);
+            super(BAD_REQUEST, message, errorMap);
         }
     }
 
@@ -43,7 +55,7 @@ public abstract class AppHttpError extends RuntimeException {
         }
 
         public Unauthorized(String message, Map<String, Object> errorMap) {
-            super(HttpStatus.UNAUTHORIZED, message, errorMap);
+            super(UNAUTHORIZED, message, errorMap);
         }
     }
 
@@ -53,7 +65,7 @@ public abstract class AppHttpError extends RuntimeException {
         }
 
         public Forbidden(String message, Map<String, Object> errorMap) {
-            super(HttpStatus.FORBIDDEN, message, errorMap);
+            super(FORBIDDEN, message, errorMap);
         }
     }
 
@@ -63,7 +75,7 @@ public abstract class AppHttpError extends RuntimeException {
         }
 
         public NotFound(String message, Map<String, Object> errorMap) {
-            super(HttpStatus.NOT_FOUND, message, errorMap);
+            super(NOT_FOUND, message, errorMap);
         }
     }
 
@@ -73,7 +85,7 @@ public abstract class AppHttpError extends RuntimeException {
         }
 
         public InternalServerError(String message, Map<String, Object> errorMap) {
-            super(HttpStatus.INTERNAL_SERVER_ERROR, message, errorMap);
+            super(INTERNAL_SERVER_ERROR, message, errorMap);
         }
     }
 }
