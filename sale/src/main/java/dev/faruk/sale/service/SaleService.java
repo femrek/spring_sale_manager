@@ -56,20 +56,6 @@ public class SaleService {
     }
 
     /**
-     * This method lists all sales saved in the database.
-     *
-     * @return List of all sales
-     */
-    public List<SaleDTO> findAll() {
-        List<Sale> sales = saleRepository.findAll();
-        List<SaleDTO> saleDTOS = new ArrayList<>();
-        for (Sale sale : sales) {
-            saleDTOS.add(new SaleDTO(sale));
-        }
-        return saleDTOS;
-    }
-
-    /**
      * Fetches and turns the sale with the given id into a sale data transfer object and returns it.
      *
      * @param id the id of the sale to be shown

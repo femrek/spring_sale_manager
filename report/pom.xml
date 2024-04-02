@@ -57,35 +57,10 @@
             <version>5.0.3</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>itextpdf</artifactId>-->
-<!--            <version>5.5.13.3</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.pdfbox</groupId>-->
-<!--            <artifactId>pdfbox</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-
-        <!-- can calc the height of the html page in px https://github.com/danfickle/openhtmltopdf/issues/427#issuecomment-577110582 -->
-        <!-- https://mvnrepository.com/artifact/com.openhtmltopdf/openhtmltopdf-pdfbox -->
-<!--        <dependency>-->
-<!--            <groupId>com.openhtmltopdf</groupId>-->
-<!--            <artifactId>openhtmltopdf-pdfbox</artifactId>-->
-<!--            <version>1.0.10</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>dev.faruk</groupId>
-            <artifactId>common-codebase</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -96,9 +71,10 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
+            <groupId>dev.faruk</groupId>
+            <artifactId>common-codebase</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

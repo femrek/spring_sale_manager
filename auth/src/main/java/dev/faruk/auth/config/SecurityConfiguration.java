@@ -100,8 +100,6 @@ public class SecurityConfiguration {
     }
 
     private final AccessDeniedHandler accessDeniedHandler = (request, response, accessDeniedException) -> {
-        System.out.println(request.getContextPath() + " | " + request.getServletPath());
-
         // determine the status code and message
         SecurityContext context = SecurityContextHolder.getContext();
         boolean isAuthed = context.getAuthentication().isAuthenticated();

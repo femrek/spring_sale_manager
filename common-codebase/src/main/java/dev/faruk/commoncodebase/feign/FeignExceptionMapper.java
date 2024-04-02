@@ -35,8 +35,6 @@ public final class FeignExceptionMapper {
      * @return the error message
      */
     private String getErrorMessage(FeignException e) {
-        System.out.println("e.contentUTF8(): " + e.contentUTF8());
-        System.out.println("e.getMessage(): " + e.getMessage());
         ObjectMapper objectMapper = new ObjectMapper();
         String message = e.contentUTF8();
         try {

@@ -26,12 +26,59 @@ public class ReportService {
      *
      * @return List of SaleDTOs
      */
-    public List<SaleDTO> showSales() {
-        List<Sale> sales = saleRepository.findAll();
+    public List<SaleDTO> showSales(
+            Integer page,
+            Integer size,
+            String orderBy,
+            Long dateFilterAfter,
+            Long dateFilterBefore,
+            Long cashierFilterId,
+            Double receivedMoneyFilterMin,
+            Double receivedMoneyFilterMax) {
+        // check if page and size are valid
+        if (page == null || size == null) throw new AppHttpError.BadRequest("Page and size are required");
+        if (page < 1 || size < 1) throw new AppHttpError.BadRequest("Page and size must be greater than 0");
+
+        // check if orderBy is valid
+        final String orderByConverted = Sale.getColumnName(orderBy);
+        if (orderByConverted == null) throw new AppHttpError.BadRequest(
+                "Invalid orderBy parameter. orderBy must be one of them: %s".formatted(Sale.getVisibleColumns()));
+
+        // check if dateFilterAfter and dateFilterBefore are valid
+        if (dateFilterAfter != null && dateFilterAfter < 0)
+            throw new AppHttpError.BadRequest("Invalid dateFilterAfter. Must to be greater than 0");
+        if (dateFilterBefore != null && dateFilterBefore < 0)
+            throw new AppHttpError.BadRequest("Invalid dateFilterBefore. Must to be greater than 0");
+        if (dateFilterBefore != null && dateFilterAfter != null && dateFilterBefore < dateFilterAfter)
+            throw new AppHttpError.BadRequest("dateFilterBefore must be greater than dateFilterAfter");
+
+        // check if receivedMoneyFilterMin and receivedMoneyFilterMax are valid
+        if (receivedMoneyFilterMin != null && receivedMoneyFilterMin < 0)
+            throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMin. Must to be greater than 0");
+        if (receivedMoneyFilterMax != null && receivedMoneyFilterMax < 0)
+            throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMax. Must to be greater than 0");
+        if (receivedMoneyFilterMax != null && receivedMoneyFilterMin != null
+                && receivedMoneyFilterMax < receivedMoneyFilterMin)
+            throw new AppHttpError.BadRequest("receivedMoneyFilterMax must be greater than receivedMoneyFilterMin");
+
+        // fetch sales from the database
+        List<Sale> sales = saleRepository.findAll(
+                page,
+                size,
+                orderByConverted,
+                dateFilterAfter,
+                dateFilterBefore,
+                cashierFilterId,
+                receivedMoneyFilterMin,
+                receivedMoneyFilterMax
+        );
+
+        // convert sales to SaleDTOs
         List<SaleDTO> saleDTOs = new ArrayList<>();
         for (Sale sale : sales) {
             saleDTOs.add(new SaleDTO(sale));
         }
+
         return saleDTOs;
     }
 
