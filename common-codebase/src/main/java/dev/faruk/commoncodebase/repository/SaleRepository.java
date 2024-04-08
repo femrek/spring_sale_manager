@@ -18,6 +18,7 @@ public interface SaleRepository {
      * @param page                   page number of the sales starting from 1. cant be null.
      * @param size                   number of sales per page. cant be null.
      * @param orderBy                order by which the sales will be sorted. this can only be a column name.
+     * @param orderAsc               true if the order is ascending, false if descending. if null, defaults to true.
      * @param dateFilterAfter        minimum date filter in milliseconds since epoch
      * @param dateFilterBefore       maximum date filter in milliseconds since epoch
      * @param cashierFilterId        id of the cashier to filter
@@ -29,6 +30,7 @@ public interface SaleRepository {
             Integer page,
             Integer size,
             String orderBy,
+            Boolean orderAsc,
             Long dateFilterAfter,
             Long dateFilterBefore,
             Long cashierFilterId,

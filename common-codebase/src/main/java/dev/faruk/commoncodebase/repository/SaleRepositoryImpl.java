@@ -30,11 +30,14 @@ public class SaleRepositoryImpl implements SaleRepository {
     public List<Sale> findAll(final Integer page,
                               final Integer size,
                               final String orderBy,
+                              final Boolean orderAsc,
                               final Long dateFilterAfter,
                               final Long dateFilterBefore,
                               final Long cashierFilterId,
                               final Double receivedMoneyFilterMin,
                               final Double receivedMoneyFilterMax) {
+        final boolean orderAscFinal = orderAsc == null || orderAsc;
+
         // prepare query
         StringBuilder queryStrBuilder = new StringBuilder("SELECT s FROM Sale as s WHERE true");
         if (receivedMoneyFilterMin != null) queryStrBuilder.append(" AND s.receivedMoney >= :received_money_min");
@@ -42,7 +45,10 @@ public class SaleRepositoryImpl implements SaleRepository {
         if (cashierFilterId != null) queryStrBuilder.append(" AND s.cashier.id = :cashier_id");
         if (dateFilterAfter != null) queryStrBuilder.append(" AND s.createdAt >= :date_min");
         if (dateFilterBefore != null) queryStrBuilder.append(" AND s.createdAt <= :date_max");
-        if (orderBy != null) queryStrBuilder.append(" ORDER BY :order_by asc"); // todo fix
+
+        if (orderBy != null) queryStrBuilder.append(" ORDER BY :order_by"); // todo fix
+        if (orderAscFinal) queryStrBuilder.append(" asc");
+        else queryStrBuilder.append(" desc");
 
         // create query
         TypedQuery<Sale> query = entityManager.createQuery(queryStrBuilder.toString(), Sale.class);
