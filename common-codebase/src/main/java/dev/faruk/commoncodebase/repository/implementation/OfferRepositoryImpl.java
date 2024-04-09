@@ -4,6 +4,7 @@ import dev.faruk.commoncodebase.entity.Offer;
 import dev.faruk.commoncodebase.repository.base.OfferRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,5 +37,13 @@ public class OfferRepositoryImpl implements OfferRepository {
         final List<Offer> results = query.getResultList();
         if (results.isEmpty()) return null;
         return results.get(0);
+    }
+
+    @Override
+    @Transactional
+    public Offer create(Offer offer) {
+        entityManager.persist(offer);
+        entityManager.merge(offer); // merge to get the id of the offer
+        return offer;
     }
 }

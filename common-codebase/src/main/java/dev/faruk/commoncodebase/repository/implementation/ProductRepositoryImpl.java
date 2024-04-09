@@ -4,6 +4,7 @@ import dev.faruk.commoncodebase.entity.Product;
 import dev.faruk.commoncodebase.repository.base.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +28,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product findById(Long id) {
         return entityManager.find(Product.class, id);
+    }
+
+    @Override
+    @Transactional
+    public Product create(Product product) {
+        entityManager.persist(product);
+        entityManager.merge(product); // merge to get the id of the product
+        return product;
     }
 }
