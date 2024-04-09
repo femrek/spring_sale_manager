@@ -15,4 +15,10 @@ public interface OfferRepository {
      * @return the offer with the given id, or null if it does not exist
      */
     Offer findById(Long id);
+
+    /**
+     * @param offer the offer to be saved
+     * @return the saved offer
+     */
+    Offer create(Offer offer);
 }

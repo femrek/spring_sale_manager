@@ -15,4 +15,10 @@ public interface ProductRepository {
      * @return the product with given id from database.
      */
     Product findById(Long id);
+
+    /**
+     * @param product the product to be saved
+     * @return the saved product
+     */
+    Product create(Product product);
 }
