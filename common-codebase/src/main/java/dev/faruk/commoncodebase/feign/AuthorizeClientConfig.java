@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import static dev.faruk.commoncodebase.constant.AppConstants.HOST;
 
 @Configuration
-public class IdentifyClientConfig {
+public class AuthorizeClientConfig {
     @Bean
-    public IdentifyClient identifyClient() {
+    public AuthorizeClient authorizeClient() {
         return Feign.builder()
                 .client(new OkHttpClient())
                 .decoder(new GsonDecoder())
                 .encoder(new GsonEncoder())
-                .target(IdentifyClient.class, HOST);
+                .target(AuthorizeClient.class, HOST);
     }
 }

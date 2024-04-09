@@ -6,7 +6,7 @@ import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
 import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  * This is a Feign client for validate permission for the requests.
  */
 @FeignClient(name = "identifyClient")
-public interface IdentifyClient {
+public interface AuthorizeClient {
     @RequestLine(value = "GET /auth/accessibility{path}")
     @Headers({"Authorization: {authHeader}"})
     void checkAccessibility(@Param("authHeader") String token,

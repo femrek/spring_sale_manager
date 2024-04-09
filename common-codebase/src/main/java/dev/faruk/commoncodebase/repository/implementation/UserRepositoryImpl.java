@@ -1,7 +1,8 @@
-package dev.faruk.commoncodebase.repository;
+package dev.faruk.commoncodebase.repository.implementation;
 
 import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;

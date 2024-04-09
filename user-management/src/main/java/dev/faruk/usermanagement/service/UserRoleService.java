@@ -3,7 +3,7 @@ package dev.faruk.usermanagement.service;
 import dev.faruk.commoncodebase.dto.UserRoleDTO;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,14 +3,13 @@ package dev.faruk.sale.service;
 import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.commoncodebase.entity.*;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.repository.ProductRepository;
-import dev.faruk.commoncodebase.repository.SaleRepository;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.ProductRepository;
+import dev.faruk.commoncodebase.repository.base.SaleRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.sale.dto.SalePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,20 +52,6 @@ public class SaleService {
             sale.add(saleProduct);
         }
         return new SaleDTO(saleRepository.create(sale));
-    }
-
-    /**
-     * This method lists all sales saved in the database.
-     *
-     * @return List of all sales
-     */
-    public List<SaleDTO> findAll() {
-        List<Sale> sales = saleRepository.findAll();
-        List<SaleDTO> saleDTOS = new ArrayList<>();
-        for (Sale sale : sales) {
-            saleDTOS.add(new SaleDTO(sale));
-        }
-        return saleDTOS;
     }
 
     /**

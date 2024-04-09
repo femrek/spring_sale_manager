@@ -4,7 +4,7 @@ import dev.faruk.commoncodebase.dto.ProductDTO;
 import dev.faruk.commoncodebase.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import dev.faruk.commoncodebase.repository.ProductRepository;
+import dev.faruk.commoncodebase.repository.base.ProductRepository;
 
 import java.util.List;
 

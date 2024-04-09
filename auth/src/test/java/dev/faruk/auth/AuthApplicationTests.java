@@ -4,7 +4,7 @@ import dev.faruk.auth.dto.LoginResponse;
 import dev.faruk.auth.service.AuthService;
 import dev.faruk.auth.service.UserManagementService;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;

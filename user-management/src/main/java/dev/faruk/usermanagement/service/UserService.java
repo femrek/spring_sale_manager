@@ -4,7 +4,7 @@ import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
 import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.usermanagement.feign.UserManagementClient;

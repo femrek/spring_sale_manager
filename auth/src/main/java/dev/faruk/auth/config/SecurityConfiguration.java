@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.faruk.auth.aspect.AuthenticationFilter;
 import dev.faruk.auth.service.AppUserDetailService;
 import dev.faruk.auth.service.AuthService;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,6 +50,8 @@ public class SecurityConfiguration {
                                            UserRepository userRepository,
                                            AuthService authService,
                                            ObjectMapper objectMapper) throws Exception {
+        System.out.println("SECURITY FILTER CHAIN");
+        System.out.println(userRepository.getClass());
         // specify authorization of the end-points
         httpSecurity.authorizeHttpRequests(configurer -> configurer
                 // auth end-points
@@ -100,8 +102,6 @@ public class SecurityConfiguration {
     }
 
     private final AccessDeniedHandler accessDeniedHandler = (request, response, accessDeniedException) -> {
-        System.out.println(request.getContextPath() + " | " + request.getServletPath());
-
         // determine the status code and message
         SecurityContext context = SecurityContextHolder.getContext();
         boolean isAuthed = context.getAuthentication().isAuthenticated();

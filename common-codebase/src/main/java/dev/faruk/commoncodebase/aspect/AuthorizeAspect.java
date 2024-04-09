@@ -1,7 +1,7 @@
 package dev.faruk.commoncodebase.aspect;
 
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
-import dev.faruk.commoncodebase.feign.IdentifyClient;
+import dev.faruk.commoncodebase.feign.AuthorizeClient;
 import feign.FeignException;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -14,15 +14,19 @@ import org.springframework.web.context.request.RequestContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * This is an aspect for authorization of the requests. It checks the accessibility of the request path by sending
+ * the request to the authorization server. If the request is not accessible, auth module throws an exception.
+ */
 @Aspect
 @Component
 public class AuthorizeAspect {
-    private final IdentifyClient identifyClient;
+    private final AuthorizeClient authorizeClient;
     private final FeignExceptionMapper feignExceptionMapper;
 
     @Autowired
-    public AuthorizeAspect(IdentifyClient identifyClient, FeignExceptionMapper feignExceptionMapper) {
-        this.identifyClient = identifyClient;
+    public AuthorizeAspect(AuthorizeClient identifyClient, FeignExceptionMapper feignExceptionMapper) {
+        this.authorizeClient = identifyClient;
         this.feignExceptionMapper = feignExceptionMapper;
     }
 
@@ -35,6 +39,12 @@ public class AuthorizeAspect {
     public void authControllerPointcut() {
     }
 
+    /**
+     * This advice is defined for all controller methods except the auth controller methods. It checks the accessibility
+     * of the request path by sending the request to the authorization server. If the request is not accessible, auth
+     * module throws an exception. The expected exception is handled by the {@link FeignExceptionMapper} and thrown to
+     * the client.
+     */
     @Before("controllerPointcut() && !authControllerPointcut()")
     public void getAllAdvice() {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -43,13 +53,9 @@ public class AuthorizeAspect {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String path0 = request.getContextPath();
         final String path1 = request.getServletPath();
-        System.out.println("BEFORE ASPECT");
-        System.out.println("authHeader: " + authHeader);
-        System.out.println("path0 " + path0);
-        System.out.println("path1 " + path1);
 
         try {
-            identifyClient.checkAccessibility(authHeader, path0 + path1);
+            authorizeClient.checkAccessibility(authHeader, path0 + path1);
         } catch (FeignException e) {
             throw feignExceptionMapper.map(e);
         }
