@@ -1,7 +1,7 @@
 package dev.faruk.auth.service;
 
 import dev.faruk.auth.dto.LoginResponse;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;

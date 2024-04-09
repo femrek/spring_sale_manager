@@ -14,6 +14,7 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "sale", schema = "public")
 public class Sale {

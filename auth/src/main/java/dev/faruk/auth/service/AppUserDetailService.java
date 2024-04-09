@@ -1,7 +1,7 @@
 package dev.faruk.auth.service;
 
 import dev.faruk.auth.dto.AppUserDetails;
-import dev.faruk.commoncodebase.repository.UserRepository;
+import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.commoncodebase.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

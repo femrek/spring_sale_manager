@@ -2,10 +2,7 @@ package dev.faruk.commoncodebase.dto;
 
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.entity.SaleProduct;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaleDTO {

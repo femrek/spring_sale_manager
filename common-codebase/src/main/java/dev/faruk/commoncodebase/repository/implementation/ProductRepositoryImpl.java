@@ -1,6 +1,7 @@
-package dev.faruk.commoncodebase.repository;
+package dev.faruk.commoncodebase.repository.implementation;
 
 import dev.faruk.commoncodebase.entity.Product;
+import dev.faruk.commoncodebase.repository.base.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;

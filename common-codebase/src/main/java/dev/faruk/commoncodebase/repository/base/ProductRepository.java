@@ -1,4 +1,4 @@
-package dev.faruk.commoncodebase.repository;
+package dev.faruk.commoncodebase.repository.base;
 
 import dev.faruk.commoncodebase.entity.Product;
 

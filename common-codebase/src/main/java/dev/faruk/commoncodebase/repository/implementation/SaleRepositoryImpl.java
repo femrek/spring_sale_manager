@@ -1,6 +1,7 @@
-package dev.faruk.commoncodebase.repository;
+package dev.faruk.commoncodebase.repository.implementation;
 
 import dev.faruk.commoncodebase.entity.Sale;
+import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;

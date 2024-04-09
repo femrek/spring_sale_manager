@@ -3,7 +3,7 @@ package dev.faruk.report.service;
 import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.repository.SaleRepository;
+import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
