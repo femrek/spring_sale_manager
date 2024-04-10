@@ -21,7 +21,7 @@ public class UserManagementController {
         this.userManagementService = userManagementService;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping({"/", ""})
     public UserDTO createUser(@RequestBody UserCreateRequest userCreateRequest) {
         return userManagementService.createUser(userCreateRequest);
     }

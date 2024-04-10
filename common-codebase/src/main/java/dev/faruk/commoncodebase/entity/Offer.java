@@ -35,16 +35,4 @@ public class Offer {
     @OneToMany(fetch = FetchType.EAGER, targetEntity = OfferProduct.class)
     @JoinColumn(name = "offer_id")
     private List<OfferProduct> requiredProducts;
-
-    public Offer(String name, Double discount, Timestamp validUntil, Timestamp validSince) {
-        this.name = name;
-        this.discount = discount;
-        this.validUntil = validUntil;
-        this.validSince = validSince;
-    }
-
-    public void add(OfferProduct offerProduct) {
-        if (requiredProducts == null) requiredProducts = new ArrayList<>();
-        requiredProducts.add(offerProduct);
-    }
 }

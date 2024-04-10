@@ -8,7 +8,6 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 
 /**
  * This is a Feign client for performing crud operations on users. In auth module, there is a controller called

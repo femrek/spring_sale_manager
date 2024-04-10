@@ -50,16 +50,12 @@ public class SecurityConfiguration {
                                            UserRepository userRepository,
                                            AuthService authService,
                                            ObjectMapper objectMapper) throws Exception {
-        System.out.println("SECURITY FILTER CHAIN");
-        System.out.println(userRepository.getClass());
         // specify authorization of the end-points
         httpSecurity.authorizeHttpRequests(configurer -> configurer
                 // auth end-points
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/user").authenticated()
-                .requestMatchers(HttpMethod.POST, "/user-management/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/user-management/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/user-management/**").hasAuthority("ADMIN")
+                .requestMatchers("/user-management/**").hasAuthority("ADMIN")
 
                 // end-points of other services
                 .requestMatchers("/accessibility/product/**").permitAll()

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
 
-import static org.springframework.http.HttpStatus.*;
-
 /**
  * GlobalRestExceptionHandler is the class that handles the exceptions thrown by the application and returns the
  * appropriate response to the client.

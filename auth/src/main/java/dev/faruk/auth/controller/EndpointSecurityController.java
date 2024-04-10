@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/accessibility")
 public class EndpointSecurityController {
     @GetMapping("/**")
-    public AppSuccessResponse<Object> checkAccessibility() {
+    public AppSuccessResponse<?> checkAccessibility() {
         return new AppSuccessResponse<>(null);
     }
 }

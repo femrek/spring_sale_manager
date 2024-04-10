@@ -104,6 +104,7 @@ public class ReportService {
      */
     public String createReportHtml(Long saleId) {
         final Sale sale = saleRepository.findById(saleId);
+        if (sale == null) throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
         final SaleDTO saleDTO = new SaleDTO(sale);
         return reportPdfGenerator.createReportHtml(saleDTO);
     }
@@ -116,6 +117,7 @@ public class ReportService {
      */
     public byte[] createReport(Long saleId) {
         final Sale sale = saleRepository.findById(saleId);
+        if (sale == null) throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
         final SaleDTO saleDTO = new SaleDTO(sale);
         return reportPdfGenerator.generatePdf(saleDTO);
     }

@@ -21,7 +21,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public AppSuccessResponse<List<ProductDTO>> showAll() {
         final List<ProductDTO> products = productService.getAllProducts();
         return new AppSuccessResponse<>("All products are listed", products);

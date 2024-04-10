@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest
 class SaleApplicationTests {
@@ -41,7 +42,7 @@ class SaleApplicationTests {
 
         OfferDTO offer = offerService.findById(offers.get(0).getId());
         assert offer != null;
-        assert offer.getId() == offers.get(0).getId();
+        assert Objects.equals(offer.getId(), offers.get(0).getId());
     }
 
 

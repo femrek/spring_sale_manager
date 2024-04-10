@@ -6,9 +6,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -35,18 +33,6 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
             throw new AppHttpError.Unauthorized("Token expired");
         } catch (JwtException e) {
-            throw new AppHttpError.Unauthorized("Invalid token");
-        }
-    }
-
-    /**
-     * Validate the given token. throws an exception if the token is not valid.
-     * @param token the token to be validated
-     */
-    public void validateToken(final String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(_getSignKey()).build().parseClaimsJws(token);
-        } catch (SignatureException e) {
             throw new AppHttpError.Unauthorized("Invalid token");
         }
     }

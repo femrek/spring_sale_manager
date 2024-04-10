@@ -24,7 +24,7 @@ public class UserRoleController {
         this.userRoleService = userRoleService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public AppSuccessResponse<List<UserRoleDTO>> showRoles() {
         List<UserRoleDTO> roles = userRoleService.showRoles();
         return new AppSuccessResponse<>("All roles are listed successfully", roles);

@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public AppSuccessResponse<List<UserDTO>> showUsers() {
         List<UserDTO> users = userService.showUsers();
         return new AppSuccessResponse<>("All users are listed successfully", users);
@@ -36,7 +36,7 @@ public class UserController {
         return new AppSuccessResponse<>("User provided successfully", user);
     }
 
-    @PostMapping("/")
+    @PostMapping({"/", ""})
     public AppSuccessResponse<UserDTO> createUser(@RequestBody UserCreateRequest user,
                                                   @RequestHeader("Authorization") String authHeader) {
         UserDTO createdUser = userService.createUser(user, authHeader);

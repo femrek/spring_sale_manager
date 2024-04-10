@@ -55,11 +55,6 @@ public class Sale {
         productList.add(saleProduct);
     }
 
-    public void remove(SaleProduct saleProduct) {
-        if (productList == null) return;
-        productList.remove(saleProduct);
-    }
-
     /**
      * Maps visible column names to actual column names in the database. Used for sorting and filtering. Visible column
      * names are the ones that are exposed to the client. Actual column names are the ones in the database.

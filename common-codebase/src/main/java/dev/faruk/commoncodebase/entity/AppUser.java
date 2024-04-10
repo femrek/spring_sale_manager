@@ -29,7 +29,7 @@ public class AppUser {
     @Column(name = "pw")
     private String password;
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "boolean default false", nullable = false, insertable = false)
     private Boolean deleted;
 
     @ManyToMany(fetch = FetchType.EAGER)
