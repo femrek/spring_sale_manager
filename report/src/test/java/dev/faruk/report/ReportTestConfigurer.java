@@ -7,14 +7,8 @@ import dev.faruk.commoncodebase.repository.testImplementations.SaleTestRepositor
 import dev.faruk.commoncodebase.repository.testImplementations.UserTestRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 public class ReportTestConfigurer {
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     @Bean("testReportService")
     public ReportService reportService(@Qualifier("testSaleRepository") SaleRepository saleRepository) {
         return new ReportService(

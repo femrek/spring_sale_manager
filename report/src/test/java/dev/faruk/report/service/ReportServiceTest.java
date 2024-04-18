@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -32,11 +30,6 @@ class ReportServiceTest {
         this.saleRepository = saleRepository;
         this.userRepository = userRepository;
         this.reportService = reportService;
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 
     @BeforeEach
