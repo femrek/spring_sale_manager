@@ -10,7 +10,6 @@ import dev.faruk.report.ReportTestConfigurer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -24,9 +23,9 @@ class ReportServiceTest {
     private final ReportService reportService;
 
     @Autowired
-    public ReportServiceTest(@Qualifier("testSaleRepository") SaleRepository saleRepository,
-                             @Qualifier("testUserRepository") UserRepository userRepository,
-                             @Qualifier("testReportService") ReportService reportService) {
+    public ReportServiceTest(SaleRepository saleRepository,
+                             UserRepository userRepository,
+                             ReportService reportService) {
         this.saleRepository = saleRepository;
         this.userRepository = userRepository;
         this.reportService = reportService;

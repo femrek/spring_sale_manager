@@ -5,12 +5,11 @@ import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.report.service.ReportService;
 import dev.faruk.commoncodebase.repository.testImplementations.SaleTestRepository;
 import dev.faruk.commoncodebase.repository.testImplementations.UserTestRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 
 public class ReportTestConfigurer {
     @Bean("testReportService")
-    public ReportService reportService(@Qualifier("testSaleRepository") SaleRepository saleRepository) {
+    public ReportService reportService(SaleRepository saleRepository) {
         return new ReportService(
                 saleRepository,
                 null
