@@ -1,5 +1,16 @@
 package dev.faruk.commoncodebase.constant;
 
-public abstract class AppConstants {
-    public static final String HOST = "http://localhost:8080";
+import org.springframework.stereotype.Component;
+
+@Component
+public class AppConstants {
+    private static final String HOST_TEMPLATE = "http://%s:8080";
+
+    public final String host;
+
+    public AppConstants() {
+        String hostEnv = System.getenv("GATEWAY_HOST");
+        String hostName = hostEnv != null ? hostEnv : "localhost";
+        this.host = String.format(HOST_TEMPLATE, hostName);
+    }
 }
