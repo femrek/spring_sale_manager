@@ -1,6 +1,13 @@
 spring:
   application:
     name: AUTH-SERVICE
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:productmanagementsystem}
+    username: postgres
+    password: ${POSTGRES_PASSWORD:1234}
+  jpa:
+    hibernate:
+      ddl-auto: none
 
 eureka:
   client:

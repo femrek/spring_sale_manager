@@ -1,11 +1,18 @@
 spring:
   application:
     name: REPORT-SERVICE
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DB:productmanagementsystem}
+    username: postgres
+    password: ${POSTGRES_PASSWORD:1234}
+  jpa:
+    hibernate:
+      ddl-auto: none
 
 eureka:
   client:
     service-url:
-      defaultZone : http://${EUREKA_HOST:localhost}:8761/eureka/
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka/
 
 server:
   port: 8084
