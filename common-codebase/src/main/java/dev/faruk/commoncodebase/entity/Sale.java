@@ -40,17 +40,6 @@ public class Sale {
     @JoinColumn(name = "sale_id")
     private List<SaleProduct> productList;
 
-    public Sale(Double receivedMoney, AppUser cashier, List<SaleProduct> productList) {
-        this.receivedMoney = receivedMoney;
-        this.cashier = cashier;
-        this.productList = productList;
-    }
-
-    public Sale(Double receivedMoney, AppUser cashier) {
-        this.receivedMoney = receivedMoney;
-        this.cashier = cashier;
-    }
-
     public void add(SaleProduct saleProduct) {
         if (productList == null) productList = new ArrayList<>();
         productList.add(saleProduct);

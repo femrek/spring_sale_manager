@@ -40,15 +40,8 @@ public class AppUser {
     )
     List<AppUserRole> roles;
 
-    public AppUser(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public void add(AppUserRole userRole) {
-        if (roles == null) {
-            roles = new ArrayList<>();
-        }
+        if (roles == null) roles = new ArrayList<>();
         roles.add(userRole);
     }
 }

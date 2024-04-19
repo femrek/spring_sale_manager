@@ -8,6 +8,7 @@ import lombok.*;
 @ToString(exclude = {"sale"})
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "sale_product_bridge", schema = "public")
 public class SaleProduct {
@@ -29,11 +30,4 @@ public class SaleProduct {
 
     @Column(name = "unit_price")
     private Double unitPrice;
-
-    public SaleProduct(Sale sale, Product product, Integer productCount, Double unitPrice) {
-        this.sale = sale;
-        this.product = product;
-        this.productCount = productCount;
-        this.unitPrice = unitPrice;
-    }
 }

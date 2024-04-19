@@ -73,11 +73,19 @@ public class SaleService {
         }
 
         // Creates a sale with the given data
-        Sale sale = new Sale(salePostRequest.getReceivedMoney(), cashier);
+        Sale sale = Sale.builder()
+                .receivedMoney(salePostRequest.getReceivedMoney())
+                .cashier(cashier)
+                .build();
         List<SalePostRequest.ProductDetails> productDetails = salePostRequest.getProducts();
         for (SalePostRequest.ProductDetails productDetail : productDetails) {
             final Product product = productRepository.findById(productDetail.getProductId());
-            SaleProduct saleProduct = new SaleProduct(sale, product, productDetail.getProductCount(), product.getPrice());
+            SaleProduct saleProduct = SaleProduct.builder()
+                    .sale(sale)
+                    .product(product)
+                    .productCount(productDetail.getProductCount())
+                    .unitPrice(product.getPrice())
+                    .build();
             sale.add(saleProduct);
         }
         return new SaleDTO(saleRepository.create(sale));
