@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class OfferTestRepository implements OfferRepository {
+public class OfferRepositoryTestImpl implements OfferRepository {
     private final List<Offer> cache = new ArrayList<>();
     private long idCounter = 1;
 

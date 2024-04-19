@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserTestRepository implements UserRepository {
+public class UserRepositoryTestImpl implements UserRepository {
     private final List<AppUser> cache = new ArrayList<>();
     private long idCounter = 1;
 

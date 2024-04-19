@@ -3,8 +3,8 @@ package dev.faruk.report;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.report.service.ReportService;
-import dev.faruk.commoncodebase.repository.testImplementations.SaleTestRepository;
-import dev.faruk.commoncodebase.repository.testImplementations.UserTestRepository;
+import dev.faruk.commoncodebase.repository.testImplementations.SaleRepositoryTestImpl;
+import dev.faruk.commoncodebase.repository.testImplementations.UserRepositoryTestImpl;
 import org.springframework.context.annotation.Bean;
 
 public class ReportTestConfigurer {
@@ -18,11 +18,11 @@ public class ReportTestConfigurer {
 
     @Bean("testSaleRepository")
     public SaleRepository saleRepository() {
-        return new SaleTestRepository();
+        return new SaleRepositoryTestImpl();
     }
 
     @Bean("testUserRepository")
     public UserRepository userRepository() {
-        return new UserTestRepository();
+        return new UserRepositoryTestImpl();
     }
 }
