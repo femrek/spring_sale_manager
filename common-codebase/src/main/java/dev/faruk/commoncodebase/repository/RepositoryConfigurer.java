@@ -29,7 +29,7 @@ public class RepositoryConfigurer {
 
     @Bean
     @Primary
-    public SaleRepository orderRepository(EntityManager entityManager) {
+    public SaleRepository saleRepository(EntityManager entityManager) {
         return new SaleRepositoryImpl(entityManager);
     }
 }
