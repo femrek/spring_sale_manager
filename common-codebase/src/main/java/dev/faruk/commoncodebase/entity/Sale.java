@@ -2,6 +2,7 @@ package dev.faruk.commoncodebase.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -26,9 +27,9 @@ public class Sale {
     @Column(name = "received_money")
     private Double receivedMoney;
 
-    @Basic(optional = false)
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = AppUser.class)

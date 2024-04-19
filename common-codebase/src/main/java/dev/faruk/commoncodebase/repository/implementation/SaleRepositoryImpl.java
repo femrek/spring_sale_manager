@@ -24,6 +24,7 @@ public class SaleRepositoryImpl implements SaleRepository {
     @Transactional
     public Sale create(Sale sale) {
         entityManager.persist(sale);
+        entityManager.flush();
         return sale;
     }
 
