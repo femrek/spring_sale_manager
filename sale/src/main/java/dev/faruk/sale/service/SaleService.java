@@ -1,12 +1,17 @@
 package dev.faruk.sale.service;
 
+import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.SaleDTO;
+import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.entity.*;
 import dev.faruk.commoncodebase.error.AppHttpError;
+import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.commoncodebase.repository.base.ProductRepository;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.sale.dto.SalePostRequest;
+import dev.faruk.sale.feign.UserClient;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,33 +22,57 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final UserClient userClient;
+    private final FeignExceptionMapper feignExceptionMapper;
 
     @Autowired
-    public SaleService(SaleRepository saleRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public SaleService(SaleRepository saleRepository,
+                       ProductRepository productRepository,
+                       UserRepository userRepository,
+                       UserClient userClient,
+                       FeignExceptionMapper feignExceptionMapper) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.userClient = userClient;
+        this.feignExceptionMapper = feignExceptionMapper;
     }
 
     /**
      * This method creates a sale.
      *
      * @param salePostRequest the request body including the sale data
+     * @param authHeader      the authorization header
      * @return the created and saved sale data
      */
-    public SaleDTO create(SalePostRequest salePostRequest) {
-        if (salePostRequest.getCashierId() == null) throw new AppHttpError.BadRequest("Cashier id is required");
-        AppUser cashier = userRepository.findOnlyExistById(salePostRequest.getCashierId());
+    public SaleDTO create(SalePostRequest salePostRequest, String authHeader) {
+        if (authHeader == null || authHeader.isEmpty()) {
+            throw new AppHttpError.BadRequest("Authorization header is required");
+        }
+
+        // Fetches the user by the given auth header
+        Long cashierId;
+        try {
+            AppSuccessResponse<UserDTO> requestSender = userClient.getUser(authHeader);
+            if (requestSender.getData() == null) {
+                throw new AppHttpError.InternalServerError("Auth user could not found");
+            }
+            cashierId = requestSender.getData().getId();
+        } catch (FeignException e) {
+            throw feignExceptionMapper.map(e);
+        }
+        AppUser cashier = userRepository.findOnlyExistById(cashierId);
+
+        // Checks if the user is a cashier
         if (cashier == null) {
-            throw new AppHttpError.BadRequest(
-                    String.format("Cashier not found with given id, %d", salePostRequest.getCashierId())
-            );
+            throw new AppHttpError.BadRequest(String.format("Cashier not found with id, %d", cashierId));
         }
         if (!isCashier(cashier)) {
             throw new AppHttpError.BadRequest(
-                    String.format("User with id %d (%s) is not a cashier", salePostRequest.getCashierId(), cashier.getUsername())
-            );
+                    String.format("User with id %d (%s) is not a cashier", cashierId, cashier.getUsername()));
         }
+
+        // Creates a sale with the given data
         Sale sale = new Sale(salePostRequest.getReceivedMoney(), cashier);
         List<SalePostRequest.ProductDetails> productDetails = salePostRequest.getProducts();
         for (SalePostRequest.ProductDetails productDetail : productDetails) {

@@ -40,7 +40,7 @@ public class UserController {
     public AppSuccessResponse<UserDTO> createUser(@RequestBody UserCreateRequest user,
                                                   @RequestHeader("Authorization") String authHeader) {
         UserDTO createdUser = userService.createUser(user, authHeader);
-        return new AppSuccessResponse<>(HttpStatus.CREATED, "User created successfully", createdUser);
+        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "User created successfully", createdUser);
     }
 
     @PatchMapping("/{id}")
