@@ -5,11 +5,9 @@ import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.sale.dto.SalePostRequest;
 import dev.faruk.sale.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sale")
@@ -23,12 +21,14 @@ public class SaleController {
 
     /**
      * This method creates a sale.
+     *
      * @param salePostRequest the request body including the sale data
      * @return the created and saved sale data
      */
     @PostMapping({"/", ""})
-    public AppSuccessResponse<SaleDTO> create(@RequestBody SalePostRequest salePostRequest) {
-        final SaleDTO result = saleService.create(salePostRequest);
-        return new AppSuccessResponse<>(HttpStatus.CREATED, "sale created successfully", result);
+    public AppSuccessResponse<SaleDTO> create(@RequestBody SalePostRequest salePostRequest,
+                                              @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+        final SaleDTO result = saleService.create(salePostRequest, authHeader);
+        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "sale created successfully", result);
     }
 }
