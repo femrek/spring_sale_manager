@@ -85,6 +85,8 @@ public class SaleRepositoryImpl implements SaleRepository {
     @Override
     @Transactional
     public void deletePermanent(Sale sale) {
-        entityManager.remove(entityManager.contains(sale) ? sale : entityManager.merge(sale));
+        entityManager.createQuery("DELETE FROM Sale as s WHERE s.id = :sale_id")
+                .setParameter("sale_id", sale.getId())
+                .executeUpdate();
     }
 }
