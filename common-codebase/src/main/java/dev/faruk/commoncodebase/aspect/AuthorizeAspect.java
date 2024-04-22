@@ -31,12 +31,12 @@ public class AuthorizeAspect {
     }
 
     @Pointcut("execution(* dev.faruk..*.controller..*(..))")
-    public void controllerPointcut() {
+    private void controllerPointcut() {
     }
 
     @SuppressWarnings("AopLanguageInspection")
     @Pointcut("execution(* dev.faruk.auth.controller..*(..))")
-    public void authControllerPointcut() {
+    private void authControllerPointcut() {
     }
 
     /**
@@ -51,11 +51,10 @@ public class AuthorizeAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = attributes.getRequest();
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String path0 = request.getContextPath();
-        final String path1 = request.getServletPath();
+        final String path = request.getContextPath() + request.getServletPath();
 
         try {
-            authorizeClient.checkAccessibility(authHeader, path0 + path1);
+            authorizeClient.checkAccessibility(authHeader, path);
         } catch (FeignException e) {
             throw feignExceptionMapper.map(e);
         }
