@@ -48,7 +48,7 @@ public class SaleRepositoryImpl implements SaleRepository {
         if (dateFilterAfter != null) queryStrBuilder.append(" AND s.createdAt >= :date_min");
         if (dateFilterBefore != null) queryStrBuilder.append(" AND s.createdAt <= :date_max");
 
-        if (orderBy != null) queryStrBuilder.append(" ORDER BY :order_by"); // todo fix
+        if (orderBy != null) queryStrBuilder.append(" ORDER BY :order_by");
         if (orderAscFinal) queryStrBuilder.append(" asc");
         else queryStrBuilder.append(" desc");
 

@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -45,6 +47,7 @@ public class AuthorizeAspect {
      * module throws an exception. The expected exception is handled by the {@link FeignExceptionMapper} and thrown to
      * the client.
      */
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     @Before("controllerPointcut() && !authControllerPointcut()")
     public void getAllAdvice() {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
