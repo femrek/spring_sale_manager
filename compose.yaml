@@ -186,6 +186,8 @@ services:
         condition: service_healthy
       user-management:
         condition: service_healthy
+      logging:
+        condition: service_healthy
     build:
       context: ./
       dockerfile: ./gateway/Dockerfile
