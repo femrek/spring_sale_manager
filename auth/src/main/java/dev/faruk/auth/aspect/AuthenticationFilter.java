@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.faruk.auth.service.AppUserDetailService;
 import dev.faruk.auth.dto.AppUserDetails;
 import dev.faruk.auth.service.AuthService;
+import dev.faruk.commoncodebase.dto.log.AuthErrorLogCreateDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;
+import dev.faruk.commoncodebase.logging.LogService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
@@ -31,14 +34,17 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 public class AuthenticationFilter extends OncePerRequestFilter {
     private final AppUserDetailService appUserDetailService;
     private final AuthService authService;
+    private final LogService logService;
     private final ObjectMapper objectMapper;
 
     @Autowired
     public AuthenticationFilter(AppUserDetailService appUserDetailService,
                                 AuthService authService,
+                                LogService logService,
                                 ObjectMapper objectMapper) {
         this.appUserDetailService = appUserDetailService;
         this.authService = authService;
+        this.logService = logService;
         this.objectMapper = objectMapper;
     }
 
@@ -62,11 +68,24 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 logger.info("response: " + response);
             } catch (AppHttpError e) {
                 logger.error("Error occurred while authenticating the user: " + e.getMessage());
+                String body = objectMapper.writeValueAsString(e.toJson());
+
+                // log if the error about auth.
+                if (e instanceof AppHttpError.Unauthorized || e instanceof AppHttpError.Forbidden) {
+                    logService.saveLog(AuthErrorLogCreateDTO.builder()
+                            .url(request.getRequestURL().toString())
+                            .method(request.getMethod())
+                            .statusCode(e.getStatusCode().value())
+                            .error(e.toString())
+                            .responseTime(new Date())
+                            .build());
+                }
+
                 response.setStatus(e.getStatusCode().value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 response.setCharacterEncoding("UTF-8");
                 response.setStatus(e.getStatusCode().value());
-                response.getWriter().write(objectMapper.writeValueAsString(e.toJson()));
+                response.getWriter().write(body);
             }
         } else {
             filterChain.doFilter(request, response);
