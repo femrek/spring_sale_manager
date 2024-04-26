@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  */
 @FeignClient(name = "identifyClient")
 public interface AuthorizeClient {
-    @RequestLine(value = "GET /auth/accessibility{path}")
+    @RequestLine(value = "GET /api/v1/auth/accessibility{path}")
     @Headers({"Authorization: {authHeader}"})
     void checkAccessibility(@Param("authHeader") String token,
                             @Param("path") String path);

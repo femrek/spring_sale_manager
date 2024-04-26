@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserManagementConfig {
+public class UserManagementClientConfig {
     @Bean
     @Qualifier("userManagementClient")
     public UserManagementClient getUserManagementClient(AppConstants appConstants) {

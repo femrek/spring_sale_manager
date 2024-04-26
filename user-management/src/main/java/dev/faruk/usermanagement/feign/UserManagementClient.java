@@ -16,20 +16,20 @@ import org.springframework.cloud.openfeign.FeignClient;
  */
 @FeignClient(name = "user-management-service")
 public interface UserManagementClient {
-    @RequestLine(value = "POST /auth/user-management/")
+    @RequestLine(value = "POST /api/v1/auth/user-management/")
     @Headers({"Accept: application/json", "Content-Type: application/json", "Authorization: {authHeader}"})
     @Body("userCreateRequest")
     UserDTO createUser(UserCreateRequest userCreateRequest,
                        @Param("authHeader") String token);
 
-    @RequestLine(value = "PATCH /auth/user-management/{userId}")
+    @RequestLine(value = "PATCH /api/v1/auth/user-management/{userId}")
     @Headers({"Accept: application/json", "Content-Type: application/json", "Authorization: {authHeader}"})
     @Body("userUpdateRequest")
     UserDTO updateUser(UserUpdateRequest userUpdateRequest,
                        @Param("userId") Long userId,
                        @Param("authHeader") String token);
 
-    @RequestLine(value = "DELETE /auth/user-management/{userId}")
+    @RequestLine(value = "DELETE /api/v1/auth/user-management/{userId}")
     @Headers({"Accept: application/json", "Content-Type: application/json", "Authorization: {authHeader}"})
     void deleteUser(@Param("userId") Long userId,
                     @Param("authHeader") String token);

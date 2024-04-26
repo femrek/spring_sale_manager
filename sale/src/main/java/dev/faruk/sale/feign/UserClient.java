@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "userClient")
 public interface UserClient {
-    @RequestLine(value = "GET /auth/user")
+    @RequestLine(value = "GET /api/v1/auth/user")
     @Headers({"Authorization: {authHeader}"})
     AppSuccessResponse<UserDTO> getUser(@Param("authHeader") String authHeader);
 }
