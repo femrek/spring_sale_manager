@@ -60,12 +60,12 @@ public class SecurityConfiguration {
                 .requestMatchers("/user-management/**").hasAuthority("ADMIN")
 
                 // end-points of other services
-                .requestMatchers("/accessibility/product/**").permitAll()
-                .requestMatchers("/accessibility/sale/**").hasAuthority("CASHIER")
-                .requestMatchers("/accessibility/offer/**").hasAuthority("CASHIER")
-                .requestMatchers("/accessibility/report/**").hasAuthority("MANAGER")
-                .requestMatchers("/accessibility/user/**").hasAuthority("ADMIN")
-                .requestMatchers("/accessibility/logging/**").permitAll()
+                .requestMatchers("/accessibility/api/v1/product/**").permitAll()
+                .requestMatchers("/accessibility/api/v1/sale/**").hasAuthority("CASHIER")
+                .requestMatchers("/accessibility/api/v1/offer/**").hasAuthority("CASHIER")
+                .requestMatchers("/accessibility/api/v1/report/**").hasAuthority("MANAGER")
+                .requestMatchers("/accessibility/api/v1/user/**").hasAuthority("ADMIN")
+                .requestMatchers("/accessibility/api/v1/logging/**").permitAll()
 
                 // always deny undefined end-points
                 .anyRequest().denyAll()
