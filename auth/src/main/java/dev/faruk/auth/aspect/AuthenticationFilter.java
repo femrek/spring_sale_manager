@@ -76,7 +76,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                             .url(request.getRequestURL().toString())
                             .method(request.getMethod())
                             .statusCode(e.getStatusCode().value())
-                            .error(e.toString())
+                            .error(body)
                             .responseTime(new Date())
                             .build());
                 }

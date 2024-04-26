@@ -26,6 +26,11 @@ spring:
           uri: lb://REPORT-SERVICE
           predicates:
             - Path=/report/**
+
+        - id: logging-service
+          uri: lb://LOGGING-SERVICE
+          predicates:
+            - Path=/logging/**
   application:
     name: gateway
 
