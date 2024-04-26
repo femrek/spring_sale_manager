@@ -148,6 +148,29 @@ services:
       timeout: 3s
       retries: 25
       start_period: 8s
+  logging:
+    container_name: logging
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    build:
+      context: ./
+      dockerfile: ./logging/Dockerfile
+    environment:
+      - POSTGRES_DB=productmanagementsystem
+      - POSTGRES_HOST=postgres-db
+      - EUREKA_HOST=service-registry
+      - GATEWAY_HOST=gateway
+    ports:
+      - 8085:8085
+    networks:
+      - app-network
+    healthcheck:
+      test: "curl localhost:8085"
+      interval: 3s
+      timeout: 3s
+      retries: 25
+      start_period: 8s
   gateway:
     container_name: gateway
     depends_on:
