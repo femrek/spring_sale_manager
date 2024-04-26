@@ -2,7 +2,6 @@ package dev.faruk.commoncodebase.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import dev.faruk.commoncodebase.constant.AppConstants;
 import dev.faruk.commoncodebase.dto.log.AppHttpErrorLogCreateDTO;
 import dev.faruk.commoncodebase.dto.log.AuthErrorLogCreateDTO;
@@ -20,20 +19,22 @@ import org.springframework.stereotype.Service;
 public class LogService {
     private final LogRepository logRepository;
     private final AppConstants appConstants;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public LogService(LogRepository logRepository,
-                      AppConstants appConstants) {
+                      AppConstants appConstants,
+                      ObjectMapper objectMapper) {
         this.logRepository = logRepository;
         this.appConstants = appConstants;
+        this.objectMapper = objectMapper;
     }
 
     @Async
     public void saveLog(SuccessLogCreateDTO log) throws JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String requestBodyJson = log.getRequest().getRequestBody() == null
-                ? null : ow.writeValueAsString(log.getRequest().getRequestBody());
-        String responseJson = ow.writeValueAsString(log.getResponse());
+                ? null : objectMapper.writeValueAsString(log.getRequest().getRequestBody());
+        String responseJson = objectMapper.writeValueAsString(log.getResponse());
 
         AppLog appLog = AppLog.builder()
                 .url(log.getRequest().getUrl())
@@ -51,14 +52,16 @@ public class LogService {
 
     @Async
     public void saveLog(AppHttpErrorLogCreateDTO log) throws JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String requestBodyJson = log.getRequest().getRequestBody() == null
-                ? null : ow.writeValueAsString(log.getRequest().getRequestBody());
+                ? null : objectMapper.writeValueAsString(log.getRequest().getRequestBody());
+        String errorJson = objectMapper.writeValueAsString(log.getError().toJson());
 
         AppLog appLog = AppLog.builder()
+                .url(log.getRequest().getUrl())
+                .method(log.getRequest().getMethod())
                 .requestBody(requestBodyJson)
                 .statusCode(log.getError().getStatusCode().value())
-                .error(log.getError().toString())
+                .error(errorJson)
                 .moduleName(appConstants.moduleName)
                 .requestAt(log.getRequest().getCreatedAt())
                 .responseAt(log.getResponseTime())
@@ -83,12 +86,13 @@ public class LogService {
 
     @Async
     public void saveLog(ErrorLogCreateDTO log) throws JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String requestBodyJson = log.getRequest().getRequestBody() == null
-                ? null : ow.writeValueAsString(log.getRequest().getRequestBody());
-        String stackTraceJson = ow.writeValueAsString(log.getStackTrace());
+                ? null : objectMapper.writeValueAsString(log.getRequest().getRequestBody());
+        String stackTraceJson = objectMapper.writeValueAsString(log.getStackTrace());
 
         AppLog appLog = AppLog.builder()
+                .url(log.getRequest().getUrl())
+                .method(log.getRequest().getMethod())
                 .requestBody(requestBodyJson)
                 .statusCode(500)
                 .error(log.getError())

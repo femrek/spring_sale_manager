@@ -28,7 +28,8 @@ public class LogRepositoryImpl implements LogRepository {
 
     @Override
     public List<AppLog> findAll(Integer page, Integer size) {
-        TypedQuery<AppLog> query = entityManager.createQuery("SELECT a FROM AppLog a", AppLog.class);
+        TypedQuery<AppLog> query = entityManager.createQuery(
+                "SELECT a FROM AppLog a ORDER BY a.responseAt desc ", AppLog.class);
 
         // pagination
         query.setFirstResult((page - 1) * size);
