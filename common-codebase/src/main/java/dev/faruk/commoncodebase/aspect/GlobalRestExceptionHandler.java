@@ -19,4 +19,10 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleException(AppHttpError e) {
         return ResponseEntity.status(e.getStatusCode()).body(e.toJson());
     }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleException(Exception e) {
+        AppHttpError appHttpError = new AppHttpError.InternalServerError(e.getMessage());
+        return ResponseEntity.status(appHttpError.getStatusCode()).body(appHttpError.toJson());
+    }
 }
