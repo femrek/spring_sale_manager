@@ -1,3 +1,4 @@
 .DS_Store
 db_credential.txt
+jwt_secret.txt
 
