@@ -5,11 +5,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +17,14 @@ import java.util.Map;
  */
 @Component
 public class JwtService {
-    private static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
     private static final long EXPIRATION_TIME_IN_MILLIS = 1000 * 60 * 30;
+
+    private final JwtSecretService jwtSecretService;
+
+    @Autowired
+    public JwtService(JwtSecretService jwtSecretService) {
+        this.jwtSecretService = jwtSecretService;
+    }
 
     /**
      * Get the username from the given token
@@ -29,7 +33,7 @@ public class JwtService {
      */
     public String getUsernameByToken(final String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(_getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
+            return Jwts.parserBuilder().setSigningKey(jwtSecretService.getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
         } catch (ExpiredJwtException e) {
             throw new AppHttpError.Unauthorized("Token expired");
         } catch (JwtException e) {
@@ -59,15 +63,7 @@ public class JwtService {
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILLIS))
-                .signWith(_getSignKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(jwtSecretService.getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    /**
-     * Get the key to be used for signing the token
-     * @return the key to be used for signing the token
-     */
-    private Key _getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 }
