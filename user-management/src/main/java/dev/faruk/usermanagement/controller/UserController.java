@@ -4,6 +4,7 @@ import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
+import dev.faruk.commoncodebase.logging.IgnoreLog;
 import dev.faruk.usermanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class UserController {
         return new AppSuccessResponse<>("User provided successfully", user);
     }
 
+    @IgnoreLog
     @PostMapping({"/", ""})
     public AppSuccessResponse<UserDTO> createUser(@RequestBody UserCreateRequest user,
                                                   @RequestHeader("Authorization") String authHeader) {
@@ -43,6 +45,7 @@ public class UserController {
         return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "User created successfully", createdUser);
     }
 
+    @IgnoreLog
     @PatchMapping("/{id}")
     public AppSuccessResponse<UserDTO> updateUser(@PathVariable Long id,
                                                   @RequestBody UserUpdateRequest userUpdateRequest,
