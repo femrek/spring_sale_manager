@@ -50,6 +50,10 @@ public class JwtSecretService {
         signKey = _getSignKey(secret);
     }
 
+    public JwtSecretService(String secret) {
+        signKey = _getSignKey(secret);
+    }
+
     /**
      * Get the key to be used for signing the token
      * @return the key to be used for signing the token
