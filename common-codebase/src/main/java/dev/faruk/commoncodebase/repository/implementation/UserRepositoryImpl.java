@@ -91,10 +91,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public AppUser create(AppUser user) {
         entityManager.persist(user);
-
-        // fetch the roles completely
-        entityManager.merge(user);
-
+        entityManager.flush();
         return user;
     }
 

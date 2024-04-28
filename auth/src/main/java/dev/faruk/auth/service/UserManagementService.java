@@ -51,8 +51,7 @@ public class UserManagementService {
             }
             roleIds.add(roleId);
 
-            AppUserRole userRole = new AppUserRole();
-            userRole.setId(roleId);
+            AppUserRole userRole = userRepository.findRoleById(roleId);
             newUser.add(userRole);
         }
 
@@ -81,8 +80,7 @@ public class UserManagementService {
         if (userUpdateRequest.getRoleIds() != null) {
             user.getRoles().clear();
             for (Long roleId : userUpdateRequest.getRoleIds()) {
-                AppUserRole userRole = new AppUserRole();
-                userRole.setId(roleId);
+                AppUserRole userRole = userRepository.findRoleById(roleId);
                 user.add(userRole);
             }
         }
