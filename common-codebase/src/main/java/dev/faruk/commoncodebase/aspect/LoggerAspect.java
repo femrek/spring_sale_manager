@@ -38,7 +38,7 @@ public class LoggerAspect {
     private void controllersPointcut() {
     }
 
-    @Pointcut("execution(public * dev.faruk..*.controller..*.*(@org.springframework.web.bind.annotation.RequestBody (*), ..))")
+    @Pointcut("execution(public * dev.faruk..*.controller..*.*(.., @org.springframework.web.bind.annotation.RequestBody (*), ..))")
     private void controllerWithRequestBodyPointcut() {
     }
 
@@ -62,7 +62,7 @@ public class LoggerAspect {
      * @throws Throwable if an error occurs when proceeding the join point
      */
     @Order
-    @Around("logWithRequestBodyPointcut() && args(@org.springframework.web.bind.annotation.RequestBody requestBody, ..)")
+    @Around(value = "logWithRequestBodyPointcut() && args(*, @org.springframework.web.bind.annotation.RequestBody requestBody, ..)")
     public Object logWithRequestBody(ProceedingJoinPoint joinPoint, @RequestBody Object requestBody) throws Throwable {
         LogRequestDTO logRequestDTO = LogRequestDTO.fromContext(requestBody);
         return log(joinPoint, logRequestDTO);
