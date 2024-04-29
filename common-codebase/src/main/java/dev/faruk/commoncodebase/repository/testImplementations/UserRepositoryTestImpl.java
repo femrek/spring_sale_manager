@@ -56,19 +56,20 @@ public class UserRepositoryTestImpl implements UserRepository {
 
     @Override
     public AppUser findOnlyExistByUsername(String username) {
-        return cache.stream().filter(user -> user.getUsername().equals(username) && user.getDeleted())
+        return cache.stream().filter(user -> user.getUsername().equals(username) && !user.getDeleted())
                 .findFirst().orElse(null);
     }
 
     @Override
     public AppUser findOnlyExistById(Long id) {
-        return cache.stream().filter(user -> user.getId().equals(id) && user.getDeleted())
+        return cache.stream().filter(user -> user.getId().equals(id) && !user.getDeleted())
                 .findFirst().orElse(null);
     }
 
     @Override
     public AppUser create(AppUser user) {
         user.setId(idCounter++);
+        if (user.getDeleted() == null) user.setDeleted(false);
         cache.add(user);
         return user;
     }
