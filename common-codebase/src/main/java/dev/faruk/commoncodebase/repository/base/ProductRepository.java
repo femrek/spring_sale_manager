@@ -21,4 +21,10 @@ public interface ProductRepository {
      * @return the saved product
      */
     Product create(Product product);
+
+    /**
+     * removes the product with given id from the database
+     * @param id the id of the product to be deleted
+     */
+    void deleteById(Long id);
 }

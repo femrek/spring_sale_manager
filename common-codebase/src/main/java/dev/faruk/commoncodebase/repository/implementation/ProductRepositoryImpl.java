@@ -37,4 +37,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         entityManager.merge(product); // merge to get the id of the product
         return product;
     }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        Product product = entityManager.find(Product.class, id);
+        entityManager.remove(product);
+    }
 }

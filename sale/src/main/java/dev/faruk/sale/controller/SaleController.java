@@ -31,4 +31,18 @@ public class SaleController {
         final SaleDTO result = saleService.create(salePostRequest, authHeader);
         return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "sale created successfully", result);
     }
+
+    /**
+     * This method previews a sale. It does not save the sale.
+     *
+     * @param salePostRequest the request body including the sale data
+     * @param authHeader      the authorization header
+     * @return the previewed sale data
+     */
+    @PostMapping("/preview")
+    public AppSuccessResponse<SaleDTO> preview(@RequestBody SalePostRequest salePostRequest,
+                                               @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+        final SaleDTO result = saleService.preview(salePostRequest, authHeader);
+        return new AppSuccessResponse<>(HttpStatus.OK.value(), "sale previewed successfully", result);
+    }
 }

@@ -28,6 +28,14 @@ public class OfferRepositoryImpl implements OfferRepository {
     }
 
     @Override
+    public List<Offer> findAllActive() {
+        TypedQuery<Offer> query = entityManager.createQuery(
+                "SELECT o FROM Offer as o WHERE o.validSince <= CURRENT_DATE AND o.validUntil >= CURRENT_DATE", Offer.class);
+
+        return query.getResultList();
+    }
+
+    @Override
     public Offer findById(Long id) {
         TypedQuery<Offer> query = entityManager.createQuery(
                 "SELECT s FROM Offer as s WHERE id = :offer_id", Offer.class);
@@ -45,5 +53,14 @@ public class OfferRepositoryImpl implements OfferRepository {
         entityManager.persist(offer);
         entityManager.merge(offer); // merge to get the id of the offer
         return offer;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        Offer offer = findById(id);
+        if (offer != null) {
+            entityManager.remove(offer);
+        }
     }
 }

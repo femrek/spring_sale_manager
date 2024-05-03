@@ -15,7 +15,7 @@ import java.util.Map;
 @Getter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AppSuccessResponse<T>  {
+public class AppSuccessResponse<T> {
     private final Integer status;
     private final String message;
     private final T data;
@@ -34,7 +34,7 @@ public class AppSuccessResponse<T>  {
         this.data = data;
     }
 
-    static private Map<String, Object> toJson(Integer status, String message, Object data) {
+    public Map<String, Object> toJson() {
         if (data == null) {
             return Map.of(
                     "status", status,

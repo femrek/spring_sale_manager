@@ -6,6 +6,7 @@ import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.entity.*;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
+import dev.faruk.commoncodebase.repository.base.OfferRepository;
 import dev.faruk.commoncodebase.repository.base.ProductRepository;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
@@ -15,6 +16,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -24,18 +26,21 @@ public class SaleService {
     private final UserRepository userRepository;
     private final UserClient userClient;
     private final FeignExceptionMapper feignExceptionMapper;
+    private final OfferRepository offerRepository;
 
     @Autowired
     public SaleService(SaleRepository saleRepository,
                        ProductRepository productRepository,
                        UserRepository userRepository,
                        UserClient userClient,
-                       FeignExceptionMapper feignExceptionMapper) {
+                       FeignExceptionMapper feignExceptionMapper,
+                       OfferRepository offerRepository) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.userClient = userClient;
         this.feignExceptionMapper = feignExceptionMapper;
+        this.offerRepository = offerRepository;
     }
 
     /**
@@ -46,10 +51,65 @@ public class SaleService {
      * @return the created and saved sale data
      */
     public SaleDTO create(SalePostRequest salePostRequest, String authHeader) {
+        return new SaleDTO(saleRepository.create(_findTheCashierAndGenerateSale(salePostRequest, authHeader)));
+    }
+
+    /**
+     * This method previews a sale. returns the preview of the sale data. It does not save the sale to the database.
+     *
+     * @param salePostRequest the request body including the sale data
+     * @param authHeader      the authorization header
+     * @return the preview of the sale data
+     */
+    public SaleDTO preview(SalePostRequest salePostRequest, String authHeader) {
+        return new SaleDTO(_findTheCashierAndGenerateSale(salePostRequest, authHeader));
+    }
+
+    /**
+     * Fetches the user by the given auth header and generates a sale with the given data.
+     * @param salePostRequest the request body including the sale data
+     * @param authHeader the authorization header
+     * @return the generated sale
+     */
+    private Sale _findTheCashierAndGenerateSale(SalePostRequest salePostRequest, String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             throw new AppHttpError.BadRequest("Authorization header is required");
         }
 
+        // Fetches the cashier by the given auth header
+        AppUser cashier = _getCashier(authHeader);
+
+        // Generates a sale with the given data
+        Sale sale = _generateSale(salePostRequest, cashier);
+
+        // Checks if the received money is enough
+        SaleDTO saleDTO = new SaleDTO(sale);
+        if (saleDTO.getTotal() > sale.getReceivedMoney()) {
+            throw new AppHttpError.BadRequest("Received money is not enough");
+        }
+
+        return sale;
+    }
+
+    /**
+     * This method lists all sales saved in the database by the given cashier.
+     *
+     * @param user the user will be checked if it is a cashier
+     * @return true if the user is a cashier, otherwise false
+     */
+    private boolean _isCashier(AppUser user) {
+        for (AppUserRole role : user.getRoles()) {
+            if (role.getName().equalsIgnoreCase("CASHIER")) return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method fetches the cashier by the given auth header.
+     * @param authHeader the authorization header
+     * @return entity object of the cashier
+     */
+    private AppUser _getCashier(String authHeader) {
         // Fetches the user by the given auth header
         Long cashierId;
         try {
@@ -67,15 +127,40 @@ public class SaleService {
         if (cashier == null) {
             throw new AppHttpError.BadRequest(String.format("Cashier not found with id, %d", cashierId));
         }
-        if (!isCashier(cashier)) {
+        if (!_isCashier(cashier)) {
             throw new AppHttpError.BadRequest(
                     String.format("User with id %d (%s) is not a cashier", cashierId, cashier.getUsername()));
+        }
+
+        return cashier;
+    }
+
+    /**
+     * This method generates a sale with the given data.
+     * @param salePostRequest the request body including the sale data
+     * @param cashier the cashier who creates the sale
+     * @return the generated sale
+     */
+    private Sale _generateSale(SalePostRequest salePostRequest, AppUser cashier) {
+        // Fetch the offers by the given offer ids
+        List<Offer> offers = salePostRequest.getOfferIds().stream().map(offerRepository::findById).toList();
+
+        // Check if the offers are satisfied by the sale products
+        for (Offer offer : offers) {
+            if (offer.getValidUntil().before(new Timestamp(System.currentTimeMillis()))) {
+                throw new AppHttpError.BadRequest("Offer %s is expired".formatted(offer.getName()));
+            }
+
+            if (!_doesOfferSatisfiedByProductList(salePostRequest.getProducts(), offer)) {
+                throw new AppHttpError.BadRequest("Offer %s is not satisfied by the sale".formatted(offer.getName()));
+            }
         }
 
         // Creates a sale with the given data
         Sale sale = Sale.builder()
                 .receivedMoney(salePostRequest.getReceivedMoney())
                 .cashier(cashier)
+                .offers(offers)
                 .build();
         List<SalePostRequest.ProductDetails> productDetails = salePostRequest.getProducts();
         for (SalePostRequest.ProductDetails productDetail : productDetails) {
@@ -88,42 +173,33 @@ public class SaleService {
                     .build();
             sale.add(saleProduct);
         }
-        return new SaleDTO(saleRepository.create(sale));
+
+        return sale;
     }
 
     /**
-     * Fetches and turns the sale with the given id into a sale data transfer object and returns it.
-     *
-     * @param id the id of the sale to be shown
-     * @return the sale with the given id
+     * This method checks if the offer is satisfied by the sale products.
+     * @param products the products in the sale
+     * @param offer the offer to be checked
+     * @return true if the offer is satisfied by the sale products, otherwise false
      */
-    public SaleDTO findById(Long id) {
-        Sale sale = saleRepository.findById(id);
-        if (sale == null) return null;
-        return new SaleDTO(sale);
-    }
+    private boolean _doesOfferSatisfiedByProductList(List<SalePostRequest.ProductDetails> products, Offer offer) {
+        if (offer.getRequiredProducts().size() > products.size()) return false;
+        outer:
+        for (OfferProduct offerProduct : offer.getRequiredProducts()) {
+            for (SalePostRequest.ProductDetails product : products) {
+                // when the product is found in the sale products
+                if (offerProduct.getProduct().getId().equals(product.getProductId())) {
+                    // check if the product count is enough
+                    if (product.getProductCount() < offerProduct.getRequiredCount()) return false;
 
-    /**
-     * Deletes the sale with the given id from the database.
-     *
-     * @param id the id of the sale to be deleted
-     */
-    public void deletePermanentById(Long id) {
-        final Sale saleWillBeRemoved = saleRepository.findById(id);
-        if (saleWillBeRemoved == null) throw new RuntimeException(String.format("sale does not exist with id: %d", id));
-        saleRepository.deletePermanent(saleWillBeRemoved);
-    }
+                    continue outer;
+                }
+            }
 
-    /**
-     * This method lists all sales saved in the database by the given cashier.
-     *
-     * @param user the user will be checked if it is a cashier
-     * @return true if the user is a cashier, otherwise false
-     */
-    private boolean isCashier(AppUser user) {
-        for (AppUserRole role : user.getRoles()) {
-            if (role.getName().equalsIgnoreCase("CASHIER")) return true;
+            // when the product is not found in the sale products
+            return false;
         }
-        return false;
+        return true;
     }
 }
