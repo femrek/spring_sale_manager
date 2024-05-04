@@ -60,7 +60,6 @@ public class SaleTestConfigurations {
 
     @Bean("testUserClient")
     public UserClient userClient(@Qualifier("testUserRepository") UserRepository userRepository) {
-
         return Feign.builder()
                 .client(new UserTestClient(userRepository, new ObjectMapper()))
                 .encoder(new GsonEncoder())
@@ -110,4 +109,3 @@ public class SaleTestConfigurations {
         }
     }
 }
-

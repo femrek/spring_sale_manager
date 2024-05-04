@@ -71,6 +71,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-gson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.faruk</groupId>
+            <artifactId>auth</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

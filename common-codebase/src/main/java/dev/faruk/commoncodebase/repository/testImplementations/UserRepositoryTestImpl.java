@@ -35,7 +35,7 @@ public class UserRepositoryTestImpl implements UserRepository {
 
     @Override
     public List<AppUser> findAllOnlyExist() {
-        return cache.stream().filter(AppUser::getDeleted).toList();
+        return cache.stream().filter(user -> !user.getDeleted()).toList();
     }
 
     @Override
