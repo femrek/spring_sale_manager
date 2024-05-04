@@ -29,6 +29,15 @@ public class OfferService {
         return offers.stream().map(OfferDTO::new).collect(Collectors.toList());
     }
 
+    /**
+     * This method lists all active offers saved in the database according to validSince and validUntil fields.
+     *
+     * @return turns the active offer entities into offer data transfer objects and returns them as a list
+     */
+    public List<OfferDTO> findAllActive() {
+        final List<Offer> offers = offerRepository.findAllActive();
+        return offers.stream().map(OfferDTO::new).collect(Collectors.toList());
+    }
 
     /**
      * Turns the offer with the given id into an offer data transfer object and returns it.

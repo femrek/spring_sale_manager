@@ -40,9 +40,22 @@ public class Sale {
     @JoinColumn(name = "sale_id")
     private List<SaleProduct> productList;
 
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Offer.class)
+    @JoinTable(
+            name = "sale_offer",
+            joinColumns = @JoinColumn(name = "sale_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id")
+    )
+    private List<Offer> offers;
+
     public void add(SaleProduct saleProduct) {
         if (productList == null) productList = new ArrayList<>();
         productList.add(saleProduct);
+    }
+
+    public void add(Offer offer) {
+        if (offers == null) offers = new ArrayList<>();
+        offers.add(offer);
     }
 
     /**

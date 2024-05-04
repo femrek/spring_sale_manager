@@ -28,4 +28,9 @@ public class ProductRepositoryTestImpl implements ProductRepository {
         cache.add(product);
         return product;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        cache.removeIf(product -> product.getId().equals(id));
+    }
 }

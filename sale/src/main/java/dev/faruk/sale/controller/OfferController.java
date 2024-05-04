@@ -4,10 +4,7 @@ import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.sale.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,8 +23,10 @@ public class OfferController {
      * @return List of all offers
      */
     @GetMapping({"/", ""})
-    public AppSuccessResponse<List<OfferDTO>> showAll() {
-        final List<OfferDTO> offers = offerService.findAll();
+    public AppSuccessResponse<List<OfferDTO>> showAll(
+            @RequestParam(name = "activeOnly", required = false) Boolean active) {
+        if (active == null) active = true;
+        final List<OfferDTO> offers = active ? offerService.findAllActive() : offerService.findAll();
         return new AppSuccessResponse<>("All offers are listed successfully", offers);
     }
 

@@ -7,12 +7,14 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalePostRequest {
     private Double receivedMoney;
     private List<ProductDetails> products;
+    private List<Long> offerIds;
 
     public void add(ProductDetails productDetails) {
         if (products == null) products = new ArrayList<>();
@@ -22,6 +24,7 @@ public class SalePostRequest {
     @Getter
     @Setter
     @ToString
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     static public final class ProductDetails {
