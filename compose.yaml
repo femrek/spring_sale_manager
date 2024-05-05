@@ -47,6 +47,7 @@ services:
       - EUREKA_HOST=service-registry
       - GATEWAY_HOST=gateway
       - JWT_SECRET_FILE=/run/secrets/jwt-secret
+      - JWT_EXPIRATION_TIME_IN_MILLIS=18000000
     ports:
       - 9898:9898
     secrets:

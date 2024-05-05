@@ -1,5 +1,6 @@
 package dev.faruk.auth.service;
 
+import dev.faruk.auth.constant.AuthConstants;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -17,13 +18,11 @@ import java.util.Map;
  */
 @Component
 public class JwtService {
-    private static final long EXPIRATION_TIME_IN_MILLIS = 1000 * 60 * 30;
-
-    private final JwtSecretService jwtSecretService;
+    private final AuthConstants authConstants;
 
     @Autowired
-    public JwtService(JwtSecretService jwtSecretService) {
-        this.jwtSecretService = jwtSecretService;
+    public JwtService(AuthConstants authConstants) {
+        this.authConstants = authConstants;
     }
 
     /**
@@ -33,7 +32,7 @@ public class JwtService {
      */
     public String getUsernameByToken(final String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(jwtSecretService.getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
+            return Jwts.parserBuilder().setSigningKey(authConstants.getSignKey()).build().parseClaimsJws(token).getBody().getSubject();
         } catch (ExpiredJwtException e) {
             throw new AppHttpError.Unauthorized("Token expired");
         } catch (JwtException e) {
@@ -62,8 +61,8 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILLIS))
-                .signWith(jwtSecretService.getSignKey(), SignatureAlgorithm.HS256).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + authConstants.getExpirationTimeInMillis()))
+                .signWith(authConstants.getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
 }

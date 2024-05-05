@@ -1,5 +1,6 @@
 package dev.faruk.auth;
 
+import dev.faruk.auth.constant.AuthConstants;
 import dev.faruk.auth.service.*;
 import dev.faruk.auth.controller.*;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
@@ -27,13 +28,15 @@ public class AuthTestConfiguration {
     }
 
     @Bean("testJwtService")
-    public JwtService jwtService(@Qualifier("testJwtSecretService") JwtSecretService jwtSecretService) {
+    public JwtService jwtService(@Qualifier("testAuthConstants") AuthConstants jwtSecretService) {
         return new JwtService(jwtSecretService);
     }
 
-    @Bean("testJwtSecretService")
-    public JwtSecretService jwtSecretService() {
-        return new JwtSecretService("5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437");
+    @Bean("testAuthConstants")
+    public AuthConstants jwtSecretService() {
+        return new AuthConstants(
+                1000 * 60 * 60 * 2L,
+                "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437");
     }
 
     @Bean("testUserManagementService")
