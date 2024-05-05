@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/accessibility/api/v1/offer/**").hasAuthority("CASHIER")
                 .requestMatchers("/accessibility/api/v1/report/**").hasAuthority("MANAGER")
                 .requestMatchers("/accessibility/api/v1/user/**").hasAuthority("ADMIN")
-                .requestMatchers("/accessibility/api/v1/logging/**").permitAll()
+                .requestMatchers("/accessibility/api/v1/logging/**").hasAuthority("ADMIN")
 
                 // always deny undefined end-points
                 .anyRequest().denyAll()
