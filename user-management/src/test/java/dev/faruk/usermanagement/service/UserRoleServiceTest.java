@@ -40,8 +40,9 @@ class UserRoleServiceTest {
         List<UserRoleDTO> roles =  userRoleService.showRoles();
 
         for (UserRoleDTO role : roles) {
-            assertNotNull(role.getId());
-            assertNotNull(role.getName());
+            UserRoleDTO roleById = userRoleService.showRoleById(role.getId());
+            assertEquals(role.getId(), roleById.getId());
+            assertEquals(role.getName(), roleById.getName());
         }
     }
 }
