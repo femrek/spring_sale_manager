@@ -114,7 +114,7 @@ public class UserRepositoryTestImpl implements UserRepository {
     }
 
     @Override
-    public void deleteSoftById(AppUser user) {
+    public void deleteSoft(AppUser user) {
         user.setDeleted(true);
         update(user);
     }

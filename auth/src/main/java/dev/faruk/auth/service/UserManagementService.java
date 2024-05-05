@@ -97,6 +97,6 @@ public class UserManagementService {
         if (user == null) {
             throw new AppHttpError.BadRequest(String.format("User not found with id %d", id));
         }
-        userRepository.deleteSoftById(user);
+        userRepository.deleteSoft(user);
     }
 }

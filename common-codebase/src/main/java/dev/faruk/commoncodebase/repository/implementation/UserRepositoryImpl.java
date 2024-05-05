@@ -127,7 +127,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void deleteSoftById(AppUser user) {
+    public void deleteSoft(AppUser user) {
         user.setDeleted(true);
         entityManager.merge(user);
     }

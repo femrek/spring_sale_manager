@@ -101,7 +101,7 @@ public interface UserRepository {
      *
      * @param user the user to be deleted
      */
-    void deleteSoftById(AppUser user);
+    void deleteSoft(AppUser user);
 
     /**
      * Fetches all the roles in the database

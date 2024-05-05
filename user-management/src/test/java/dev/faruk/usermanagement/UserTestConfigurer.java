@@ -1,7 +1,6 @@
 package dev.faruk.usermanagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.faruk.auth.service.UserManagementService;
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.commoncodebase.repository.testImplementations.UserRepositoryTestImpl;
@@ -36,9 +35,9 @@ public class UserTestConfigurer {
     @Bean
     public UserManagementClient userManagementClient(UserRepository userRepository,
                                                      ObjectMapper objectMapper,
-                                                     UserManagementService userManagementService) {
+                                                     PasswordEncoder passwordEncoder) {
         return Feign.builder()
-                .client(new UserManagementTestClient(userRepository, objectMapper, userManagementService))
+                .client(new UserManagementTestClient(userRepository, objectMapper, passwordEncoder))
                 .decoder(new GsonDecoder())
                 .encoder(new GsonEncoder())
                 .target(UserManagementClient.class, "http://localhost:8080");
@@ -65,11 +64,5 @@ public class UserTestConfigurer {
     @Bean
     public UserRoleService userRoleService(UserRepository userRepository) {
         return new UserRoleService(userRepository);
-    }
-
-    @Bean
-    public UserManagementService userManagementService(UserRepository userRepository,
-                                                       PasswordEncoder passwordEncoder) {
-        return new UserManagementService(userRepository, passwordEncoder);
     }
 }
