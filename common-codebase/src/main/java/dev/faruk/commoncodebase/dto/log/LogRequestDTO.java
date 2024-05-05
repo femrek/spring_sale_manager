@@ -27,6 +27,7 @@ public class LogRequestDTO {
         final String getParams = request.getQueryString();
         return LogRequestDTO.builder()
                 .url(url + (getParams != null ? "?" + getParams : ""))
+//                .url(getParams != null ? "%s?%s".formatted(url, getParams) : url)
                 .method(method)
                 .requestBody(body)
                 .createdAt(new Date())
