@@ -13,7 +13,7 @@ public class OfferData {
         return Offer.builder()
                 .name("Offer A")
                 .discount(0.15)
-                .validSince(Timestamp.from(Instant.now()))
+                .validSince(Timestamp.from(Instant.now().minus(Duration.ofSeconds(1))))
                 .validUntil(Timestamp.from(Instant.now().plus(Duration.ofDays(30))))
                 .requiredProducts(offerProductSet_3_2_1)
                 .build();
@@ -23,7 +23,7 @@ public class OfferData {
         return Offer.builder()
                 .name("Offer B")
                 .discount(0.20)
-                .validSince(Timestamp.from(Instant.now()))
+                .validSince(Timestamp.from(Instant.now().minus(Duration.ofSeconds(1))))
                 .validUntil(Timestamp.from(Instant.now().plus(Duration.ofDays(30))))
                 .requiredProducts(offerProductSet_2_1)
                 .build();
@@ -33,7 +33,7 @@ public class OfferData {
         return Offer.builder()
                 .name("Offer C")
                 .discount(0.25)
-                .validSince(Timestamp.from(Instant.now()))
+                .validSince(Timestamp.from(Instant.now().minus(Duration.ofSeconds(1))))
                 .validUntil(Timestamp.from(Instant.now().plus(Duration.ofDays(30))))
                 .requiredProducts(offerProductSet_1_1)
                 .build();
