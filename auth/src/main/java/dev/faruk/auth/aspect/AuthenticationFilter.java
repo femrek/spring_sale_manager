@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,13 +23,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Date;
 
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-
 /**
  * This class is used to filter the requests and authenticate the user by token. used for auth module only.
  */
 @Component
-@Order(HIGHEST_PRECEDENCE)
 public class AuthenticationFilter extends OncePerRequestFilter {
     private final AppUserDetailService appUserDetailService;
     private final AuthService authService;
