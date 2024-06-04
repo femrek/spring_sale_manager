@@ -4,12 +4,14 @@ import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Service
 public class ReportService {
     private final SaleRepository saleRepository;
@@ -36,31 +38,38 @@ public class ReportService {
             Long cashierFilterId,
             Double receivedMoneyFilterMin,
             Double receivedMoneyFilterMax) {
-        // check if page and size are valid
-        if (page == null || size == null) throw new AppHttpError.BadRequest("Page and size are required");
-        if (page < 1 || size < 1) throw new AppHttpError.BadRequest("Page and size must be greater than 0");
-
-        // check if orderBy is valid
         final String orderByConverted = Sale.getColumnName(orderBy);
-        if (orderByConverted == null) throw new AppHttpError.BadRequest(
-                "Invalid orderBy parameter. orderBy must be one of them: %s".formatted(Sale.getVisibleColumns()));
 
-        // check if dateFilterAfter and dateFilterBefore are valid
-        if (dateFilterAfter != null && dateFilterAfter < 0)
-            throw new AppHttpError.BadRequest("Invalid dateFilterAfter. Must to be greater than 0");
-        if (dateFilterBefore != null && dateFilterBefore < 0)
-            throw new AppHttpError.BadRequest("Invalid dateFilterBefore. Must to be greater than 0");
-        if (dateFilterBefore != null && dateFilterAfter != null && dateFilterBefore < dateFilterAfter)
-            throw new AppHttpError.BadRequest("dateFilterBefore must be greater than dateFilterAfter");
+        // check if the parameters are valid
+        try {
+            // check if page and size are valid
+            if (page == null || size == null) throw new AppHttpError.BadRequest("Page and size are required");
+            if (page < 1 || size < 1) throw new AppHttpError.BadRequest("Page and size must be greater than 0");
 
-        // check if receivedMoneyFilterMin and receivedMoneyFilterMax are valid
-        if (receivedMoneyFilterMin != null && receivedMoneyFilterMin < 0)
-            throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMin. Must to be greater than 0");
-        if (receivedMoneyFilterMax != null && receivedMoneyFilterMax < 0)
-            throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMax. Must to be greater than 0");
-        if (receivedMoneyFilterMax != null && receivedMoneyFilterMin != null
-                && receivedMoneyFilterMax < receivedMoneyFilterMin)
-            throw new AppHttpError.BadRequest("receivedMoneyFilterMax must be greater than receivedMoneyFilterMin");
+            // check if orderBy is valid
+            if (orderByConverted == null) throw new AppHttpError.BadRequest(
+                    "Invalid orderBy parameter. orderBy must be one of them: %s".formatted(Sale.getVisibleColumns()));
+
+            // check if dateFilterAfter and dateFilterBefore are valid
+            if (dateFilterAfter != null && dateFilterAfter < 0)
+                throw new AppHttpError.BadRequest("Invalid dateFilterAfter. Must to be greater than 0");
+            if (dateFilterBefore != null && dateFilterBefore < 0)
+                throw new AppHttpError.BadRequest("Invalid dateFilterBefore. Must to be greater than 0");
+            if (dateFilterBefore != null && dateFilterAfter != null && dateFilterBefore < dateFilterAfter)
+                throw new AppHttpError.BadRequest("dateFilterBefore must be greater than dateFilterAfter");
+
+            // check if receivedMoneyFilterMin and receivedMoneyFilterMax are valid
+            if (receivedMoneyFilterMin != null && receivedMoneyFilterMin < 0)
+                throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMin. Must to be greater than 0");
+            if (receivedMoneyFilterMax != null && receivedMoneyFilterMax < 0)
+                throw new AppHttpError.BadRequest("Invalid receivedMoneyFilterMax. Must to be greater than 0");
+            if (receivedMoneyFilterMax != null && receivedMoneyFilterMin != null
+                    && receivedMoneyFilterMax < receivedMoneyFilterMin)
+                throw new AppHttpError.BadRequest("receivedMoneyFilterMax must be greater than receivedMoneyFilterMin");
+        } catch (AppHttpError.BadRequest e) {
+            log.debug("Bad request error when listing sales", e);
+            throw e;
+        }
 
         // fetch sales from the database
         List<Sale> sales = saleRepository.findAll(
@@ -92,7 +101,10 @@ public class ReportService {
      */
     public SaleDTO showSale(Long saleId) {
         Sale sale = saleRepository.findById(saleId);
-        if (sale == null) throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        if (sale == null) {
+            log.debug("Sale not found with id: %d".formatted(saleId));
+            throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        }
         return new SaleDTO(sale);
     }
 
@@ -104,7 +116,10 @@ public class ReportService {
      */
     public String createReportHtml(Long saleId) {
         final Sale sale = saleRepository.findById(saleId);
-        if (sale == null) throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        if (sale == null) {
+            log.debug("Sale not found with id: %d".formatted(saleId));
+            throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        }
         final SaleDTO saleDTO = new SaleDTO(sale);
         return reportPdfGenerator.createReportHtml(saleDTO);
     }
@@ -117,7 +132,10 @@ public class ReportService {
      */
     public byte[] createReport(Long saleId) {
         final Sale sale = saleRepository.findById(saleId);
-        if (sale == null) throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        if (sale == null) {
+            log.debug("Sale not found with id: %d".formatted(saleId));
+            throw new AppHttpError.NotFound("Sale not found with id: %d".formatted(saleId));
+        }
         final SaleDTO saleDTO = new SaleDTO(sale);
         return reportPdfGenerator.generatePdf(saleDTO);
     }

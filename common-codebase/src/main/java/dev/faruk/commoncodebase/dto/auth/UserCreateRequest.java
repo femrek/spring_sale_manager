@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.dto.auth;
 
+import dev.faruk.commoncodebase.logging.SensitiveDataType;
 import lombok.*;
 
 import java.util.List;
@@ -10,12 +11,26 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateRequest {
+public class UserCreateRequest implements SensitiveDataType {
     private String username;
     private String password;
     private String name;
     private List<Long> roleIds;
+
+    @Override
+    public String toVisualString() {
+        return new StringBuilder()
+                .append("UserCreateRequest{")
+                .append("username='").append(username).append('\'')
+                .append(", password='").append("********").append('\'')
+                .append(", name='").append(name).append('\'')
+                .append(", roleIds=").append(roleIds).append('}').toString();
+    }
+
+    @Override
+    public String toString() {
+        return toVisualString();
+    }
 }

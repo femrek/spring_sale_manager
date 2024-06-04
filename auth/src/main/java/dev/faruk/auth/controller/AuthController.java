@@ -5,7 +5,7 @@ import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.auth.service.AuthService;
-import dev.faruk.commoncodebase.logging.IgnoreLog;
+import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class AuthController {
         this.authService = service;
     }
 
-    @IgnoreLog
+    @IgnoreDbLog
     @PostMapping("/login")
     public AppSuccessResponse<LoginResponse> login(@RequestBody LoginRequest userCredentials) {
         LoginResponse response = authService.generateToken(userCredentials);

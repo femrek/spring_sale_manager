@@ -4,7 +4,7 @@ import dev.faruk.auth.service.UserManagementService;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
-import dev.faruk.commoncodebase.logging.IgnoreLog;
+import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +22,13 @@ public class UserManagementController {
         this.userManagementService = userManagementService;
     }
 
-    @IgnoreLog
+    @IgnoreDbLog
     @PostMapping({"/", ""})
     public UserDTO createUser(@RequestBody UserCreateRequest userCreateRequest) {
         return userManagementService.createUser(userCreateRequest);
     }
 
-    @IgnoreLog
+    @IgnoreDbLog
     @PatchMapping("/{id}")
     public UserDTO updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         return userManagementService.updateUser(id, userUpdateRequest);

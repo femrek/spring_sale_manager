@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.dto.auth;
 
+import dev.faruk.commoncodebase.logging.SensitiveDataType;
 import lombok.*;
 
 import java.util.List;
@@ -10,10 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequest {
+public class UserUpdateRequest implements SensitiveDataType {
     /**
      * If password is provided, it will be updated. If not, it will not be updated.
      */
@@ -32,5 +32,19 @@ public class UserUpdateRequest {
 
     public boolean isEmpty() {
         return password == null && roleIds == null;
+    }
+
+    @Override
+    public String toVisualString() {
+        return new StringBuilder()
+                .append("UserUpdateRequest{")
+                .append("password='").append("********").append('\'')
+                .append(", name='").append(name).append('\'')
+                .append(", roleIds=").append(roleIds).append('}').toString();
+    }
+
+    @Override
+    public String toString() {
+        return toVisualString();
     }
 }

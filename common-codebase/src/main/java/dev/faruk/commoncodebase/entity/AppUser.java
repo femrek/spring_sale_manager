@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.entity;
 
+import dev.faruk.commoncodebase.logging.SensitiveDataType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,13 +9,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "user", schema = "public")
-public class AppUser {
+public class AppUser implements SensitiveDataType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -43,5 +43,22 @@ public class AppUser {
     public void add(AppUserRole userRole) {
         if (roles == null) roles = new ArrayList<>();
         roles.add(userRole);
+    }
+
+    @Override
+    public String toVisualString() {
+        return new StringBuilder()
+                .append("AppUser{")
+                .append("id=").append(id)
+                .append(", username='").append(username).append('\'')
+                .append(", name='").append(name).append('\'')
+                .append(", password='").append("********").append('\'')
+                .append(", deleted=").append(deleted)
+                .append(", roles=").append(roles).append('}').toString();
+    }
+
+    @Override
+    public String toString() {
+        return toVisualString();
     }
 }

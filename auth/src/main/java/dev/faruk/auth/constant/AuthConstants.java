@@ -3,7 +3,7 @@ package dev.faruk.auth.constant;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -12,7 +12,7 @@ import java.security.Key;
 import java.util.Scanner;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Slf4j
+@Log4j2
 @Component
 public class AuthConstants {
     @Getter
@@ -65,7 +65,7 @@ public class AuthConstants {
                 secret = scanner.nextLine().trim();
                 scanner.close();
             } catch (FileNotFoundException e) {
-                log.error("JWT secret file not found: {}", secretFilePath);
+                log.error("JWT secret file not found: %s".formatted(secretFilePath), e);
             }
         }
 
