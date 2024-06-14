@@ -1,6 +1,15 @@
 version: '1'
 
 services:
+  builder:
+    image: app-builder
+    build:
+      context: ./
+      dockerfile: ./docker-builder-image/Dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 0
   postgres-db:
     image: postgres
     container_name: postgres-db

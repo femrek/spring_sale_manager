@@ -5,7 +5,6 @@ import dev.faruk.commoncodebase.dto.UserRoleDTO;
 import dev.faruk.usermanagement.service.UserRoleService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,11 +33,5 @@ public class UserRoleController {
     public AppSuccessResponse<UserRoleDTO> showRole(@PathVariable Long roleId) {
         UserRoleDTO role = userRoleService.showRoleById(roleId);
         return new AppSuccessResponse<>("Role provided successfully", role);
-    }
-
-    @ExceptionHandler
-    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
-        log.warn("An exception occurred: ", e);
-        throw e;
     }
 }

@@ -5,7 +5,6 @@ import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.sale.service.OfferService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,11 +41,5 @@ public class OfferController {
     public AppSuccessResponse<OfferDTO> showById(@PathVariable(name = "id") Long id) {
         final OfferDTO offer = offerService.findById(id);
         return new AppSuccessResponse<>("The offer is shown by id successfully", offer);
-    }
-
-    @ExceptionHandler
-    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
-        log.warn("An exception occurred: ", e);
-        throw e;
     }
 }
