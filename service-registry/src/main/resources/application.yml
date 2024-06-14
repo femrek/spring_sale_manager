@@ -4,3 +4,12 @@ eureka:
     fetch-registry: false
 server:
   port: 8761
+
+spring:
+  application:
+    name: EUREKA-SERVICE
+
+logging:
+  config: ${LOG4J2_CONFIG_FILE:../log4j2.xml}
+  level:
+    dev.faruk: TRACE

@@ -18,3 +18,8 @@ server:
   port: 8082
   servlet:
     context-path: /api/v1
+
+logging:
+  config: ${LOG4J2_CONFIG_FILE:../log4j2.xml}
+  level:
+    dev.faruk: TRACE

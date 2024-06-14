@@ -54,11 +54,11 @@ public class Log4JTrackAspect {
 
         // log before
         if (argString == null) {
-            log.trace("{}.{}() called with no body.",
+            log.trace("Controller: {}.{}() called with no body.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         } else {
-            log.trace("{}.{}() called with body: {}",
+            log.trace("Controller: {}.{}() called with body: {}",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(),
                     argString);
@@ -69,7 +69,7 @@ public class Log4JTrackAspect {
 
         // check null
         if (result == null) {
-            log.warn("{}.{}() returned null.",
+            log.warn("Controller: {}.{}() returned null.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
             return null;
@@ -90,42 +90,68 @@ public class Log4JTrackAspect {
     private void servicePointcut() {
     }
 
-    @Around("servicePointcut()")
+    @Pointcut("@annotation(dev.faruk.commoncodebase.logging.IgnoreArgsLog4J2)")
+    private void ignoredArgsPointcut() {
+    }
+
+    @Around("servicePointcut() && !ignoredArgsPointcut()")
     public Object aroundService(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.getLevel().isMoreSpecificThan(org.apache.logging.log4j.Level.TRACE)) {
-            return _logService(joinPoint);
+            return _logService(joinPoint, true);
         }
         return joinPoint.proceed();
     }
 
-    private Object _logService(final ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("servicePointcut() && ignoredArgsPointcut()")
+    public Object aroundServiceIgnoredArgs(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (log.getLevel().isMoreSpecificThan(org.apache.logging.log4j.Level.TRACE)) {
+            return _logService(joinPoint, false);
+        }
+        return joinPoint.proceed();
+    }
+
+    private Object _logService(final ProceedingJoinPoint joinPoint, boolean putArgs) throws Throwable {
         // get arguments
         StringBuilder stringBuilder = new StringBuilder();
-        for (Object arg : joinPoint.getArgs()) {
-            if (arg == null) {
-                stringBuilder.append("null, ");
-            } else if (arg instanceof SensitiveDataType) {
-                stringBuilder.append(((SensitiveDataType) arg).toVisualString()).append(", ");
-            } else {
-                stringBuilder.append(arg).append(", ");
+        if (putArgs) {
+            for (Object arg : joinPoint.getArgs()) {
+                if (arg == null) {
+                    stringBuilder.append("null, ");
+                } else if (arg instanceof SensitiveDataType) {
+                    stringBuilder.append(((SensitiveDataType) arg).toVisualString()).append(", ");
+                } else {
+                    stringBuilder.append(arg).append(", ");
+                }
             }
         }
 
         // log before
-        log.trace("{}.{}() called with args: {}",
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(),
-                stringBuilder.toString());
+        if (putArgs) {
+            log.trace("Service: {}.{}() called with args: {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    stringBuilder.toString());
+        } else {
+            log.trace("Service: {}.{}(). args are hidden.",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
+        }
 
         // proceed
         final var result = joinPoint.proceed();
 
         // log after
         final boolean isResultNull = result == null;
-        log.trace("Service: {}.{}() returned: {}",
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(),
-                isResultNull ? "null" : result.toString());
+        if (putArgs) {
+            log.trace("Service: {}.{}() returned: {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    isResultNull ? "null" : result.toString());
+        } else {
+            log.trace("Service: {}.{}(). result is hidden.",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
+        }
 
         // response
         return result;

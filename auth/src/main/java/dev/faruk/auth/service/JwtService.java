@@ -2,6 +2,7 @@ package dev.faruk.auth.service;
 
 import dev.faruk.auth.constant.AuthConstants;
 import dev.faruk.commoncodebase.error.AppHttpError;
+import dev.faruk.commoncodebase.logging.IgnoreArgsLog4J2;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -48,6 +49,7 @@ public class JwtService {
      * @param userName the username to be included in the token
      * @return the generated token
      */
+    @IgnoreArgsLog4J2
     public String generateToken(final String userName) {
         Map<String, Object> claims = new HashMap<>();
         return _createToken(claims, userName);
