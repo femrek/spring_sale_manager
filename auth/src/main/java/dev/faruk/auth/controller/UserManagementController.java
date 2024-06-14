@@ -8,7 +8,6 @@ import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
 import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -41,11 +40,5 @@ public class UserManagementController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userManagementService.deleteUser(id);
-    }
-
-    @ExceptionHandler
-    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
-        log.warn("An exception occurred: ", e);
-        throw e;
     }
 }

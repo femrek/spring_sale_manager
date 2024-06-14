@@ -5,13 +5,12 @@ import dev.faruk.commoncodebase.dto.ProductDTO;
 import dev.faruk.product.service.ProductService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Log4j2
-@RestController
+@RestController()
 @RequestMapping("/product")
 public class ProductController {
     private final ProductService productService;
@@ -31,11 +30,5 @@ public class ProductController {
     public AppSuccessResponse<ProductDTO> show(@PathVariable Long id) {
         final ProductDTO product = productService.getProductById(id);
         return new AppSuccessResponse<>("Product is found", product);
-    }
-
-    @ExceptionHandler
-    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
-        log.warn("An exception occurred: ", e);
-        throw e;
     }
 }
