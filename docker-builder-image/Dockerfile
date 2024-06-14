@@ -1,0 +1,51 @@
+# Build stage
+FROM maven AS build
+
+## copy log config file
+COPY log4j2.xml /home/app/log4j2.xml
+
+## compile the core module
+COPY common-codebase/src /home/app/common-codebase/src
+COPY common-codebase/pom.xml /home/app/common-codebase
+RUN mvn -f /home/app/common-codebase/pom.xml install
+
+## compile service-registery
+COPY service-registry/src /home/app/service-registry/src
+COPY service-registry/pom.xml /home/app/service-registry
+RUN mvn -f /home/app/service-registry/pom.xml package
+
+## compile auth
+COPY auth/src /home/app/auth/src
+COPY auth/pom.xml /home/app/auth
+RUN mvn -f /home/app/auth/pom.xml package
+
+## compile user-management
+COPY user-management/src /home/app/user-management/src
+COPY user-management/pom.xml /home/app/user-management
+RUN mvn -f /home/app/user-management/pom.xml package
+
+## compile product
+COPY product/src /home/app/product/src
+COPY product/pom.xml /home/app/product
+RUN mvn -f /home/app/product/pom.xml package
+
+## compile sale
+COPY sale/src /home/app/sale/src
+COPY sale/pom.xml /home/app/sale
+RUN mvn -f /home/app/sale/pom.xml package
+
+## compile report
+COPY report/src /home/app/report/src
+COPY report/pom.xml /home/app/report
+RUN mvn -f /home/app/report/pom.xml package
+
+## compile logging
+COPY logging/src /home/app/logging/src
+COPY logging/pom.xml /home/app/logging
+RUN mvn -f /home/app/logging/pom.xml package
+
+## compile gateway
+COPY gateway/src /home/app/gateway/src
+COPY gateway/pom.xml /home/app/gateway
+RUN mvn -f /home/app/gateway/pom.xml package
+
