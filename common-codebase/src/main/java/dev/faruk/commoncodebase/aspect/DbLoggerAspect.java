@@ -1,11 +1,12 @@
 package dev.faruk.commoncodebase.aspect;
 
+import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import dev.faruk.commoncodebase.dto.log.AppHttpErrorLogCreateDTO;
 import dev.faruk.commoncodebase.dto.log.ErrorLogCreateDTO;
 import dev.faruk.commoncodebase.dto.log.LogRequestDTO;
 import dev.faruk.commoncodebase.dto.log.SuccessLogCreateDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.logging.LogService;
+import dev.faruk.commoncodebase.dbLogging.DbLoggingService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,15 +24,17 @@ import java.util.Objects;
 
 /**
  * This is an aspect for logging the requests and responses. It logs the request and response of the controller methods.
+ * This aspect saves the logs into database. {@link IgnoreDbLog} annotation can be used
+ * to ignore logging for a specific method.
  */
 @Aspect
 @Component
-public class LoggerAspect {
-    private final LogService logService;
+public class DbLoggerAspect {
+    private final DbLoggingService dbLoggingService;
 
     @Autowired
-    public LoggerAspect(LogService logService) {
-        this.logService = logService;
+    public DbLoggerAspect(DbLoggingService dbLoggingService) {
+        this.dbLoggingService = dbLoggingService;
     }
 
     @Pointcut("execution(public * dev.faruk..*.controller..*.*(..))")
@@ -42,7 +45,7 @@ public class LoggerAspect {
     private void controllerWithRequestBodyPointcut() {
     }
 
-    @Pointcut("@annotation(dev.faruk.commoncodebase.logging.IgnoreLog)")
+    @Pointcut("@annotation(dev.faruk.commoncodebase.dbLogging.IgnoreDbLog)")
     private void ignoreLogPointcut() {
     }
 
@@ -93,7 +96,7 @@ public class LoggerAspect {
                     .response(result)
                     .responseTime(new Date())
                     .build();
-            logService.saveLog(successLogCreateDTO);
+            dbLoggingService.saveLog(successLogCreateDTO);
             return result;
         } catch (AppHttpError e) {
             AppHttpErrorLogCreateDTO appHttpErrorLogCreateDTO = AppHttpErrorLogCreateDTO.builder()
@@ -101,7 +104,7 @@ public class LoggerAspect {
                     .error(e)
                     .responseTime(new Date())
                     .build();
-            logService.saveLog(appHttpErrorLogCreateDTO);
+            dbLoggingService.saveLog(appHttpErrorLogCreateDTO);
             throw e;
         } catch (Exception e) {
             ErrorLogCreateDTO errorLogCreateDTO = ErrorLogCreateDTO.builder()
@@ -110,7 +113,7 @@ public class LoggerAspect {
                     .stackTrace(e.getStackTrace())
                     .responseTime(new Date())
                     .build();
-            logService.saveLog(errorLogCreateDTO);
+            dbLoggingService.saveLog(errorLogCreateDTO);
             throw e;
         }
     }

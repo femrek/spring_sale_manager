@@ -9,6 +9,7 @@ import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.usermanagement.feign.UserManagementClient;
 import feign.FeignException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * UserService is the class that handles the business logic for the users. mostly CRUD operations.
  */
+@Log4j2
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -50,7 +52,10 @@ public class UserService {
      */
     public UserDTO showUserById(Long id) {
         final AppUser user = userRepository.findOnlyExistById(id);
-        if (user == null) throw new AppHttpError.NotFound("User not found with id " + id);
+        if (user == null) {
+            log.debug("User not found with id: %d".formatted(id));
+            throw new AppHttpError.NotFound("User not found with id " + id);
+        }
         return new UserDTO(user);
     }
 
@@ -66,6 +71,7 @@ public class UserService {
             final UserDTO response = userManagementClient.createUser(userCreateRequest, authHeader);
             if (response != null) return response;
         } catch (FeignException e) {
+            log.debug("User creation failed", e);
             throw feignExceptionMapper.map(e);
         }
 
@@ -87,6 +93,7 @@ public class UserService {
             final UserDTO response = userManagementClient.updateUser(userUpdateRequest, userId, authHeader);
             if (response != null) return response;
         } catch (FeignException e) {
+            log.debug("User update failed", e);
             throw feignExceptionMapper.map(e);
         }
 
@@ -103,6 +110,7 @@ public class UserService {
         try {
             userManagementClient.deleteUser(userId, authHeader);
         } catch (FeignException e) {
+            log.debug("User deletion failed", e);
             throw feignExceptionMapper.map(e);
         }
     }

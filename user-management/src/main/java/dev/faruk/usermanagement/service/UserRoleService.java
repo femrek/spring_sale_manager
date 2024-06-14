@@ -4,6 +4,7 @@ import dev.faruk.commoncodebase.dto.UserRoleDTO;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * UserRoleService is the class that handles the business logic for the roles.
  */
+@Log4j2
 @Service
 public class UserRoleService {
     private final UserRepository userRepository;
@@ -38,7 +40,10 @@ public class UserRoleService {
      */
     public UserRoleDTO showRoleById(Long roleId) {
         final AppUserRole role = userRepository.findRoleById(roleId);
-        if (role == null) throw new AppHttpError.BadRequest("Role not found with id " + roleId);
+        if (role == null) {
+            log.debug("Role not found with id: %d".formatted(roleId));
+            throw new AppHttpError.BadRequest("Role not found with id " + roleId);
+        }
         return new UserRoleDTO(role);
     }
 }

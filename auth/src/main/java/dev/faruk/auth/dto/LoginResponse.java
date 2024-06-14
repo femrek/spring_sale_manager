@@ -1,5 +1,6 @@
 package dev.faruk.auth.dto;
 
+import dev.faruk.commoncodebase.logging.SensitiveDataType;
 import lombok.*;
 
 /**
@@ -7,9 +8,18 @@ import lombok.*;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
+public class LoginResponse implements SensitiveDataType {
     private String token;
+
+    @Override
+    public String toVisualString() {
+        return "LoginResponse{token='********'}";
+    }
+
+    @Override
+    public String toString() {
+        return toVisualString();
+    }
 }

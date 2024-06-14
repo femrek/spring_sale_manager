@@ -2,10 +2,12 @@ package dev.faruk.auth.service;
 
 import dev.faruk.auth.constant.AuthConstants;
 import dev.faruk.commoncodebase.error.AppHttpError;
+import dev.faruk.commoncodebase.logging.IgnoreArgsLog4J2;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 /**
  * JwtService is the service that is used to generate and validate JWT tokens.
  */
+@Log4j2
 @Component
 public class JwtService {
     private final AuthConstants authConstants;
@@ -36,6 +39,7 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
             throw new AppHttpError.Unauthorized("Token expired");
         } catch (JwtException e) {
+            log.debug("invalid token when extracting the username from token.", e);
             throw new AppHttpError.Unauthorized("Invalid token");
         }
     }
@@ -45,6 +49,7 @@ public class JwtService {
      * @param userName the username to be included in the token
      * @return the generated token
      */
+    @IgnoreArgsLog4J2
     public String generateToken(final String userName) {
         Map<String, Object> claims = new HashMap<>();
         return _createToken(claims, userName);

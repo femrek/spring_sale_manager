@@ -32,7 +32,7 @@ spring:
           predicates:
             - Path=/api/v1/logging/**
   application:
-    name: gateway
+    name: GATEWAY-SERVICE
 
 server:
   port: 8080
@@ -41,3 +41,8 @@ eureka:
   client:
     service-url:
       defaultZone : http://${EUREKA_HOST:localhost}:8761/eureka/
+
+logging:
+  config: ${LOG4J2_CONFIG_FILE:../log4j2.xml}
+  level:
+    dev.faruk: TRACE

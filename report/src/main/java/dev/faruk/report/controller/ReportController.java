@@ -3,12 +3,15 @@ package dev.faruk.report.controller;
 import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.report.service.ReportService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 @RequestMapping("/report")
 public class ReportController {
@@ -66,5 +69,11 @@ public class ReportController {
                 .header("Content-Disposition", "attachment; filename=receipt.pdf")
                 .header("Content-Type", "application/pdf; charset=UTF-8")
                 .body(report);
+    }
+
+    @ExceptionHandler
+    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
+        log.warn("An exception occurred: ", e);
+        throw e;
     }
 }

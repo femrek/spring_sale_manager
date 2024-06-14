@@ -3,6 +3,7 @@ package dev.faruk.commoncodebase.aspect;
 import dev.faruk.commoncodebase.feign.FeignExceptionMapper;
 import dev.faruk.commoncodebase.feign.AuthorizeClient;
 import feign.FeignException;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * This is an aspect for authorization of the requests. It checks the accessibility of the request path by sending
  * the request to the authorization server. If the request is not accessible, auth module throws an exception.
  */
+@Log4j2
 @Aspect
 @Component
 public class AuthorizeAspect {
@@ -59,6 +61,7 @@ public class AuthorizeAspect {
         try {
             authorizeClient.checkAccessibility(authHeader, path);
         } catch (FeignException e) {
+            log.debug("Authorization failed for path: %s".formatted(path), e);
             throw feignExceptionMapper.map(e);
         }
     }

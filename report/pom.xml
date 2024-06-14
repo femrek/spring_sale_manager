@@ -36,7 +36,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!--        logging-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -49,8 +62,8 @@
             <optional>true</optional>
         </dependency>
 
-<!--    https://stackoverflow.com/q/47869248/13136991-->
-<!--    AGPL license   -->
+        <!--    https://stackoverflow.com/q/47869248/13136991-->
+        <!--    AGPL license   -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>html2pdf</artifactId>

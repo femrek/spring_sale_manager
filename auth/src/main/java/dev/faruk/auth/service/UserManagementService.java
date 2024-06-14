@@ -7,12 +7,14 @@ import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Log4j2
 @Service
 public class UserManagementService {
     private final UserRepository userRepository;
@@ -33,7 +35,10 @@ public class UserManagementService {
      */
     public UserDTO createUser(UserCreateRequest registerRequest) {
         // check if the username is already taken
-        if (userRepository.findByUsername(registerRequest.getUsername()) != null) {
+        AppUser userWithGivenUsername = userRepository.findByUsername(registerRequest.getUsername());
+        if (userWithGivenUsername != null) {
+            log.debug("the user with the given username was exist when creating a user. username: '%s'. user marked as deleted: %s"
+                    .formatted(userWithGivenUsername.getUsername(), userWithGivenUsername.getDeleted()));
             throw new AppHttpError.BadRequest(
                     String.format("Username %s is already taken", registerRequest.getUsername()));
         }
@@ -47,6 +52,8 @@ public class UserManagementService {
         for (Long roleId : registerRequest.getRoleIds()) {
             // check if the role is already added
             if (roleIds.contains(roleId)) {
+                log.debug("the role with the given id was duplicated when creating a user. request: %s"
+                        .formatted(registerRequest.toVisualString()));
                 throw new AppHttpError.BadRequest(String.format("Role with id %d is duplicated", roleId));
             }
             roleIds.add(roleId);
@@ -67,8 +74,9 @@ public class UserManagementService {
      * @return the updated user
      */
     public UserDTO updateUser(Long id, UserUpdateRequest userUpdateRequest) {
-        AppUser user = userRepository.findOnlyExistById(id);
-        if (user == null) {
+        AppUser user = userRepository.findById(id);
+        if (user == null || user.getDeleted()) {
+            log.debug("the user with the given id was not found when updating a user. id: %d".formatted(id));
             throw new AppHttpError.NotFound(String.format("User not found with id %d", id));
         }
         if (userUpdateRequest.getPassword() != null) {
@@ -80,6 +88,13 @@ public class UserManagementService {
         if (userUpdateRequest.getRoleIds() != null) {
             user.getRoles().clear();
             for (Long roleId : userUpdateRequest.getRoleIds()) {
+                // check if the role is already added
+                if (user.getRoles().stream().anyMatch(role -> role.getId().equals(roleId))) {
+                    log.debug("the role with the given id was duplicated when updating a user. request: %s"
+                            .formatted(userUpdateRequest.toVisualString()));
+                    throw new AppHttpError.BadRequest(String.format("Role with id %d is duplicated", roleId));
+                }
+
                 AppUserRole userRole = userRepository.findRoleById(roleId);
                 user.add(userRole);
             }
@@ -94,7 +109,13 @@ public class UserManagementService {
      */
     public void deleteUser(Long id) {
         final AppUser user = userRepository.findOnlyExistById(id);
-        if (user == null) {
+        if (user == null || user.getDeleted()) {
+            if (user == null) {
+                log.debug("the user with the given id was not found (even if marked as deleted) when deleting a user. id: %d"
+                        .formatted(id));
+            } else {
+                log.debug("the user with the given id was already deleted when deleting a user. id: %d".formatted(id));
+            }
             throw new AppHttpError.BadRequest(String.format("User not found with id %d", id));
         }
         userRepository.deleteSoft(user);

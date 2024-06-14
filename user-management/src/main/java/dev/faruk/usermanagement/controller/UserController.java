@@ -4,10 +4,12 @@ import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
-import dev.faruk.commoncodebase.logging.IgnoreLog;
+import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import dev.faruk.usermanagement.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * UserController is the class that handles the requests for CRUD operations on users.
  */
+@Log4j2
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -37,7 +40,7 @@ public class UserController {
         return new AppSuccessResponse<>("User provided successfully", user);
     }
 
-    @IgnoreLog
+    @IgnoreDbLog
     @PostMapping({"/", ""})
     public AppSuccessResponse<UserDTO> createUser(@RequestBody UserCreateRequest user,
                                                   @RequestHeader("Authorization") String authHeader) {
@@ -45,7 +48,7 @@ public class UserController {
         return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "User created successfully", createdUser);
     }
 
-    @IgnoreLog
+    @IgnoreDbLog
     @PatchMapping("/{id}")
     public AppSuccessResponse<UserDTO> updateUser(@PathVariable Long id,
                                                   @RequestBody UserUpdateRequest userUpdateRequest,
@@ -59,5 +62,11 @@ public class UserController {
                                                  @RequestHeader("Authorization") String authHeader) {
         userService.deleteUser(id, authHeader);
         return new AppSuccessResponse<>("User deleted successfully", null);
+    }
+
+    @ExceptionHandler
+    public AppSuccessResponse<ErrorResponse> handleException(Exception e) throws Exception {
+        log.warn("An exception occurred: ", e);
+        throw e;
     }
 }

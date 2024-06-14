@@ -4,12 +4,14 @@ import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.commoncodebase.entity.Offer;
 import dev.faruk.commoncodebase.error.AppHttpError;
 import dev.faruk.commoncodebase.repository.base.OfferRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class OfferService {
     private final OfferRepository offerRepository;
@@ -47,7 +49,10 @@ public class OfferService {
      */
     public OfferDTO findById(Long id) {
         final Offer offer = offerRepository.findById(id);
-        if (offer == null) throw new AppHttpError.NotFound(String.format("Offer could not found by id: %d", id));
+        if (offer == null) {
+            log.debug("Offer could not found by id: %d".formatted(id));
+            throw new AppHttpError.NotFound(String.format("Offer could not found by id: %d", id));
+        }
         return new OfferDTO(offer);
     }
 }

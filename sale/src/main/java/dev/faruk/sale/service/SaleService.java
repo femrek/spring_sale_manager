@@ -13,12 +13,14 @@ import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.sale.dto.SalePostRequest;
 import dev.faruk.sale.feign.UserClient;
 import feign.FeignException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Log4j2
 @Service
 public class SaleService {
     private final SaleRepository saleRepository;
@@ -115,6 +117,7 @@ public class SaleService {
         try {
             AppSuccessResponse<UserDTO> requestSender = userClient.getUser(authHeader);
             if (requestSender.getData() == null) {
+                log.warn("Auth user could not found when trying to create sale.");
                 throw new AppHttpError.InternalServerError("Auth user could not found");
             }
             cashierId = requestSender.getData().getId();
@@ -148,10 +151,12 @@ public class SaleService {
         // Check if the offers are satisfied by the sale products
         for (Offer offer : offers) {
             if (offer.getValidUntil().before(new Timestamp(System.currentTimeMillis()))) {
+                log.debug("Offer %s is expired when generating sale.".formatted(offer.getName()));
                 throw new AppHttpError.BadRequest("Offer %s is expired".formatted(offer.getName()));
             }
 
             if (!_doesOfferSatisfiedByProductList(salePostRequest.getProducts(), offer)) {
+                log.debug("Offer %s is not satisfied by the sale when generating sale.".formatted(offer.getName()));
                 throw new AppHttpError.BadRequest("Offer %s is not satisfied by the sale".formatted(offer.getName()));
             }
         }
@@ -191,13 +196,19 @@ public class SaleService {
                 // when the product is found in the sale products
                 if (offerProduct.getProduct().getId().equals(product.getProductId())) {
                     // check if the product count is enough
-                    if (product.getProductCount() < offerProduct.getRequiredCount()) return false;
+                    if (product.getProductCount() < offerProduct.getRequiredCount()) {
+                        log.debug("Product %s count is not enough in the sale when checking offer(%s)."
+                                .formatted(offerProduct.getProduct().getId(), offer.getId()));
+                        return false;
+                    }
 
                     continue outer;
                 }
             }
 
             // when the product is not found in the sale products
+            log.debug("Product %s is not found in the sale when checking offer."
+                    .formatted(offerProduct.getProduct().getId()));
             return false;
         }
         return true;

@@ -1,4 +1,4 @@
-package dev.faruk.commoncodebase.logging;
+package dev.faruk.commoncodebase.dbLogging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @EnableAsync
-public class LogService {
+public class DbLoggingService {
     private final LogRepository logRepository;
     private final AppConstants appConstants;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public LogService(LogRepository logRepository,
-                      AppConstants appConstants,
-                      ObjectMapper objectMapper) {
+    public DbLoggingService(LogRepository logRepository,
+                            AppConstants appConstants,
+                            ObjectMapper objectMapper) {
         this.logRepository = logRepository;
         this.appConstants = appConstants;
         this.objectMapper = objectMapper;
