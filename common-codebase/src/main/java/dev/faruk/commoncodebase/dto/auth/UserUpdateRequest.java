@@ -31,7 +31,7 @@ public class UserUpdateRequest implements SensitiveDataType {
     private List<Long> roleIds;
 
     public boolean isEmpty() {
-        return password == null && roleIds == null;
+        return password == null && roleIds == null && name == null;
     }
 
     @Override
