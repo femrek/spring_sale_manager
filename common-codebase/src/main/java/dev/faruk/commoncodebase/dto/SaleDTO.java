@@ -1,5 +1,7 @@
 package dev.faruk.commoncodebase.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import dev.faruk.commoncodebase.entity.Offer;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.entity.SaleProduct;
 import lombok.*;
@@ -14,12 +16,14 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SaleDTO {
     private Long id;
     private Double receivedMoney;
     private Timestamp createdAt;
     private UserDTO cashier;
     private List<SaleProductDTO> products;
+    private List<OfferDTO> offers;
 
     public SaleDTO(Sale sale) {
         id = sale.getId();
@@ -29,6 +33,12 @@ public class SaleDTO {
         products = new ArrayList<>();
         for (SaleProduct m : sale.getProductList()) {
             products.add(new SaleProductDTO(m));
+        }
+        offers = new ArrayList<>();
+        if (sale.getOffers() != null) {
+            for (Offer o : sale.getOffers()) {
+                offers.add(new OfferDTO(o));
+            }
         }
     }
 
@@ -51,6 +61,11 @@ public class SaleDTO {
     }
 
     public Double getTotal() {
-        return products.stream().map(SaleProductDTO::getProductTotal).reduce(0.0, Double::sum);
+        double total = products.stream().map(SaleProductDTO::getProductTotal).reduce(0.0, Double::sum);
+        if (!offers.isEmpty()) {
+            Double discount = offers.stream().map(OfferDTO::getDiscount).reduce(0.0, Double::sum);
+            total *= (1.0D - discount);
+        }
+        return total;
     }
 }

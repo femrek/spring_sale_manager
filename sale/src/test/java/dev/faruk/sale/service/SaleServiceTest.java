@@ -1,5 +1,6 @@
 package dev.faruk.sale.service;
 
+import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.error.AppHttpError;
@@ -333,16 +334,30 @@ class SaleServiceTest {
     }
 
     private void assertSaleSuccessWithTheSameProductList(SaleDTO saleDTO) {
+        assertTrue(saleDTO.getOffers().size() < 2);
+        Double discount = 0.0;
+        if (!saleDTO.getOffers().isEmpty()) {
+            discount = saleDTO.getOffers().get(0).getDiscount();
+        }
+        Double totalExpected = 772.5D * (1.0D - discount);
+        Double changeExpected = 1000 - totalExpected;
         assertEquals(1000, saleDTO.getReceivedMoney());
-        assertEquals(772.5, saleDTO.getTotal());
-        assertEquals(227.5, saleDTO.getChange());
+        assertEquals(totalExpected, saleDTO.getTotal());
+        assertEquals(changeExpected, saleDTO.getChange());
         assertEquals(3, saleDTO.getProducts().size());
     }
 
     private void assertSaleSuccessWithDifferentProductListSize(SaleDTO saleDTO) {
+        assertTrue(saleDTO.getOffers().size() < 2);
+        Double discount = 0.0;
+        if (!saleDTO.getOffers().isEmpty()) {
+            discount = saleDTO.getOffers().get(0).getDiscount();
+        }
+        Double totalExpected = 772.5D * (1.0D - discount);
+        Double changeExpected = 1000 - totalExpected;
         assertEquals(1000, saleDTO.getReceivedMoney());
-        assertEquals(772.5, saleDTO.getTotal());
-        assertEquals(227.5, saleDTO.getChange());
+        assertEquals(totalExpected, saleDTO.getTotal());
+        assertEquals(changeExpected, saleDTO.getChange());
         assertEquals(3, saleDTO.getProducts().size());
     }
 }
