@@ -24,7 +24,7 @@ public class SaleRepositoryImpl implements SaleRepository {
     @Transactional
     public Sale create(Sale sale) {
         entityManager.persist(sale);
-        entityManager.merge(sale); // merge to get the id of the sale
+        entityManager.merge(sale);
         return sale;
     }
 

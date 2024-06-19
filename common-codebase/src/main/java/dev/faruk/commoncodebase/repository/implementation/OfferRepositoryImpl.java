@@ -51,7 +51,7 @@ public class OfferRepositoryImpl implements OfferRepository {
     @Transactional
     public Offer create(Offer offer) {
         entityManager.persist(offer);
-        entityManager.merge(offer); // merge to get the id of the offer
+        entityManager.merge(offer);
         return offer;
     }
 

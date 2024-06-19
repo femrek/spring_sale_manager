@@ -34,7 +34,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Transactional
     public Product create(Product product) {
         entityManager.persist(product);
-        entityManager.merge(product); // merge to get the id of the product
+        entityManager.merge(product);
         return product;
     }
 

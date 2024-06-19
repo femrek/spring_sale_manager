@@ -41,7 +41,7 @@ services:
       test: "curl localhost:8761"
       interval: 2s
       timeout: 3s
-      retries: 5
+      retries: 35
       start_period: 4s
   auth:
     container_name: auth
@@ -68,7 +68,7 @@ services:
       test: "curl localhost:9898"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   product:
     container_name: product
@@ -91,7 +91,7 @@ services:
       test: "curl localhost:8081"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   report:
     container_name: report
@@ -114,7 +114,7 @@ services:
       test: "curl localhost:8084"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   sale:
     container_name: sale
@@ -137,7 +137,7 @@ services:
       test: "curl localhost:8082"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   user-management:
     container_name: user-manaagement
@@ -160,7 +160,7 @@ services:
       test: "curl localhost:8083"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   logging:
     container_name: logging
@@ -183,7 +183,7 @@ services:
       test: "curl localhost:8085"
       interval: 3s
       timeout: 3s
-      retries: 25
+      retries: 55
       start_period: 8s
   gateway:
     container_name: gateway
