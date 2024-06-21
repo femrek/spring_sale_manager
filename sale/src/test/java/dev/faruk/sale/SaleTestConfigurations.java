@@ -98,7 +98,7 @@ public class SaleTestConfigurations {
             AppSuccessResponse<AppUser> body = new AppSuccessResponse<>(
                     "User found successfully",
                     userRepository.findByUsername(SaleTestDataSource.CASHIER_USERNAME_FOR_SALE_CREATION));
-            String requestBodyJson = objectMapper.writeValueAsString(body.toJson());
+            String requestBodyJson = objectMapper.writeValueAsString(body);
             return Response.builder()
                     .status(200)
                     .reason("OK")

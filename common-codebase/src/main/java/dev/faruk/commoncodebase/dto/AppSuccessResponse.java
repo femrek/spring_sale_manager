@@ -7,8 +7,6 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
-import java.util.Map;
-
 /**
  * AppSuccessResponse is the only response type that should be used for successful requests.
  */
@@ -32,19 +30,5 @@ public class AppSuccessResponse<T> {
         this.status = status;
         this.message = message;
         this.data = data;
-    }
-
-    public Map<String, Object> toJson() {
-        if (data == null) {
-            return Map.of(
-                    "status", status,
-                    "message", message
-            );
-        }
-        return Map.of(
-                "status", status,
-                "message", message,
-                "data", data
-        );
     }
 }
