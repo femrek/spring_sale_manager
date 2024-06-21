@@ -1,4 +1,4 @@
-# PRODUCT MANAGEMENT AND CASH FLOW MANAGEMENT SYSTEM
+# PRODUCT MANAGEMENT AND SALE MANAGEMENT SYSTEM
 
 ## About the project
 
@@ -11,9 +11,10 @@ services. The app has an interface for other services to manage users and
 
 - Listing Products
 - Listing Offers
-- Posting Sales
-- Get reports of sales
-- User management and authorization
+- Creating Sales
+- Listing Sales
+- Generate Reports of Sales
+- User Management and Authorization
 
 ### Technologies
 
@@ -27,7 +28,7 @@ The project developed around the Java Spring framework. And, PostgreSQL is the d
 - Eureka (for service discovery)
 - Docker
 - itextpdf html2pdf (for generating pdf reports)
-- feign (for calling other services)
+- Feign (for calling other services)
 - Log4j2 (for logging) (also there is another logging system that stores in the database)
 
 ## How to run (Docker)
@@ -37,6 +38,9 @@ The project developed around the Java Spring framework. And, PostgreSQL is the d
 - Docker has to be installed on your machine.
 - After running the docker compose command, the database must be created by executing `db_structure_public_scheme.sql`
   file.
+- Create a text file named `db_credential.txt` in the root directory of the project. Write the database password for
+  postgres user directly.
+- Create a text file named `jwt_secret.txt` in the root directory of the project. Write the secret key for JWT directly.
 
 Run the following command in the root directory of the project.
 
@@ -172,7 +176,7 @@ Two logging systems are used in the project. One of them is the Log4j2 library. 
 
 ### Log4j2
 
-The log4j2 library is used for logging the actions of the users. The logs are stored in the home directory of the 
+The log4j2 library is used for logging the actions of the users. The logs are stored in the home directory of the
 container.
 
 ### Database Logging
