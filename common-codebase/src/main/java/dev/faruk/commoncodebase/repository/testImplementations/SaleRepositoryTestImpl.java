@@ -70,18 +70,18 @@ public class SaleRepositoryTestImpl implements SaleRepository {
         if (orderAsc == null || orderAsc) {
             result.sort((s1, s2) -> switch (finalOrderBy) {
                 case "id" -> s1.getId().compareTo(s2.getId());
-                case "created_at" -> s1.getCreatedAt().compareTo(s2.getCreatedAt());
+                case "createdAt" -> s1.getCreatedAt().compareTo(s2.getCreatedAt());
                 case "cashier" -> s1.getCashier().getName().compareTo(s2.getCashier().getName());
-                case "received_money" -> s1.getReceivedMoney().compareTo(s2.getReceivedMoney());
+                case "receivedMoney" -> s1.getReceivedMoney().compareTo(s2.getReceivedMoney());
                 default -> throw new IllegalArgumentException(
                         "Invalid orderBy parameter: %s. orderBy must be one of them: id, createdAt, cashier, receivedMoney".formatted(orderBy));
             });
         } else {
             result.sort((s1, s2) -> switch (finalOrderBy) {
                 case "id" -> s2.getId().compareTo(s1.getId());
-                case "created_at" -> s2.getCreatedAt().compareTo(s1.getCreatedAt());
+                case "createdAt" -> s2.getCreatedAt().compareTo(s1.getCreatedAt());
                 case "cashier" -> s2.getCashier().getName().compareTo(s1.getCashier().getName());
-                case "received_money" -> s2.getReceivedMoney().compareTo(s1.getReceivedMoney());
+                case "receivedMoney" -> s2.getReceivedMoney().compareTo(s1.getReceivedMoney());
                 default -> throw new IllegalArgumentException(
                         "Invalid orderBy parameter: %s. orderBy must be one of them: id, createdAt, cashier, receivedMoney".formatted(orderBy));
             });

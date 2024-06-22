@@ -39,11 +39,6 @@ COPY report/src /home/app/report/src
 COPY report/pom.xml /home/app/report
 RUN mvn -f /home/app/report/pom.xml package
 
-## compile logging
-COPY logging/src /home/app/logging/src
-COPY logging/pom.xml /home/app/logging
-RUN mvn -f /home/app/logging/pom.xml package
-
 ## compile gateway
 COPY gateway/src /home/app/gateway/src
 COPY gateway/pom.xml /home/app/gateway

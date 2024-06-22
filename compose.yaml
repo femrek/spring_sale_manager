@@ -5,8 +5,8 @@ services:
     image: app-builder
     build:
       context: ./
-      dockerfile: ./docker-builder-image/Dockerfile
-    restart: always
+      dockerfile: ./BuilderDockerfile
+    restart: no
     deploy:
       mode: replicated
       replicas: 0
