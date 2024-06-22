@@ -1,6 +1,5 @@
 package dev.faruk.auth;
 
-import dev.faruk.commoncodebase.dto.UserRoleDTO;
 import dev.faruk.commoncodebase.entity.AppUser;
 import dev.faruk.commoncodebase.entity.AppUserRole;
 import dev.faruk.commoncodebase.repository.base.UserRepository;

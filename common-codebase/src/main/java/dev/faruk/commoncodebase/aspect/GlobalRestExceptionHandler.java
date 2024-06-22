@@ -1,10 +1,7 @@
 package dev.faruk.commoncodebase.aspect;
 
 import dev.faruk.commoncodebase.error.AppHttpError;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,5 +25,6 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn("An unhandled exception occurred: ", e);
         AppHttpError appHttpError = new AppHttpError.InternalServerError(e.getMessage());
         return ResponseEntity.status(appHttpError.getStatusCode()).body(appHttpError.toJson());
+        // this handler may return a fixed error message for security reasons.
     }
 }

@@ -1,6 +1,5 @@
 package dev.faruk.sale.service;
 
-import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.commoncodebase.dto.SaleDTO;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.error.AppHttpError;

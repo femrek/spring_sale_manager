@@ -1,7 +1,6 @@
 package dev.faruk.product.service;
 
 import dev.faruk.commoncodebase.dto.ProductDTO;
-import dev.faruk.commoncodebase.repository.base.ProductRepository;
 import dev.faruk.product.ProductTestConfigurer;
 import dev.faruk.product.ProductTestDataSource;
 import org.junit.jupiter.api.AfterEach;
@@ -17,15 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = ProductTestConfigurer.class)
 class ProductServiceTest {
     private final ProductService productService;
-    private final ProductRepository productRepository;
     private final ProductTestDataSource productTestDataSource;
 
     @Autowired
     public ProductServiceTest(ProductService productService,
-                              ProductRepository productRepository,
                               ProductTestDataSource productTestDataSource) {
         this.productService = productService;
-        this.productRepository = productRepository;
         this.productTestDataSource = productTestDataSource;
     }
 

@@ -32,10 +32,4 @@ public class RepositoryConfigurer {
     public SaleRepository saleRepository(EntityManager entityManager) {
         return new SaleRepositoryImpl(entityManager);
     }
-
-    @Bean
-    @Primary
-    public LogRepository logRepository(EntityManager entityManager) {
-        return new LogRepositoryImpl(entityManager);
-    }
 }
