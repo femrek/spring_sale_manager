@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.faruk.auth.service.AppUserDetailService;
 import dev.faruk.auth.dto.AppUserDetails;
 import dev.faruk.auth.service.AuthService;
-import dev.faruk.commoncodebase.dto.log.AuthErrorLogCreateDTO;
 import dev.faruk.commoncodebase.error.AppHttpError;
-import dev.faruk.commoncodebase.dbLogging.DbLoggingService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * This class is used to filter the requests and authenticate the user by token. used for auth module only.
@@ -33,17 +30,14 @@ import java.util.Date;
 public class AuthenticationFilter extends OncePerRequestFilter {
     private final AppUserDetailService appUserDetailService;
     private final AuthService authService;
-    private final DbLoggingService dbLoggingService;
     private final ObjectMapper objectMapper;
 
     @Autowired
     public AuthenticationFilter(AppUserDetailService appUserDetailService,
                                 AuthService authService,
-                                DbLoggingService dbLoggingService,
                                 ObjectMapper objectMapper) {
         this.appUserDetailService = appUserDetailService;
         this.authService = authService;
-        this.dbLoggingService = dbLoggingService;
         this.objectMapper = objectMapper;
     }
 
@@ -66,17 +60,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             } catch (AppHttpError e) {
                 log.debug("Authentication error on before filter", e);
                 String body = objectMapper.writeValueAsString(e.toJson());
-
-                // log if the error about auth.
-                if (e instanceof AppHttpError.Unauthorized || e instanceof AppHttpError.Forbidden) {
-                    dbLoggingService.saveLog(AuthErrorLogCreateDTO.builder()
-                            .url(request.getRequestURL().toString())
-                            .method(request.getMethod())
-                            .statusCode(e.getStatusCode().value())
-                            .error(body)
-                            .responseTime(new Date())
-                            .build());
-                }
 
                 response.setStatus(e.getStatusCode().value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);

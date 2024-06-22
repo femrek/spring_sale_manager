@@ -4,7 +4,7 @@
 
 This app aims to manage a simple cash register. Also list the products and offers. The app has user management and
 authorization. The app has a report system to list the sales and generate pdf receipts. The app has a logging system to
-log the actions of the users. The app has an authentication service to authenticate the users and authorize the other
+log the actions of the system. The app has an authentication service to authenticate the users and authorize the other
 services. The app has an interface for other services to manage users and
 
 ### Features
@@ -29,7 +29,7 @@ The project developed around the Java Spring framework. And, PostgreSQL is the d
 - Docker
 - itextpdf html2pdf (for generating pdf reports)
 - Feign (for calling other services)
-- Log4j2 (for logging) (also there is another logging system that stores in the database)
+- Log4j2 (for logging)
 
 ## How to run (Docker)
 
@@ -136,18 +136,6 @@ All the success responses are in AppSuccessResponse format.
     - no request body
     - Response Body: String: the html receipt
 
-### Logging Service (/api/v1/logging/)
-
-- GET /api/v1/logging
-    - no request body
-    - Request Param:
-        - p (required): Integer: page number
-        - s (required): Integer: page size
-    - Response Body: List<LogDTO>: list of logs
-- GET /api/v1/logging/{id}
-    - no request body
-    - Response Body: LogDTO: the log
-
 ## Inter-service Communication
 
 ### User Management - Authentication Service Interface
@@ -172,14 +160,5 @@ All the success responses are in AppSuccessResponse format.
 
 ## Logging
 
-Two logging systems are used in the project. One of them is the Log4j2 library. The other one is the database logging.
-
-### Log4j2
-
-The log4j2 library is used for logging the actions of the users. The logs are stored in the home directory of the
-container.
-
-### Database Logging
-
-The database logging system is used for logging the actions of the users. The logs are stored in the database. The
-logging system is used for the user management service and the sale service.
+The log4j2 library is used for logging the actions of the system. The logs are stored in the home directory of the
+container. `log4j2.xml` file is used for configuration for all the modules.

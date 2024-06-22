@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.faruk.auth.aspect.AuthenticationFilter;
 import dev.faruk.auth.service.AppUserDetailService;
 import dev.faruk.auth.service.AuthService;
-import dev.faruk.commoncodebase.dbLogging.DbLoggingService;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +49,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
                                            UserRepository userRepository,
                                            AuthService authService,
-                                           DbLoggingService dbLoggingService,
                                            ObjectMapper objectMapper) throws Exception {
         // specify authorization of the end-points
         httpSecurity.authorizeHttpRequests(configurer -> configurer
@@ -65,7 +63,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/accessibility/api/v1/offer/**").hasAuthority("CASHIER")
                 .requestMatchers("/accessibility/api/v1/report/**").hasAuthority("MANAGER")
                 .requestMatchers("/accessibility/api/v1/user/**").hasAuthority("ADMIN")
-                .requestMatchers("/accessibility/api/v1/logging/**").hasAuthority("ADMIN")
 
                 // always deny undefined end-points
                 .anyRequest().denyAll()
@@ -95,7 +92,6 @@ public class SecurityConfiguration {
         httpSecurity.addFilterBefore(new AuthenticationFilter(
                 appUserDetailService(userRepository),
                 authService,
-                dbLoggingService,
                 objectMapper), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();

@@ -5,7 +5,6 @@ import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.auth.service.AuthService;
-import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,6 @@ public class AuthController {
         this.authService = service;
     }
 
-    @IgnoreDbLog
     @PostMapping("/login")
     public AppSuccessResponse<LoginResponse> login(@RequestBody LoginRequest userCredentials) {
         LoginResponse response = authService.generateToken(userCredentials);

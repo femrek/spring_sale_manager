@@ -1,11 +1,9 @@
 package dev.faruk.auth.controller;
 
 import dev.faruk.auth.service.UserManagementService;
-import dev.faruk.commoncodebase.dto.AppSuccessResponse;
 import dev.faruk.commoncodebase.dto.UserDTO;
 import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
-import dev.faruk.commoncodebase.dbLogging.IgnoreDbLog;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +23,11 @@ public class UserManagementController {
         this.userManagementService = userManagementService;
     }
 
-    @IgnoreDbLog
     @PostMapping({"/", ""})
     public UserDTO createUser(@RequestBody UserCreateRequest userCreateRequest) {
         return userManagementService.createUser(userCreateRequest);
     }
 
-    @IgnoreDbLog
     @PatchMapping("/{id}")
     public UserDTO updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
         return userManagementService.updateUser(id, userUpdateRequest);
