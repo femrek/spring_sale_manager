@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
  * AppSuccessResponse is the only response type that should be used for successful requests.
@@ -30,5 +31,9 @@ public class AppSuccessResponse<T> {
         this.status = status;
         this.message = message;
         this.data = data;
+    }
+
+    public ResponseEntity<AppSuccessResponse<T>> toResponseEntity() {
+        return ResponseEntity.status(status).body(this);
     }
 }

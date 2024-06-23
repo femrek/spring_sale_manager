@@ -1,6 +1,7 @@
 package dev.faruk.auth.service;
 
 import dev.faruk.auth.dto.LoginResponse;
+import dev.faruk.commoncodebase.logging.IgnoreArgsLog4J2;
 import dev.faruk.commoncodebase.repository.base.UserRepository;
 import dev.faruk.auth.dto.LoginRequest;
 import dev.faruk.commoncodebase.dto.UserDTO;
@@ -71,6 +72,7 @@ public class AuthService {
      * @param authHeader the token to get the user by
      * @return the user object
      */
+    @IgnoreArgsLog4J2
     public UserDTO getUserByToken(String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             throw new AppHttpError.Unauthorized("Token is not provided");

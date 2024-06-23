@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,23 +26,51 @@ public class Log4JTrackAspect {
     private void controllerWithoutRequestBodyPointcut() {
     }
 
-    @Around("controllerWithRequestBodyPointcut() && args(*, @org.springframework.web.bind.annotation.RequestBody arg, ..)")
-    public Object aroundControllerWithRequestBody(ProceedingJoinPoint joinPoint, Object arg) throws Throwable {
+    @Pointcut("@annotation(dev.faruk.commoncodebase.logging.IgnoreArgsLog4J2)")
+    private void controllerWithRequestBodyAndIgnoredArgsPointcut() {
+    }
+
+    /**
+     * This method is for logging controller methods with request body and ignored arguments.
+     */
+    @Around("controllerWithRequestBodyAndIgnoredArgsPointcut() && controllerWithRequestBodyPointcut()")
+    public Object aroundControllerWithRequestBodyIgnored(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.getLevel().isMoreSpecificThan(org.apache.logging.log4j.Level.TRACE)) {
-            return _logController(joinPoint, arg);
+            return _logController(joinPoint, null, false);
         }
         return joinPoint.proceed();
     }
 
+    /**
+     * This method is for logging controller methods with request body.
+     */
+    @Around("!controllerWithRequestBodyAndIgnoredArgsPointcut()" +
+            " && controllerWithRequestBodyPointcut()" +
+            " && (args(*, @org.springframework.web.bind.annotation.RequestBody arg, ..)" +
+            " || args(.., @org.springframework.web.bind.annotation.RequestBody arg, *)" +
+            " || args(@org.springframework.web.bind.annotation.RequestBody arg, ..)" +
+            " || args(.., @org.springframework.web.bind.annotation.RequestBody arg))")
+    public Object aroundControllerWithRequestBody(ProceedingJoinPoint joinPoint, Object arg) throws Throwable {
+        if (log.getLevel().isMoreSpecificThan(org.apache.logging.log4j.Level.TRACE)) {
+            return _logController(joinPoint, arg, true);
+        }
+        return joinPoint.proceed();
+    }
+
+    /**
+     * This method is for logging controller methods without request body.
+     */
     @Around("controllerWithoutRequestBodyPointcut()")
     public Object aroundControllerWithoutRequestBody(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.getLevel().isMoreSpecificThan(org.apache.logging.log4j.Level.TRACE)) {
-            return _logController(joinPoint, null);
+            return _logController(joinPoint, null, true);
         }
         return joinPoint.proceed();
     }
 
-    private Object _logController(final ProceedingJoinPoint joinPoint, final Object body) throws Throwable {
+    private Object _logController(final ProceedingJoinPoint joinPoint,
+                                  final Object body,
+                                  boolean putArgs) throws Throwable {
         // get arguments
         String argString;
         if (body == null) {
@@ -53,7 +82,11 @@ public class Log4JTrackAspect {
         }
 
         // log before
-        if (argString == null) {
+        if (!putArgs) {
+            log.trace("Controller: {}.{}(). args are hidden.",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
+        } else if (argString == null) {
             log.trace("Controller: {}.{}() called with no body.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
@@ -76,11 +109,18 @@ public class Log4JTrackAspect {
         }
 
         // log after
-        final boolean isAppSuccessResponse = result instanceof AppSuccessResponse<?>;
-        log.trace("Controller: {}.{}() returned: {}",
-                joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(),
-                isAppSuccessResponse ? result : result.toString());
+        if (putArgs) {
+            final boolean isAppSuccessResponse = result instanceof ResponseEntity<?>
+                    && ((ResponseEntity<?>) result).getBody() instanceof AppSuccessResponse<?>;
+            log.trace("Controller: {}.{}() returned: {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    isAppSuccessResponse ? ((ResponseEntity<?>) result).getBody() : result.toString());
+        } else {
+            log.trace("Controller: {}.{}(). result is hidden.",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
+        }
 
         // response
         return result;

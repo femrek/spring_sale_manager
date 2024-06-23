@@ -8,6 +8,7 @@ import dev.faruk.auth.service.AuthService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Log4j2
@@ -21,14 +22,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AppSuccessResponse<LoginResponse> login(@RequestBody LoginRequest userCredentials) {
+    public ResponseEntity<AppSuccessResponse<LoginResponse>> login(@RequestBody LoginRequest userCredentials) {
         LoginResponse response = authService.generateToken(userCredentials);
-        return new AppSuccessResponse<>("token is provided", response);
+        return new AppSuccessResponse<>("token is provided", response).toResponseEntity();
     }
 
     @GetMapping("/user")
-    public AppSuccessResponse<UserDTO> user(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public ResponseEntity<AppSuccessResponse<UserDTO>> user(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         final UserDTO user = authService.getUserByToken(authHeader);
-        return new AppSuccessResponse<>("user found by authentication token successfully", user);
+        return new AppSuccessResponse<>("user found by authentication token successfully", user).toResponseEntity();
     }
 }

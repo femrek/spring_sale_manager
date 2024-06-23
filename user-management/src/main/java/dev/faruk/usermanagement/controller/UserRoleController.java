@@ -5,6 +5,7 @@ import dev.faruk.commoncodebase.dto.UserRoleDTO;
 import dev.faruk.usermanagement.service.UserRoleService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,14 +25,14 @@ public class UserRoleController {
     }
 
     @GetMapping({"/", ""})
-    public AppSuccessResponse<List<UserRoleDTO>> showRoles() {
+    public ResponseEntity<AppSuccessResponse<List<UserRoleDTO>>> showRoles() {
         List<UserRoleDTO> roles = userRoleService.showRoles();
-        return new AppSuccessResponse<>("All roles are listed successfully", roles);
+        return new AppSuccessResponse<>("All roles are listed successfully", roles).toResponseEntity();
     }
 
     @GetMapping("/{roleId}")
-    public AppSuccessResponse<UserRoleDTO> showRole(@PathVariable Long roleId) {
+    public ResponseEntity<AppSuccessResponse<UserRoleDTO>> showRole(@PathVariable Long roleId) {
         UserRoleDTO role = userRoleService.showRoleById(roleId);
-        return new AppSuccessResponse<>("Role provided successfully", role);
+        return new AppSuccessResponse<>("Role provided successfully", role).toResponseEntity();
     }
 }

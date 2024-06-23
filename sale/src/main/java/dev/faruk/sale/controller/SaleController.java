@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Log4j2
@@ -28,10 +29,12 @@ public class SaleController {
      * @return the created and saved sale data
      */
     @PostMapping({"/", ""})
-    public AppSuccessResponse<SaleDTO> create(@RequestBody SalePostRequest salePostRequest,
-                                              @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public ResponseEntity<AppSuccessResponse<SaleDTO>> create(
+            @RequestBody SalePostRequest salePostRequest,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         final SaleDTO result = saleService.create(salePostRequest, authHeader);
-        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "sale created successfully", result);
+        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "sale created successfully", result)
+                .toResponseEntity();
     }
 
     /**
@@ -42,9 +45,11 @@ public class SaleController {
      * @return the previewed sale data
      */
     @PostMapping("/preview")
-    public AppSuccessResponse<SaleDTO> preview(@RequestBody SalePostRequest salePostRequest,
-                                               @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public ResponseEntity<AppSuccessResponse<SaleDTO>> preview(
+            @RequestBody SalePostRequest salePostRequest,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         final SaleDTO result = saleService.preview(salePostRequest, authHeader);
-        return new AppSuccessResponse<>(HttpStatus.OK.value(), "sale previewed successfully", result);
+        return new AppSuccessResponse<>(HttpStatus.OK.value(), "sale previewed successfully", result)
+                .toResponseEntity();
     }
 }

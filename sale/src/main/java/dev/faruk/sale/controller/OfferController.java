@@ -5,6 +5,7 @@ import dev.faruk.commoncodebase.dto.OfferDTO;
 import dev.faruk.sale.service.OfferService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +26,11 @@ public class OfferController {
      * @return List of all offers
      */
     @GetMapping({"/", ""})
-    public AppSuccessResponse<List<OfferDTO>> showAll(
+    public ResponseEntity<AppSuccessResponse<List<OfferDTO>>> showAll(
             @RequestParam(name = "activeOnly", required = false) Boolean active) {
         if (active == null) active = true;
         final List<OfferDTO> offers = active ? offerService.findAllActive() : offerService.findAll();
-        return new AppSuccessResponse<>("All offers are listed successfully", offers);
+        return new AppSuccessResponse<>("All offers are listed successfully", offers).toResponseEntity();
     }
 
     /**
@@ -38,8 +39,8 @@ public class OfferController {
      * @return the offer with the given id
      */
     @GetMapping("/{id}")
-    public AppSuccessResponse<OfferDTO> showById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<AppSuccessResponse<OfferDTO>> showById(@PathVariable(name = "id") Long id) {
         final OfferDTO offer = offerService.findById(id);
-        return new AppSuccessResponse<>("The offer is shown by id successfully", offer);
+        return new AppSuccessResponse<>("The offer is shown by id successfully", offer).toResponseEntity();
     }
 }

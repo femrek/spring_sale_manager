@@ -22,7 +22,7 @@ public class ReportController {
     }
 
     @GetMapping
-    public AppSuccessResponse<List<SaleDTO>> showSales(
+    public ResponseEntity<AppSuccessResponse<List<SaleDTO>>> showSales(
             @RequestParam(value = "p") Integer page,
             @RequestParam(value = "s") Integer size,
             @RequestParam(value = "orderBy", required = false) String orderBy,
@@ -44,12 +44,13 @@ public class ReportController {
                 receivedMoneyFilterMin,
                 receivedMoneyFilterMax
         );
-        return new AppSuccessResponse<>("All sales are listed successfully", sales);
+        return new AppSuccessResponse<>("All sales are listed successfully", sales).toResponseEntity();
     }
 
     @GetMapping("/{saleId}")
-    public AppSuccessResponse<SaleDTO> showSale(@PathVariable Long saleId) {
-        return new AppSuccessResponse<>("Sale is shown successfully", reportService.showSale(saleId));
+    public ResponseEntity<AppSuccessResponse<SaleDTO>> showSale(@PathVariable Long saleId) {
+        return new AppSuccessResponse<>("Sale is shown successfully", reportService.showSale(saleId))
+                .toResponseEntity();
     }
 
     @GetMapping("/{saleId}/receipt-html")

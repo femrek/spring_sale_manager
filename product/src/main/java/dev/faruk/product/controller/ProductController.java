@@ -5,6 +5,7 @@ import dev.faruk.commoncodebase.dto.ProductDTO;
 import dev.faruk.product.service.ProductService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +22,14 @@ public class ProductController {
     }
 
     @GetMapping({"/", ""})
-    public AppSuccessResponse<List<ProductDTO>> showAll() {
+    public ResponseEntity<AppSuccessResponse<List<ProductDTO>>> showAll() {
         final List<ProductDTO> products = productService.getAllProducts();
-        return new AppSuccessResponse<>("All products are listed", products);
+        return new AppSuccessResponse<>("All products are listed", products).toResponseEntity();
     }
 
     @GetMapping("/{id}")
-    public AppSuccessResponse<ProductDTO> show(@PathVariable Long id) {
+    public ResponseEntity<AppSuccessResponse<ProductDTO>> show(@PathVariable Long id) {
         final ProductDTO product = productService.getProductById(id);
-        return new AppSuccessResponse<>("Product is found", product);
+        return new AppSuccessResponse<>("Product is found", product).toResponseEntity();
     }
 }

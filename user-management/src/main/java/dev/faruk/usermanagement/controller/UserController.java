@@ -8,6 +8,7 @@ import dev.faruk.usermanagement.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,36 +28,37 @@ public class UserController {
     }
 
     @GetMapping({"/", ""})
-    public AppSuccessResponse<List<UserDTO>> showUsers() {
+    public ResponseEntity<AppSuccessResponse<List<UserDTO>>> showUsers() {
         List<UserDTO> users = userService.showUsers();
-        return new AppSuccessResponse<>("All users are listed successfully", users);
+        return new AppSuccessResponse<>("All users are listed successfully", users).toResponseEntity();
     }
 
     @GetMapping("/{id}")
-    public AppSuccessResponse<UserDTO> showUser(@PathVariable Long id) {
+    public ResponseEntity<AppSuccessResponse<UserDTO>> showUser(@PathVariable Long id) {
         UserDTO user = userService.showUserById(id);
-        return new AppSuccessResponse<>("User provided successfully", user);
+        return new AppSuccessResponse<>("User provided successfully", user).toResponseEntity();
     }
 
     @PostMapping({"/", ""})
-    public AppSuccessResponse<UserDTO> createUser(@RequestBody UserCreateRequest user,
-                                                  @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<AppSuccessResponse<UserDTO>> createUser(@RequestBody UserCreateRequest user,
+                                                                  @RequestHeader("Authorization") String authHeader) {
         UserDTO createdUser = userService.createUser(user, authHeader);
-        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "User created successfully", createdUser);
+        return new AppSuccessResponse<>(HttpStatus.CREATED.value(), "User created successfully", createdUser)
+                .toResponseEntity();
     }
 
     @PatchMapping("/{id}")
-    public AppSuccessResponse<UserDTO> updateUser(@PathVariable Long id,
+    public ResponseEntity<AppSuccessResponse<UserDTO>> updateUser(@PathVariable Long id,
                                                   @RequestBody UserUpdateRequest userUpdateRequest,
                                                   @RequestHeader("Authorization") String authHeader) {
         UserDTO user = userService.updateUser(id, userUpdateRequest, authHeader);
-        return new AppSuccessResponse<>("User updated successfully", user);
+        return new AppSuccessResponse<>("User updated successfully", user).toResponseEntity();
     }
 
     @DeleteMapping("/{id}")
-    public AppSuccessResponse<Object> deleteUser(@PathVariable Long id,
+    public ResponseEntity<AppSuccessResponse<Object>> deleteUser(@PathVariable Long id,
                                                  @RequestHeader("Authorization") String authHeader) {
         userService.deleteUser(id, authHeader);
-        return new AppSuccessResponse<>("User deleted successfully", null);
+        return new AppSuccessResponse<>("User deleted successfully", null).toResponseEntity();
     }
 }

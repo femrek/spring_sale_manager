@@ -33,6 +33,7 @@ public class JwtService {
      * @param token the token to get the username from
      * @return the username from the given token
      */
+    @IgnoreArgsLog4J2
     public String getUsernameByToken(final String token) {
         try {
             return Jwts.parserBuilder().setSigningKey(authConstants.getSignKey()).build().parseClaimsJws(token).getBody().getSubject();

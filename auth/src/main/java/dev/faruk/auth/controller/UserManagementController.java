@@ -6,6 +6,7 @@ import dev.faruk.commoncodebase.dto.auth.UserCreateRequest;
 import dev.faruk.commoncodebase.dto.auth.UserUpdateRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,17 +25,18 @@ public class UserManagementController {
     }
 
     @PostMapping({"/", ""})
-    public UserDTO createUser(@RequestBody UserCreateRequest userCreateRequest) {
-        return userManagementService.createUser(userCreateRequest);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest userCreateRequest) {
+        return ResponseEntity.status(201).body(userManagementService.createUser(userCreateRequest));
     }
 
     @PatchMapping("/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userManagementService.updateUser(id, userUpdateRequest);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity.ok(userManagementService.updateUser(id, userUpdateRequest));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userManagementService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
