@@ -7,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -59,33 +58,17 @@ public class Sale {
     }
 
     /**
-     * Maps visible column names to actual column names in the database. Used for sorting and filtering. Visible column
-     * names are the ones that are exposed to the client. Actual column names are the ones in the database.
-     */
-    private static final Map<String, String> visibleColumnsToColumnNames = Map.of(
-            "id", "id",
-            "receivedMoney", "received_money",
-            "createdAt", "created_at",
-            "cashier", "cashier"
-    );
-
-    /**
-     * Returns the visible column names that are exposed to the client.
+     * Returns the visible column names that are exposed to the client. Also, these names are used in the repository
+     * layer to filter the columns that are going to be selected from the database.
      *
      * @return Set of visible column names
      */
     public static Set<String> getVisibleColumns() {
-        return visibleColumnsToColumnNames.keySet();
-    }
-
-    /**
-     * Returns the actual column name in the database by the given visible column name.
-     *
-     * @param visibleName visible column name. Usually comes from the client.
-     * @return actual column name in the database
-     */
-    public static String getColumnName(String visibleName) {
-        if (visibleName == null) return "id";
-        return visibleColumnsToColumnNames.get(visibleName);
+        return Set.of(
+                "id",
+                "receivedMoney",
+                "createdAt",
+                "cashier"
+        );
     }
 }
