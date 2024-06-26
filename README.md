@@ -54,7 +54,7 @@ docker compose up
 
 Check [postman documentation](https://documenter.getpostman.com/view/29982062/2sA3XTdKMi) for more details.
 
-All the success responses are in AppSuccessResponse format.
+All the success responses are in AppSuccessResponse format that includes status, message and data fields.
 
 ### Authentication Service (/api/v1/auth/)
 
@@ -137,6 +137,17 @@ All the success responses are in AppSuccessResponse format.
 - GET /api/v1/report/{id}/receipt-html
     - no request body
     - Response Body: String: the html receipt
+
+### Error Responses
+
+`AppHttpError` class is used for error responses. The `AppHttpError` class has a `code` field for the error code and a
+`message` field for the error message. Example error response:
+```json
+{
+  "status": 400,
+  "message": "<<Error explanation>>"
+}
+```
 
 ## Inter-service Communication
 
