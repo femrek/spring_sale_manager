@@ -15,7 +15,7 @@ public class SalePostRequest {
     private Double receivedMoney;
     private Long paymentMethodId;
     private List<ProductDetails> products;
-    private List<Long> offerIds;
+    private Long offerId;
 
     public void add(ProductDetails productDetails) {
         if (products == null) products = new ArrayList<>();
