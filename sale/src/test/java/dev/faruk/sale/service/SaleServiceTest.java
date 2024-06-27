@@ -207,9 +207,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdA_15_30D_3_2_1
-                ))
+                .offerId(saleTestDataSource.offerIdA_15_30D_3_2_1)
                 .products(products)
                 .build();
     }
@@ -225,9 +223,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdB_20_30D_2_1
-                ))
+                .offerId(saleTestDataSource.offerIdB_20_30D_2_1)
                 .products(products)
                 .build();
     }
@@ -243,9 +239,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(100D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdA_15_30D_3_2_1
-                ))
+                .offerId(saleTestDataSource.offerIdA_15_30D_3_2_1)
                 .products(products)
                 .build();
     }
@@ -261,9 +255,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(500D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdBB_25_30D_1_1
-                ))
+                .offerId(saleTestDataSource.offerIdBB_25_30D_1_1)
                 .products(products)
                 .build();
     }
@@ -279,9 +271,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(500D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdBB_25_30D_1_1
-                ))
+                .offerId(saleTestDataSource.offerIdBB_25_30D_1_1)
                 .products(products)
                 .build();
     }
@@ -297,9 +287,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(500D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdC_25_30D_1_1
-                ))
+                .offerId(saleTestDataSource.offerIdC_25_30D_1_1)
                 .products(products)
                 .build();
     }
@@ -315,9 +303,7 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(500D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdA_15_30D_3_2_1
-                ))
+                .offerId(saleTestDataSource.offerIdA_15_30D_3_2_1)
                 .products(products)
                 .build();
     }
@@ -333,21 +319,23 @@ class SaleServiceTest {
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
                 .paymentMethodId(1L)
-                .offerIds(List.of(
-                        saleTestDataSource.offerIdD_25_passed30D_1_1
-                ))
+                .offerId(saleTestDataSource.offerIdD_25_passed30D_1_1)
                 .products(products)
                 .build();
     }
 
     private void assertSaleSuccessWithTheSameProductList(SaleDTO saleDTO) {
         assertTrue(saleDTO.getOffers().size() < 2);
+
+        // calculate the discount
         Double discount = 0.0;
         if (!saleDTO.getOffers().isEmpty()) {
             discount = saleDTO.getOffers().get(0).getDiscount();
         }
-        Double totalExpected = 772.5D * (1.0D - discount);
+        Double totalExpected = 772.5D - discount;
         Double changeExpected = 1000 - totalExpected;
+
+        // assert the sale
         assertEquals(1000, saleDTO.getReceivedMoney());
         assertEquals(totalExpected, saleDTO.getTotal());
         assertEquals(changeExpected, saleDTO.getChange());
@@ -356,12 +344,16 @@ class SaleServiceTest {
 
     private void assertSaleSuccessWithDifferentProductListSize(SaleDTO saleDTO) {
         assertTrue(saleDTO.getOffers().size() < 2);
+
+        // calculate the discount
         Double discount = 0.0;
         if (!saleDTO.getOffers().isEmpty()) {
             discount = saleDTO.getOffers().get(0).getDiscount();
         }
-        Double totalExpected = 772.5D * (1.0D - discount);
+        Double totalExpected = 772.5D - discount;
         Double changeExpected = 1000 - totalExpected;
+
+        // assert the sale
         assertEquals(1000, saleDTO.getReceivedMoney());
         assertEquals(totalExpected, saleDTO.getTotal());
         assertEquals(changeExpected, saleDTO.getChange());

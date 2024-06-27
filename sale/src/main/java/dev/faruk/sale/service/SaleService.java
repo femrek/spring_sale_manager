@@ -171,16 +171,18 @@ public class SaleService {
      * @return the generated sale
      */
     private Sale _generateSale(SalePostRequest salePostRequest, AppUser cashier, PaymentMethod paymentMethod) {
-        // Fetch the offers by the given offer ids
-        List<Offer> offers = salePostRequest.getOfferIds().stream().map(offerRepository::findById).toList();
+        Offer offer = null;
+        if (salePostRequest.getOfferId() != null) {
+            // Fetch the offer by the given offer id
+            offer = offerRepository.findById(salePostRequest.getOfferId());
 
-        // Check if the offers are satisfied by the sale products
-        for (Offer offer : offers) {
+            // Check if the offers date is valid
             if (offer.getValidUntil().before(new Timestamp(System.currentTimeMillis()))) {
                 log.debug("Offer %s is expired when generating sale.".formatted(offer.getName()));
                 throw new AppHttpError.BadRequest("Offer %s is expired".formatted(offer.getName()));
             }
 
+            // Check if the offer is satisfied by the sale products
             if (!_doesOfferSatisfiedByProductList(salePostRequest.getProducts(), offer)) {
                 log.debug("Offer %s is not satisfied by the sale when generating sale.".formatted(offer.getName()));
                 throw new AppHttpError.BadRequest("Offer %s is not satisfied by the sale".formatted(offer.getName()));
@@ -192,7 +194,7 @@ public class SaleService {
                 .receivedMoney(salePostRequest.getReceivedMoney())
                 .cashier(cashier)
                 .paymentMethod(paymentMethod)
-                .offers(offers)
+                .offers(offer != null ? List.of(offer) : null)
                 .build();
         List<SalePostRequest.ProductDetails> productDetails = salePostRequest.getProducts();
         for (SalePostRequest.ProductDetails productDetail : productDetails) {
