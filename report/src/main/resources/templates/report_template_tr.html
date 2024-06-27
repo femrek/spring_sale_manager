@@ -79,6 +79,10 @@
             padding: 0.02in;
         }
 
+        #offer-table {
+            width: 100%;
+        }
+
         #money-table {
             width: 100%;
         }
@@ -184,6 +188,27 @@
 </table>
 
 <hr/> <!-- divider -->
+
+<!-- offer section if exist -->
+<table th:if="${!sale.getOffers().isEmpty()}" id="offer-table">
+    <thead>
+    <tr>
+        <td colspan="2">UYGULANAN İNDİRİMLER:</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="offer: ${sale.getOffers()}">
+        <td th:text="${offer.getName()}">{offerName}</td>
+        <td class="details-right-side no-wrap"
+            th:text="|-${#numbers.formatDecimal(offer.getDiscount(), 1, 2, 'COMMA')}|">
+            {offerPrice}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr th:if="${!sale.getOffers().isEmpty()}"/> <!-- divider -->
 
 <!-- received money and remainder -->
 <table id="money-table">
