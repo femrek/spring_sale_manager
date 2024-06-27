@@ -32,6 +32,19 @@ ALTER SCHEMA public OWNER TO pg_database_owner;
 COMMENT ON SCHEMA public IS 'standard public schema';
 
 
+--
+-- Name: noupdate(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.noupdate() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$BEGIN
+   RAISE EXCEPTION 'update is not allowed';
+END;$$;
+
+
+ALTER FUNCTION public.noupdate() OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -436,6 +449,41 @@ CREATE INDEX role_user_bridge_user_id_idx ON public.role_user_bridge USING btree
 --
 
 CREATE INDEX sale_product_bridge_sale_id_idx ON public.sale_product_bridge USING btree (sale_id);
+
+
+--
+-- Name: offer noupdate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER noupdate BEFORE UPDATE ON public.offer FOR EACH ROW EXECUTE FUNCTION public.noupdate();
+
+
+--
+-- Name: offer_requirement_bridge noupdate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER noupdate BEFORE UPDATE ON public.offer_requirement_bridge FOR EACH ROW EXECUTE FUNCTION public.noupdate();
+
+
+--
+-- Name: product noupdate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER noupdate BEFORE UPDATE ON public.product FOR EACH ROW EXECUTE FUNCTION public.noupdate();
+
+
+--
+-- Name: sale_offer noupdate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER noupdate BEFORE UPDATE ON public.sale_offer FOR EACH ROW EXECUTE FUNCTION public.noupdate();
+
+
+--
+-- Name: sale_product_bridge noupdate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER noupdate BEFORE UPDATE ON public.sale_product_bridge FOR EACH ROW EXECUTE FUNCTION public.noupdate();
 
 
 --
