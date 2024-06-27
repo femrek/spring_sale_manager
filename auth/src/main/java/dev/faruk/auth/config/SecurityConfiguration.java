@@ -61,6 +61,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/accessibility/api/v1/product/**").permitAll()
                 .requestMatchers("/accessibility/api/v1/sale/**").hasAuthority("CASHIER")
                 .requestMatchers("/accessibility/api/v1/offer/**").hasAuthority("CASHIER")
+                .requestMatchers("/accessibility/api/v1/payment-method/**").hasAuthority("CASHIER")
                 .requestMatchers("/accessibility/api/v1/report/**").hasAuthority("MANAGER")
                 .requestMatchers("/accessibility/api/v1/user/**").hasAuthority("ADMIN")
 

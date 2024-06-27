@@ -143,7 +143,7 @@
 
         <td class="details-right-side no-wrap">SATIŞ</td>
         <td class="details-right-side colon no-wrap">:</td>
-        <td class="details-right-side no-wrap">NAKİT</td>
+        <td class="details-right-side no-wrap" th:text="${sale.getPaymentMethodName_tr()}">{paymentMethod}</td>
     </tr>
 
     <!-- cashier -->

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SalePostRequest {
     private Double receivedMoney;
+    private Long paymentMethodId;
     private List<ProductDetails> products;
     private List<Long> offerIds;
 

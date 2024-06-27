@@ -201,11 +201,13 @@ class ReportServiceTest {
                 .receivedMoney(200D)
                 .cashier(sampleCashier)
                 .productList(List.of())
+                .paymentMethod(saleRepository.findPaymentMethodById(1L))
                 .build();
         Sale sale1 = Sale.builder()
                 .receivedMoney(100D)
                 .cashier(sampleCashier)
                 .productList(List.of())
+                .paymentMethod(saleRepository.findPaymentMethodById(1L))
                 .build();
         userRepository.create(sampleCashier);
         saleRepository.create(sale0);

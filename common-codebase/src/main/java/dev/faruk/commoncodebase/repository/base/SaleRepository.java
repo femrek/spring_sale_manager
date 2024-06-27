@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.repository.base;
 
+import dev.faruk.commoncodebase.entity.PaymentMethod;
 import dev.faruk.commoncodebase.entity.Sale;
 
 import java.util.List;
@@ -52,4 +53,19 @@ public interface SaleRepository {
      * @param sale the sale to be deleted.
      */
     void deletePermanent(Sale sale);
+
+    /**
+     * Fetches all the payment methods saved in the database
+     *
+     * @return List of payment methods
+     */
+    List<PaymentMethod> findAllPaymentMethods();
+
+    /**
+     * Fetches a payment method by id
+     *
+     * @param id id of the payment method
+     * @return PaymentMethod with the given id
+     */
+    PaymentMethod findPaymentMethodById(Long id);
 }

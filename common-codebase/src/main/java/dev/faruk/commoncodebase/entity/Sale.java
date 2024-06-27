@@ -31,6 +31,10 @@ public class Sale {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = PaymentMethod.class)
+    @JoinColumn(name = "payment_method")
+    private PaymentMethod paymentMethod;
+
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = AppUser.class)
     @JoinColumn(name = "cashier")
     private AppUser cashier;

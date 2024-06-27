@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.repository.implementation;
 
+import dev.faruk.commoncodebase.entity.PaymentMethod;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import jakarta.persistence.EntityManager;
@@ -107,5 +108,27 @@ public class SaleRepositoryImpl implements SaleRepository {
         entityManager.createQuery("DELETE FROM Sale as s WHERE s.id = :sale_id")
                 .setParameter("sale_id", sale.getId())
                 .executeUpdate();
+    }
+
+    @Override
+    public List<PaymentMethod> findAllPaymentMethods() {
+        TypedQuery<PaymentMethod> query = entityManager.createQuery(
+                "SELECT pm FROM PaymentMethod as pm",
+                PaymentMethod.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public PaymentMethod findPaymentMethodById(Long id) {
+        TypedQuery<PaymentMethod> query = entityManager.createQuery(
+                "SELECT pm FROM PaymentMethod as pm WHERE pm.id = :payment_method_id",
+                PaymentMethod.class);
+
+        query.setParameter("payment_method_id", id);
+
+        List<PaymentMethod> results = query.getResultList();
+        if (results.isEmpty()) return null;
+        return results.get(0);
     }
 }

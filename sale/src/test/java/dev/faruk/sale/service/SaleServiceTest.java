@@ -206,6 +206,7 @@ class SaleServiceTest {
 
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdA_15_30D_3_2_1
                 ))
@@ -223,6 +224,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdB_20_30D_2_1
                 ))
@@ -240,6 +242,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(100D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdA_15_30D_3_2_1
                 ))
@@ -257,6 +260,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(500D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdBB_25_30D_1_1
                 ))
@@ -274,6 +278,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(500D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdBB_25_30D_1_1
                 ))
@@ -291,6 +296,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(500D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdC_25_30D_1_1
                 ))
@@ -308,6 +314,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(500D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdA_15_30D_3_2_1
                 ))
@@ -325,6 +332,7 @@ class SaleServiceTest {
                 ).toList();
         return SalePostRequest.builder()
                 .receivedMoney(1000D)
+                .paymentMethodId(1L)
                 .offerIds(List.of(
                         saleTestDataSource.offerIdD_25_passed30D_1_1
                 ))

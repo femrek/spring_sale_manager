@@ -78,11 +78,14 @@ public class SaleService {
             throw new AppHttpError.BadRequest("Authorization header is required");
         }
 
+        // Fetches the payment method by the given id
+        PaymentMethod paymentMethod = _getPaymentMethod(salePostRequest);
+
         // Fetches the cashier by the given auth header
         AppUser cashier = _getCashier(authHeader);
 
         // Generates a sale with the given data
-        Sale sale = _generateSale(salePostRequest, cashier);
+        Sale sale = _generateSale(salePostRequest, cashier, paymentMethod);
 
         // Checks if the received money is enough
         SaleDTO saleDTO = new SaleDTO(sale);
@@ -91,6 +94,29 @@ public class SaleService {
         }
 
         return sale;
+    }
+
+    /**
+     * This method fetches the payment method by the given id.
+     * @param salePostRequest the request body including the sale data
+     * @return the payment method
+     */
+    private PaymentMethod _getPaymentMethod(SalePostRequest salePostRequest) {
+        // check if the payment method is given
+        if (salePostRequest.getPaymentMethodId() == null) {
+            throw new AppHttpError.BadRequest("'PaymentMethodId' is required");
+        }
+
+        // fetch the payment method by the given id
+        PaymentMethod paymentMethod = saleRepository.findPaymentMethodById(salePostRequest.getPaymentMethodId());
+
+        // check if the payment method is found
+        if (paymentMethod == null) {
+            throw new AppHttpError
+                    .BadRequest("Payment method not found with id, %d".formatted(salePostRequest.getPaymentMethodId()));
+        }
+
+        return paymentMethod;
     }
 
     /**
@@ -144,7 +170,7 @@ public class SaleService {
      * @param cashier the cashier who creates the sale
      * @return the generated sale
      */
-    private Sale _generateSale(SalePostRequest salePostRequest, AppUser cashier) {
+    private Sale _generateSale(SalePostRequest salePostRequest, AppUser cashier, PaymentMethod paymentMethod) {
         // Fetch the offers by the given offer ids
         List<Offer> offers = salePostRequest.getOfferIds().stream().map(offerRepository::findById).toList();
 
@@ -165,6 +191,7 @@ public class SaleService {
         Sale sale = Sale.builder()
                 .receivedMoney(salePostRequest.getReceivedMoney())
                 .cashier(cashier)
+                .paymentMethod(paymentMethod)
                 .offers(offers)
                 .build();
         List<SalePostRequest.ProductDetails> productDetails = salePostRequest.getProducts();

@@ -1,9 +1,11 @@
 package dev.faruk.commoncodebase.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dev.faruk.commoncodebase.entity.Offer;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.entity.SaleProduct;
+import dev.faruk.commoncodebase.error.AppHttpError;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -21,6 +23,7 @@ public class SaleDTO {
     private Long id;
     private Double receivedMoney;
     private Timestamp createdAt;
+    private PaymentMethodDTO paymentMethod;
     private UserDTO cashier;
     private List<SaleProductDTO> products;
     private List<OfferDTO> offers;
@@ -28,8 +31,9 @@ public class SaleDTO {
     public SaleDTO(Sale sale) {
         id = sale.getId();
         receivedMoney = sale.getReceivedMoney();
-        cashier = new UserDTO(sale.getCashier());
         createdAt = sale.getCreatedAt();
+        paymentMethod = sale.getPaymentMethod() == null ? null : new PaymentMethodDTO(sale.getPaymentMethod());
+        cashier = new UserDTO(sale.getCashier());
         products = new ArrayList<>();
         for (SaleProduct m : sale.getProductList()) {
             products.add(new SaleProductDTO(m));
@@ -40,6 +44,15 @@ public class SaleDTO {
                 offers.add(new OfferDTO(o));
             }
         }
+    }
+
+    @JsonIgnore
+    public String getPaymentMethodName_tr() {
+        if (paymentMethod == null) return null;
+        if (paymentMethod.getName() == null) return null;
+        if (paymentMethod.getName().equals("CASH")) return "Nakit";
+        if (paymentMethod.getName().equals("CREDIT_CARD")) return "Kredi Kartı";
+        throw new AppHttpError.InternalServerError("Unknown payment method");
     }
 
     public String getDate() {

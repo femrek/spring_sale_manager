@@ -15,7 +15,7 @@ spring:
         - id: sale-service
           uri: lb://SALE-SERVICE
           predicates:
-            - Path=/api/v1/sale/**, /api/v1/offer/**
+            - Path=/api/v1/sale/**, /api/v1/offer/** , /api/v1/payment-method/**
 
         - id: user-management-service
           uri: lb://USER-MANAGEMENT-SERVICE

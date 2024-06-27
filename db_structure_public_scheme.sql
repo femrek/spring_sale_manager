@@ -131,6 +131,18 @@ ALTER TABLE public.offer_requirement_bridge ALTER COLUMN id ADD GENERATED ALWAYS
 
 
 --
+-- Name: payment_method; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.payment_method (
+    id integer NOT NULL,
+    method_name text NOT NULL
+);
+
+
+ALTER TABLE public.payment_method OWNER TO postgres;
+
+--
 -- Name: product; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -178,7 +190,8 @@ CREATE TABLE public.sale (
     id integer NOT NULL,
     received_money numeric NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    cashier integer NOT NULL
+    cashier integer NOT NULL,
+    payment_method integer DEFAULT 1 NOT NULL
 );
 
 
@@ -351,6 +364,14 @@ ALTER TABLE ONLY public.sale_product_bridge
 
 
 --
+-- Name: payment_method unique_payment_method_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.payment_method
+    ADD CONSTRAINT unique_payment_method_id PRIMARY KEY (id);
+
+
+--
 -- Name: product unique_product_barcode; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -463,6 +484,14 @@ ALTER TABLE ONLY public.sale_offer
 
 ALTER TABLE ONLY public.sale_product_bridge
     ADD CONSTRAINT "lnk_sale_MM_sale_product_bridge" FOREIGN KEY (sale_id) REFERENCES public.sale(id) MATCH FULL;
+
+
+--
+-- Name: sale lnk_sale_OM_payment_method; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sale
+    ADD CONSTRAINT "lnk_sale_OM_payment_method" FOREIGN KEY (payment_method) REFERENCES public.payment_method(id) MATCH FULL;
 
 
 --

@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.repository.testImplementations;
 
+import dev.faruk.commoncodebase.entity.PaymentMethod;
 import dev.faruk.commoncodebase.entity.Sale;
 import dev.faruk.commoncodebase.repository.base.SaleRepository;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,11 @@ import java.util.List;
 public class SaleRepositoryTestImpl implements SaleRepository {
     private final List<Sale> cache = new ArrayList<>();
     private long idCounter = 1;
+
+    private final List<PaymentMethod> paymentMethods = List.of(
+            new PaymentMethod(1L, "CASH"),
+            new PaymentMethod(2L, "CREDIT_CARD")
+    );
 
     @Override
     public Sale create(Sale sale) {
@@ -98,5 +104,15 @@ public class SaleRepositoryTestImpl implements SaleRepository {
     @Override
     public void deletePermanent(Sale sale) {
         cache.remove(sale);
+    }
+
+    @Override
+    public List<PaymentMethod> findAllPaymentMethods() {
+        return paymentMethods;
+    }
+
+    @Override
+    public PaymentMethod findPaymentMethodById(Long id) {
+        return paymentMethods.stream().filter(pm -> pm.getId().equals(id)).findFirst().orElse(null);
     }
 }
