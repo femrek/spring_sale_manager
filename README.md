@@ -59,65 +59,89 @@ All the success responses are in AppSuccessResponse format that includes status,
 ### Authentication Service (/api/v1/auth/)
 
 - POST /api/v1/auth/login
-    - Request Body: LoginRequest
-    - Response Body: LoginResponse: contains the JWT token
+    - **Authentication:** no authentication
+    - **Request Body:** LoginRequest
+    - **Response Body:** LoginResponse: contains the JWT token
 - GET /api/v1/auth/user
-    - no request body
-    - Response Body: UserDTO: the authenticated user
+    - **Authentication:** authenticated
+    - **Request Body:** no request body
+    - **Response Body:** UserDTO: the authenticated user
 
 ### User Management Service (/api/v1/user/)
 
 - GET /api/v1/user
-    - no request body
-    - Response Body: List<UserDTO>: list of users
+    - **Authentication:** ADMIN only
+    - **Request Body:** no request body
+    - **Response Body:** List<UserDTO>: list of users
 - GET /api/v1/user/{userId}
-    - no request body
-    - Response Body: UserDTO: the user
+    - **Authentication:** ADMIN only
+    - **Request Body:** no request body
+    - **Response Body:** UserDTO: the user
 - POST /api/v1/user
-    - Request Body: UserCreateRequest
-    - Response Body: UserDTO: the created user
+    - **Authentication:** ADMIN only
+    - **Request Body:** UserCreateRequest
+    - **Response Body:** UserDTO: the created user
 - PATCH /api/v1/user/{userId}
-    - Request Body: UserUpdateRequest
-    - Response Body: UserDTO: the updated user
+    - **Authentication:** ADMIN only
+    - **Request Body:** UserUpdateRequest
+    - **Response Body:** UserDTO: the updated user
 - DELETE /api/v1/user/{userId}
-    - no request body
-    - no response body: success or error response
+    - **Authentication:** ADMIN only
+    - **Request Body:** no request body
+    - **Response Body:** no request body: success or error response
 - GET /api/v1/user/role
-    - no request body
-    - Response Body: List<UserRoleDTO>: list of roles
+    - **Authentication:** ADMIN only
+    - **Request Body:** no request body
+    - **Response Body:** List<UserRoleDTO>: list of roles
 - GET /api/v1/user/role/{roleId}
-    - no request body
-    - Response Body: UserRoleDTO: the role
+    - **Authentication:** ADMIN only
+    - **Request Body:** no request body
+    - **Response Body:** UserRoleDTO: the role
 
 ### Product Service (/api/v1/product/)
 
 - GET /api/v1/product
-    - no request body
-    - Response Body: List<ProductDTO>: list of products
+    - **Authentication:** no authentication
+    - **Request Body:** no request body
+    - **Response Body:** List<ProductDTO>: list of products
 - GET /api/v1/product/{id}
-    - no request body
-    - Response Body: ProductDTO: the product
+    - **Authentication:** no authentication
+    - **Request Body:** no request body
+    - **Response Body:** ProductDTO: the product
 
 ### Sale Service (/api/v1/sale/ | /api/v1/offer/)
 
 - POST /api/v1/sale
-    - Request Body: SaleCreateRequest
-    - Response Body: SaleDTO: the created sale
+    - **Authentication:** CASHIER only
+    - **Request Body:** SaleCreateRequest
+    - **Response Body:** SaleDTO: the created sale
 - POST /api/v1/sale/preview
-    - Request Body: SaleCreateRequest
-    - Response Body: SalePreviewDTO: the preview of the sale if it is valid
-- GET /api/v1/sale/offer
-    - no request body
-    - Response Body: List<OfferDTO>: list of offers
-- GET /api/v1/sale/offer/{id}
-    - no request body
-    - Response Body: OfferDTO: the offer
+    - **Authentication:** CASHIER only
+    - **Request Body:** SaleCreateRequest
+    - **Response Body:** SalePreviewDTO: the preview of the sale if it is valid
+- GET /api/v1/offer
+    - **Authentication:** CASHIER only
+    - **Request Body:** no request body
+    - **Response Body:** List<OfferDTO>: list of offers
+- GET /api/v1/offer/{id}
+    - **Authentication:** CASHIER only
+    - **Request Body:** no request body
+    - **Response Body:** OfferDTO: the offer
+- GET /api/v1/payment-method
+    - **Authentication:** CASHIER only
+    - **Request Body:** no request body
+    - **Response Body:** List<PaymentMethodDTO>: list of payment methods
+- GET /api/v1/payment-method/{id}
+    - **Authentication:** CASHIER only
+    - **Request Body:** no request body
+    - **Response Body:** PaymentMethodDTO: the payment method
 
 ### Report Service (/api/v1/report/)
 
 - GET /api/v1/report
-    - no request body
-    - Request Param:
+    - **Authentication:** MANAGER only
+    - **Request Body:** no request body
+    - **Request Param:**
         - p (required): Integer: page number
         - s (required): Integer: page size
         - orderBy (optional) String: the field to order by [id, receivedMoney, createdAt, cashier]
@@ -127,21 +151,25 @@ All the success responses are in AppSuccessResponse format that includes status,
         - cashierFilter (optional) Long: the cashier id
         - receivedMoneyFilterMin (optional) Double: received money filter min or equal
         - receivedMoneyFilterMax (optional) Double: received money filter max or equal
-    - Response Body: List<ReportDTO>: list of reports
+    - **Response Body:** List<ReportDTO>: list of reports
 - GET /api/v1/report/{id}
-    - no request body
-    - Response Body: ReportDTO: the sale in json format
+    - **Authentication:** MANAGER only
+    - **Request Body:** no request body
+    - **Response Body:** ReportDTO: the sale in json format
 - GET /api/v1/report/{id}/receipt
-    - no request body
-    - Response Body: byte[] (file): the pdf receipt
+    - **Authentication:** MANAGER only
+    - **Request Body:** no request body
+    - **Response Body:** byte[] (file): the pdf receipt
 - GET /api/v1/report/{id}/receipt-html
-    - no request body
-    - Response Body: String: the html receipt
+    - **Authentication:** MANAGER only
+    - **Request Body:** no request body
+    - **Response Body:** byte[] (file): the html receipt
 
 ### Error Responses
 
 `AppHttpError` class is used for error responses. The `AppHttpError` class has a `code` field for the error code and a
 `message` field for the error message. Example error response:
+
 ```json
 {
   "status": 400,
@@ -154,22 +182,22 @@ All the success responses are in AppSuccessResponse format that includes status,
 ### User Management - Authentication Service Interface
 
 - POST /api/v1/auth/user-management
-    - Request Body: UserCreateRequest
-    - Response Body: UserDTO: the created user
+    - **Request Body:** UserCreateRequest
+    - **Response Body:** UserDTO: the created user
 
 - PATCH /api/v1/auth/user-management/{id}
-    - Request Body: UserUpdateRequest
-    - Response Body: UserDTO: the updated user
+    - **Request Body:** UserUpdateRequest
+    - **Response Body:** UserDTO: the updated user
 
 - DELETE /api/v1/auth/user-management/{id}
-    - no request body
-    - no response body: success or error response
+    - **Request Body:** no request body
+    - **Response Body:** no request body: success or error response
 
 ### Authentication and Authorization Interface for Other Services
 
 - GET /api/v1/auth/accessibility
-    - no request body
-    - no response body: success or error response
+    - **Request Body:** no request body
+    - **Response Body:** no request body: success or error response
 
 ## Logging
 
