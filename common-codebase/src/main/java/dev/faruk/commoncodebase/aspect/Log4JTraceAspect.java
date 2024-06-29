@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Aspect
 @Component
-public class Log4JTrackAspect {
+public class Log4JTraceAspect {
     @Pointcut("execution(public * dev.faruk..*.controller..*.*(.., @org.springframework.web.bind.annotation.RequestBody (*), ..))")
     private void controllerWithRequestBodyPointcut() {
     }
@@ -83,15 +83,15 @@ public class Log4JTrackAspect {
 
         // log before
         if (!putArgs) {
-            log.trace("Controller: {}.{}(). args are hidden.",
+            log.trace("Controller: call: {}.{}(). args are hidden.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         } else if (argString == null) {
-            log.trace("Controller: {}.{}() called with no body.",
+            log.trace("Controller: call: {}.{}() called with no body.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         } else {
-            log.trace("Controller: {}.{}() called with body: {}",
+            log.trace("Controller: call: {}.{}() called with body: {}",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(),
                     argString);
@@ -102,7 +102,7 @@ public class Log4JTrackAspect {
 
         // check null
         if (result == null) {
-            log.warn("Controller: {}.{}() returned null.",
+            log.warn("Controller: return: {}.{}() returned null.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
             return null;
@@ -112,12 +112,12 @@ public class Log4JTrackAspect {
         if (putArgs) {
             final boolean isAppSuccessResponse = result instanceof ResponseEntity<?>
                     && ((ResponseEntity<?>) result).getBody() instanceof AppSuccessResponse<?>;
-            log.trace("Controller: {}.{}() returned: {}",
+            log.trace("Controller: return: {}.{}() returned: {}",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(),
                     isAppSuccessResponse ? ((ResponseEntity<?>) result).getBody() : result.toString());
         } else {
-            log.trace("Controller: {}.{}(). result is hidden.",
+            log.trace("Controller: return: {}.{}(). result is hidden.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         }
@@ -167,12 +167,12 @@ public class Log4JTrackAspect {
 
         // log before
         if (putArgs) {
-            log.trace("Service: {}.{}() called with args: {}",
+            log.trace("Service: call: {}.{}() called with args: {}",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(),
                     stringBuilder.toString());
         } else {
-            log.trace("Service: {}.{}(). args are hidden.",
+            log.trace("Service: call: {}.{}(). args are hidden.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         }
@@ -183,12 +183,12 @@ public class Log4JTrackAspect {
         // log after
         final boolean isResultNull = result == null;
         if (putArgs) {
-            log.trace("Service: {}.{}() returned: {}",
+            log.trace("Service: return: {}.{}() returned: {}",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName(),
                     isResultNull ? "null" : result.toString());
         } else {
-            log.trace("Service: {}.{}(). result is hidden.",
+            log.trace("Service: return: {}.{}(). result is hidden.",
                     joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         }
