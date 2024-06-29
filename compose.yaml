@@ -55,7 +55,7 @@ services:
       - POSTGRES_DB=productmanagementsystem
       - POSTGRES_HOST=postgres-db
       - EUREKA_HOST=service-registry
-      - GATEWAY_HOST=gateway
+      - GATEWAY_HOST=gateway:8080
       - JWT_SECRET_FILE=/run/secrets/jwt-secret
       - JWT_EXPIRATION_TIME_IN_MILLIS=18000000
     ports:
@@ -82,7 +82,7 @@ services:
       - POSTGRES_DB=productmanagementsystem
       - POSTGRES_HOST=postgres-db
       - EUREKA_HOST=service-registry
-      - GATEWAY_HOST=gateway
+      - GATEWAY_HOST=gateway:8080
     ports:
       - 8081:8081
     networks:
@@ -105,7 +105,7 @@ services:
       - POSTGRES_DB=productmanagementsystem
       - POSTGRES_HOST=postgres-db
       - EUREKA_HOST=service-registry
-      - GATEWAY_HOST=gateway
+      - GATEWAY_HOST=gateway:8080
     ports:
       - 8084:8084
     networks:
@@ -128,7 +128,7 @@ services:
       - POSTGRES_DB=productmanagementsystem
       - POSTGRES_HOST=postgres-db
       - EUREKA_HOST=service-registry
-      - GATEWAY_HOST=gateway
+      - GATEWAY_HOST=gateway:8080
     ports:
       - 8082:8082
     networks:
@@ -151,7 +151,7 @@ services:
       - POSTGRES_DB=productmanagementsystem
       - POSTGRES_HOST=postgres-db
       - EUREKA_HOST=service-registry
-      - GATEWAY_HOST=gateway
+      - GATEWAY_HOST=gateway:8080
     ports:
       - 8083:8083
     networks:

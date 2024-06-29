@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppConstants {
-    private static final String HOST_TEMPLATE = "http://%s:8080";
+    private static final String HOST_TEMPLATE = "http://%s";
 
     @Value("${spring.application.name}")
     public String moduleName;
@@ -14,7 +14,7 @@ public class AppConstants {
 
     public AppConstants() {
         String hostEnv = System.getenv("GATEWAY_HOST");
-        String hostName = hostEnv != null ? hostEnv : "localhost";
+        String hostName = hostEnv != null ? hostEnv : "localhost:8080";
         this.host = String.format(HOST_TEMPLATE, hostName);
     }
 }
