@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" monitorInterval="30">
+<Configuration>
     <!-- Logging Properties -->
     <Properties>
       <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSS}{UTC+0} UTC+00 %-5p %-6pid --- [${spring:spring.application.name}] [%15.15t] %40.40c{1.} : %m%n</Property>
