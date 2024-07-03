@@ -56,6 +56,25 @@ Check [postman documentation](https://documenter.getpostman.com/view/29982062/2s
 
 All the success responses are in AppSuccessResponse format that includes status, message and data fields.
 
+```json
+{
+  "status": 200,
+  "message": "Success",
+  "data": { }
+}
+```
+
+```json
+{
+  "status": 200,
+  "message": "Success",
+  "data": [
+    { },
+    { }
+  ]
+}
+```
+
 ### Authentication Service (/api/v1/auth/)
 
 - POST /api/v1/auth/login
