@@ -130,7 +130,7 @@ Response format:
     - **Request Body:** no request body
     - **Response Body:** ProductDTO: the product
 
-### Sale Service (/api/v1/sale/ | /api/v1/offer/)
+### Sale Service (/api/v1/sale/ | /api/v1/offer/ | /api/v1/payment-method/)
 
 - POST /api/v1/sale
     - **Authentication:** CASHIER only
