@@ -40,6 +40,7 @@ CREATE FUNCTION public.noupdate() RETURNS trigger
     LANGUAGE plpgsql
     AS $$BEGIN
    RAISE EXCEPTION 'update is not allowed';
+   RETURN NEW;
 END;$$;
 
 
@@ -48,41 +49,6 @@ ALTER FUNCTION public.noupdate() OWNER TO postgres;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: app_log; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.app_log (
-    id integer NOT NULL,
-    status_code integer NOT NULL,
-    request text,
-    response text,
-    error text,
-    stack_trace text,
-    module_name text NOT NULL,
-    request_at timestamp with time zone,
-    response_at timestamp with time zone NOT NULL,
-    url text NOT NULL,
-    method text NOT NULL
-);
-
-
-ALTER TABLE public.app_log OWNER TO postgres;
-
---
--- Name: app_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-ALTER TABLE public.app_log ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.app_log_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
 
 --
 -- Name: offer; Type: TABLE; Schema: public; Owner: postgres
@@ -94,8 +60,7 @@ CREATE TABLE public.offer (
     discount numeric NOT NULL,
     valid_until timestamp without time zone NOT NULL,
     valid_since timestamp without time zone NOT NULL,
-    CONSTRAINT discount_interval_down CHECK ((discount > (0)::numeric)),
-    CONSTRAINT discount_interval_upper CHECK ((discount < (1)::numeric))
+    CONSTRAINT discount_interval_down CHECK ((discount > (0)::numeric))
 );
 
 
@@ -318,14 +283,6 @@ ALTER TABLE public.user_role ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
     NO MAXVALUE
     CACHE 1
 );
-
-
---
--- Name: app_log app_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.app_log
-    ADD CONSTRAINT app_log_pkey PRIMARY KEY (id);
 
 
 --
