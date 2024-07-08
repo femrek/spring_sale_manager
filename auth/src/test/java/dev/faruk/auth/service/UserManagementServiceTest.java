@@ -150,5 +150,9 @@ class UserManagementServiceTest {
 
     @Test
     void deleteUser() {
+        final Long userId = authTestDataSource.getAdminUser().getId();
+        userManagementService.deleteUser(userId);
+
+        assertTrue(userRepository.findById(userId).getDeleted());
     }
 }
