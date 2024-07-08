@@ -47,8 +47,8 @@ public class ReportService {
             if (page < 1 || size < 1) throw new AppHttpError.BadRequest("Page and size must be greater than 0");
 
             // check if orderBy is valid
-            if (!Sale.getVisibleColumns().contains(orderBy)) throw new AppHttpError.BadRequest(
-                    "Invalid orderBy parameter. orderBy must be one of them: %s".formatted(Sale.getVisibleColumns()));
+            if (!Sale.visibleColumns.contains(orderBy)) throw new AppHttpError.BadRequest(
+                    "Invalid orderBy parameter. orderBy must be one of them: %s".formatted(Sale.visibleColumns));
 
             // check if dateFilterAfter and dateFilterBefore are valid
             if (dateFilterAfter != null && dateFilterAfter < 0)

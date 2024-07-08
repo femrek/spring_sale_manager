@@ -177,7 +177,11 @@ public class SaleService {
             offer = offerRepository.findById(salePostRequest.getOfferId());
 
             // Check if the offers date is valid
-            if (offer.getValidUntil().before(new Timestamp(System.currentTimeMillis()))) {
+            if (offer.getValidSince().after(new Timestamp(System.currentTimeMillis()))) {
+                log.debug("Offer %s is not valid yet when generating sale.".formatted(offer.getName()));
+                throw new AppHttpError.BadRequest("Offer %s is not valid yet".formatted(offer.getName()));
+            }
+            else if (offer.getValidUntil().before(new Timestamp(System.currentTimeMillis()))) {
                 log.debug("Offer %s is expired when generating sale.".formatted(offer.getName()));
                 throw new AppHttpError.BadRequest("Offer %s is expired".formatted(offer.getName()));
             }

@@ -64,15 +64,11 @@ public class Sale {
     /**
      * Returns the visible column names that are exposed to the client. Also, these names are used in the repository
      * layer to filter the columns that are going to be selected from the database.
-     *
-     * @return Set of visible column names
      */
-    public static Set<String> getVisibleColumns() {
-        return Set.of(
-                "id",
-                "receivedMoney",
-                "createdAt",
-                "cashier"
-        );
-    }
+    public static Set<String> visibleColumns = Set.of(
+            "id",
+            "receivedMoney",
+            "createdAt",
+            "cashier"
+    );
 }

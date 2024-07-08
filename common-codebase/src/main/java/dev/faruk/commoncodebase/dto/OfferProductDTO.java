@@ -1,5 +1,6 @@
 package dev.faruk.commoncodebase.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import dev.faruk.commoncodebase.entity.OfferProduct;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OfferProductDTO {
     private Long id;
     private ProductDTO product;
